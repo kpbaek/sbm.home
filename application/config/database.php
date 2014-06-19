@@ -48,10 +48,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'cikorea.net';
-$db['default']['username'] = 'user';
-$db['default']['password'] = 'pass';
-$db['default']['database'] = 'codeigniter';
+$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = 'sbmkorea';
+$db['default']['password'] = 'sbmkoreacom123';
+$db['default']['database'] = 'sbm';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;
