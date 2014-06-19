@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Config Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Config Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>환경설정 클래스Config Class</h1>
+
+<p>환경설정클래스는 환경설정정보를 가져오거나 설정하는 방법을 제공합니다.환경설정 정보는 기본 설정파일(<samp>application/config/config.php</samp>)이나 당신이 만든 설정파일(custom config files)에서 가져올 수 있습니다..</p>
+
+<p class="important"><strong>Note:</strong> 이 클래스는 시스템에서 자동으로 초기화하므로 수동으로 할필요가 없습니다..</p>
+
+
+<h2>환경설정 파일 해부 (Anatomy of a Config File)</h2>
+
+<p>기본적으로 , CodeIgniter 는 하나의 주 설정파일(primary config file) 이 있으며 ,그파일은 <samp>application/config/config.php</samp> 입니다.그 파일을 열어보시면 환경설정정보가 <var>$config</var>배열로 세팅되어있는것을 알수 있습니다. </p>
+
+<p>당신은 새로운설정정보를 이 파일에 추가할수도 있고, 별도의 파일을 만든후 거기에 추가할 수도 있습니다.별도의 파일을 사용할경우 파일을 만드신후 <dfn>config</dfn> 폴더에 저장하셔야합니다.</p>
+
+<p><strong>Note:</strong>만약 설정파일을 만드신다면 주 설정파일과 같이 <var>$config 배열을 사용하여 설정항목을 추가하세요 </var>. CodeIgniter 는 배열이름이 동일하더라도 지능적으로 충돌이 일어나지 않도록 관리합니다. (배열인덱스의 이름은 서로 다르다고 가정합니다.).</p>
+
+<h2>환경설정 파일 로드 Loading a Config File</h2>
+
+<p><strong>Note:</strong> CodeIgniter 는 주 설정파일(<samp>application/config/config.php</samp>)을 자동으로 로드합니다.그러므로, 당신 직접만드신 설정파일이 있다면 그 파일만 로드 하시면됩니다.</p>
+
+<p>설정파일을 로드하는데는 두가지 방법이 있습니다:</p>
+
+<ol>
+  <li><strong>수동 로드(Manual Loading</strong>
+)
+    <p>직접만드신 설정파일을 로드하려면 그파일을 필요로 하는 <a href="../general/controllers.html">컨트롤러</a> 에서 다음의 코드를 사용하여 로드합니다.:</p>
+
+<code>$this->config->load('<var>filename</var>');</code>
+
+<p><var>filename</var> 는 당신의 설정파일 이름이며 .php 확장자는 붙이지 않습니다. </p>
+
+<p>여러개의 설정파일을 로드할때는 모든설정파일들이 하나의 주 설정 배열 ( master config array)로 합쳐질것입니다.서로다른파일에서라도 배열인덱스의 이름이 동일하다면, 충돌이 일어납니다. 이러한 충돌을 피하기 위해서는 두번째 파라미터를 <kbd>TRUE</kbd>
+로 하면됩니다. 그러면, 각 설정파일은 설정파일명과 동일한 배열인덱스에 저장될것입니다.:</p>
+
+<code>
+// Stored in an array with this prototype:  $this->config['blog_settings'] = $config<br />
+$this->config->load('<var>blog_settings</var>', <kbd>TRUE</kbd>);</code>
+
+<p><dfn>설정 아이템 가져오기</dfn> 항목을 보시면 이런방법으로 설정된 값을 어떻게 사용하는지 알수 있으실겁니다.</p>
+
+<p>아래설정은 설정파일이 존재하지않을때 발생하는 에러를 표시하지않도록 해줍니다.:</p>
+
+<code>$this->config->load('<var>blog_settings</var>', <dfn>FALSE</dfn>, <kbd>TRUE</kbd>);</code>
+
+</li>
+<li><strong>자동로드 </strong>
+  <p>만약 특정 설정파일을 글로벌하게 사용하고자한다면 그 파일을 시스템에서 자동으로 로드할수있도록 설정할 수 있습니다.<strong><samp>application/config/autoload.php</samp></strong> 파일을 여신후, 해당 설정파일을 추가하세요 .</p>
+</li>
+</ol>
+
+
+<h2>설정 항목 가져오기 (Fetching Config Items)</h2>
+
+<p>당신의 설정파일에서 설정항목을 가져오려면 아래코드를 씁니다.:</p>
+
+<code>$this->config->item('<var>item name</var>');</code>
+
+<p><var>item name</var> 은 $config 배열의 인덱스입니다.예를들어 ,언어설정값을 가져오려면 아래와 같이 합니다.:</p>
+
+<code>$lang = $this->config->item('language');</code>
+
+<p>가져오려는 항목이 존재하지않는다면 함수는 FALSE (boolean)를 리턴합니다.</p>
+
+<p>&nbsp;</p>
+<p>만약 당신이 직접추가한 설정항목들(config items)을 특정 인덱스에 넣기위해<kbd>$this->config->load</kbd> 함수의 두번째 파라미터를 사용하고 있다면 <kbd>$this->config->item()</kbd> 함수의 두번째 파라미터로 그 인덱스를 집어넣음으로써 설정값을 가져올 수 있습니다.  예:</p>
+<code>
+// Loads a config file named blog_settings.php and assigns it to an index named "blog_settings"<br />
+$this->config->load('<var>blog_settings</var>', <kbd>TRUE</kbd>);<br /><br />
+
+// Retrieve a config item named site_name contained within the blog_settings array<br />
+$site_name = $this->config->item('<dfn>site_name</dfn>', '<var>blog_settings</var>');<br /><br />
+
+// An alternate way to specify the same item:<br />
+$blog_config = $this->config->item('<var>blog_settings</var>');<br />
+$site_name = $blog_config['site_name'];</code>
+
+<h2>환경설정 항목 설정Setting a Config Item</h2>
+
+<p>동적으로 환경설정을 하거나, 기존의 설정을 변경하려면 아래의 코드를 사용합니다.:</p>
+
+<code>$this->config->set_item('<var>item_name</var>', '<var>item_value</var>');</code>
+
+<p><var>item_name</var> 은 설정하고자 하는 $config 배열의 인덱스입니다.<var>item_value</var> 는 설정하고자하는 값입니다. 
+</p>  <a name="environments"></a> 
+  <h2>여러환경 설정(Environments)</h2>
+  <p> 현재의 환경에 따라 다른 설정 파일을 로드할 수 있습니다.<kbd>ENVIRONMENT</kbd>상수가 index.php에 정의되어 
+    있으며, <a href="../general/environments.html">여러 환경</a>의 취급 섹션에서 자세히 설명하고 있습니다. 
+  </p>  <p> 특정 환경 설정 파일을 작성하려면 application / config / {ENVIRONMENT} / {FILENAME} php 
+    설정 파일을 만들거나 복사합니다.</p>
+  <p>예를 들어 프로덕션 환경에서 config.php를 만들려면 다음과 같이합니다 :</p>
+  <ol>
+    <li> application / config / production /디렉토리를 만듭니다</li>
+    <li>기존 config.php 위의 디렉토리에 복사합니다</li>
+    <li> application/config/production/config.php 를 원하는 대로 설정합니다</li>
+  </ol>
+  <p> <kbd>ENVIRONMENT</kbd> 상수를 'production'으로 설정하면,새로 만든 환경설정이 담긴config.php가 
+    로드됩니다.</p>
+  <p>환경 관련 폴더에 다음의 설정 파일을 넣을 수 있습니다:</p>
+  <ul>
+    <li>기본 CodeIgniter 설정 파일들</li>
+    <li>사용자 지정 설정 파일들</li>
+  </ul>  
+  <p><strong>주의:</strong> CodeIgniter는 현재의 환경 설정 파일을 먼저로드하려고 시도합니다. 만약 파일이 존재하지 
+    않으면 전역 설정 파일 (즉, <samp>application/config/</samp>에있는 파일)을 로드합니다.그러므로, 모든 환경설정 
+    파일들을 새로만든 디렉토리에 복사할 필요하는 없습니다. 단지 달라지는 부분만 넣어두면 됩니다.</p>
+
+
+<h2>헬퍼 함수들 Helper Functions</h2>
+
+<p>환경설정 클래스는 다음의 헬퍼함수들을 포함합니다.:</p>
+
+<h2>$this->config->site_url();</h2>
+  <p>이 함수는 사이트 URL 을 반환합니다.이때 설정파일에 지정한 인덱스( "index") 값도 함께 반환합니다.</p>
+  <p>&nbsp;</p>
+
+<h2>$this->config->base_url();</h2>
+  <p>이 메서드는 사이트의 URL을 가져옵니다.추가로 스타일 시트 및 이미지의 경로도 가져올 수 있습니다(옵션)</p>
+  <p>위의 두 메서드는 일반적으로 <a href="../helpers/url_helper.html">URL 헬퍼</a> 의 해당 함수를 
+    통해 액세스됩니다.</p>
+  <p>&nbsp;</p>
+
+<h2>$this->config->system_url();</h2>
+<p>이함수는 시스템폴더( <dfn>system folder</dfn>) url 을 리턴합니다.</p>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="calendar.html">Calendaring Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="../database/index.html">Database Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

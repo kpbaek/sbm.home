@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CodeIgniter at a Glance : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+What is CodeIgniter?
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>CodeIgniter 한눈에 둘러보기 CodeIgniter at a Glance</h1>
+
+
+<h2>CodeIgniter 는 프레임워크 입니다</h2>
+
+<p>CodeIgniter 는 PHP를 이용하여 웹사이트를 개발하고자하는 사람들을 위한 도구모음 입니다. 날코딩을 하고계셨다면 님하의 개발속도를 훨씬 향상시켜줄 것입니다. 이를 위해 CI는 일반적 작업에 사용되는 풍부한 라이브러리를 제공합니다. 게다가 라이브러리사용은 논리적이며 쉬운 인터페이스를 제공합니다.CI는 최소코딩만 필요하게 하므로써 님하의 생산성을 향상시켜주는데 촛점이 맞춰져 있습니다. </p>
+<h2>CodeIgniter 는 무료입니다 </h2>
+<p>CodeIgniter 는 Apache/BSD 스타일의 오픈소스 라이센스를 채택하고있습니다. 더 자세한 정보는 <a href="../license.html">라이센스 페이지를 참고하세요 . </a></p>
+
+
+  <h2>CodeIgniter 는 가볍습니다</h2>
+<p>엄청 가볍습니다. 코어시스템은 겨우 몇개의 작은 라이브러리만 사용합니다. 이점은 다른 수많은 프레임워크들이 엄청난 리소스를 요구하는것과 뚜렷하게 대조됩니다. 추가적인 라이브러리는  필요할때만 동적으로 로드하시면 됩니다 </p>
+<h2>CodeIgniter 는 빠릅니다</h2>
+<p>겁나빠릅니다. CodeIgniter 보다 빠른 프레임워크를 찾으신다면 오백원 드릴께요 .(미국으로 비행기타고오삼) </p>
+<h2>CodeIgniter 는 M-V-C 패턴에 기반합니다 </h2>
+<p>CodeIgniter 는 모델-뷰-컨트롤러 패턴을 사용합니다. 비즈니스로직 계층과 표현계층이 분리되어있으므로 ,디자이너와 같이 일하실때 템플릿파일에는 최소한의 프로그램코드만 들어갈것입니다. </p>
+<h2>CodeIgniter 는 깔끔한  URL을 생성합니다 </h2>
+<p>CodeIgniter 에서 생성한 URL 은 깔끔하고 검색엔진에서 색인되기 좋은 구조입니다. 일반적인 쿼리스트링 기반의 URL 이 아니라 세그먼트 기반의 URL 을 사용합니다. </p>
+<code>example.com/<var>news</var>/<dfn>article</dfn>/<samp>345</samp></code>
+
+<p>위의경우 기본으로 index.php가 URL 에 포함되어있으나 , 간단히 .htaccess 파일을 사용하여 제거할수 있습니다. </p>
+<h2>CodeIgniter 는 굉장히 위력적입니다 </h2>
+<p>CodeIgniter 는 일반적인 웹작업의 대부분을 커버하는 라이브러리를 제공합니다. 예를들어  database 접근,email 전송, form 데이터검증(validation),세션관리, 이미지 처리, XML-RPC 사용등을 제공합니다 </p>
+<p>&nbsp;</p>
+<h2>CodeIgniter 는 확장 가능합니다 </h2>
+  <p>직접만든 라이브러리나 헬퍼 사용하여 손쉽게 확장할수있습니다.</p>
+<p>혹은 클래스확장이나 시스템 후킹을 통해서도 확장가능합니다.</p>
+<h2>CodeIgniter 는 템플릿 엔진이 필요없습니다</h2>
+<p>CodeIgniter <em></em>가 심플한 템플릿파서를 포함하고있긴하지만, 반드시 사용할 필요는 없습니다. 템플릿엔진은 PHP 문법과 간단히 매치되지않기 때문에 거의 PHP를 배우는 만큼의 학습노력이 필요합니다. </p>
+<p>아래 코드를 보시죠.</p>
+<code>&lt;ul><br />
+<br />
+&lt;?php foreach ($addressbook as $name):?><br />
+<br />
+&lt;li>&lt;?=$name?>&lt;/li><br />
+<br />
+&lt;?php endforeach; ?><br />
+<br />
+&lt;/ul></code>
+
+<p>아래는 템플릿 엔진을 사용할 경우 입니다</p>
+
+<code>&lt;ul><br />
+<br />
+{foreach from=$addressbook item="name"}<br />
+<br />
+&lt;li>{$name}&lt;/li><br />
+<br />
+{/foreach}<br />
+<br />
+&lt;/ul></code>
+
+<p>맞습니다 맞구요.</p>
+<p>템플릿엔진쪽이 쬐금 더 깨끗해보이긴합니다. 그러나 위 코드는 반드시 재해석의 과정을 거쳐야하기  때문에 성능이 떨어집니다. 우리의 목표는 최대의 성능이기 때문에 템플릿엔진을 사용하지 않습니다. </p>
+<h2>CodeIgniter 는 완벽하게 문서화 되어있습니다 </h2>
+<p>개발자는 코드를 사랑하지 문서작성을 사랑하진 않습니다. 물론 우리도 별로 다르지않습니다. </p>
+<p>그렇지만, 문서도 코드 자체만큼 중요하기 때문에 우리는 문서를 만들었답니다. 물론 코드도 깨끗할 뿐 아니라주석처리도 잘되었구요 .</p>
+<h2>CodeIgniter 는 친절한 사용자 커뮤니티가 있습니다.</h2>
+
+<p>포럼으로 오세요 --&gt;<a href="http://codeigniter.com/forums/">Community Forums</a>.</p>
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="getting_started.html">Getting Started</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="features.html">CodeIgniter Features</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

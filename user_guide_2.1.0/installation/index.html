@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Installation Instructions : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Installation Instructions
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>설치 절차 Installation Instructions</h1>
+
+<p>CodeIgniter 설치는 다음 4단계를 거칩니다:</p>
+
+<ol>
+<li>다운받은 파일의 압축을 푼다.</li>
+<li>CodeIgniter 를 서버에 업로드한다.  일반적으로 index.php 을 홈페이지 루트에 오도록 해야 한다.</li>
+<li><dfn>application/config/config.php</dfn> 파일을 열어 기반url(base URL)을 세팅한다. 암호화나 세션을 사용하려면 암호키(encryption key)를 설정한다.</li>
+<li>데이터베이스를 사용한다면 <dfn>application/config/database.php</dfn> 파일을 열어서 데이터베이스 정보를 세팅한다.</li>
+</ol>
+
+  <p><dfn>system</dfn> 폴더의 이름을 변경하여 보안을 강화할수 있습니다. 만약 변경한다면 반드시 메인 <kbd>index.php</kbd>
+    파일을 열어 맨위에 있는 <samp>$system_folder</samp> 변수와 <samp>$application_folder</samp>
+    변수의 값을 새 폴더 이름을 바꿔야합니다.</p>
+  <p>보안으로 가장 좋은 방법은, <dfn>system</dfn> 및 <dfn>application</dfn> 폴더를 브라우저에서 직접
+    액세스할 수없는 위치에 옮기는 것입니다. 기본적으로 각 폴더에 .htaccess 파일이 존재니다만, 서버설정에 따라서 동작하지않을 수
+    도 있으므로, 브라우저에서 접근 불가능한 경로에두는것이 가장 좋습니다.</p>
+  <p>추가 대책으로 프로덕션 환경에서 PHP 오류보고와 다른 개발 기능을 비활성화했습니다. 비활성화는 <kbd>ENVIRONMENT</kbd>
+    설정을 통해 이루어졌으며 자세한 내용은 보안 클래스 를 확인하십시오.</p>
+  <p>&nbsp;</p>
+
+<p>끝 ! </p>
+<p>CodeIgniter를 처음 시작하신다면 <a href="../overview/getting_started.html">시작하기</a> 부분을 먼저 읽어보시길 권합니다.</p>
+<p>그럼 지금부터 신나는 프로그램을 즐겨 주세요! </p>
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="../general/credits.html">Credits</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="upgrading.html">Upgrading from a Previous Version</a>
+</p>
+
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

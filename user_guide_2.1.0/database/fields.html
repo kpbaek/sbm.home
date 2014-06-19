@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Field Data : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Field Names
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>필드 메타데이터Field Data</h1>
+
+
+<h2>$this->db->list_fields()</h2>
+<p>필드(칼럼)이름을 배열로 리턴합니다. 이 쿼리는 두가지 방법으로 호출할 수 있습니다:</p>
+
+
+<p>1. 테이블 명을 넘겨주고 <dfn>$this->db-></dfn> 객체를 사용하여 아래와같이 사용합니다:</p>
+
+<code>
+$fields = $this->db->list_fields('table_name');<br /><br />
+
+foreach ($fields as $field)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;echo $field;<br />
+}
+</code>
+
+<p>2. 쿼리를 이용하여 필드들을 지정한 효과를 낼수 있습니다. 필드와 관련된 어떤 쿼리라도 상관없습니다. (필드와 관련없는 함수호출 쿼리는 안되겠죠) 아래예제를 보시기 바랍니다:</p>
+
+<code>
+$query = $this->db->query('SELECT * FROM some_table');
+<br /><br />
+
+foreach ($query->list_fields() as $field)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;echo $field;<br />
+}
+</code>
+
+
+<h2>$this->db->field_exists()</h2>
+
+<p>쿼리를 실행하기전에 관련필드가 실재 존재하는지 검사할때 유용합니다. 결과는  TRUE/FALSE 로 리턴됩니다..  사용예:</p>
+
+<code>
+if ($this->db->field_exists('field_name', 'table_name'))<br />
+{<br />
+&nbsp;&nbsp; // some code...<br />
+}
+</code>
+
+<p>Note:  <em>field_name</em> 부분은 여러분이 실재로 조회하고자하는 필드 이름으로 바꾸어 넣으세요 .<em>table_name</em> 부분도 여러분의 테이블명으로 하시구요.</p>
+
+
+<h2>$this->db->field_data()</h2>
+<p>필드정보를 담음 객체의 배열을 리턴합니다.</p>
+<p>필드이름이나 칼럼타입, 최대길이(max length) 등의 메타데이터를 조회하는데 유용합니다..</p>
+
+
+<p class="important">Note: 모든 데이터베이스가 메타데이터를 제공하지는 않습니다.</p>
+
+<p>사용예:</p>
+
+<code>
+$fields = $this->db->field_data('table_name');<br /><br />
+
+foreach ($fields as $field)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;echo $field->name;<br />
+&nbsp;&nbsp;&nbsp;echo $field->type;<br />
+&nbsp;&nbsp;&nbsp;echo $field->max_length;<br />
+&nbsp;&nbsp;&nbsp;echo $field->primary_key;<br />
+}
+</code>
+
+<p>이미 실행한 쿼리가 있다면, 테이블이름 대신 그 결과객체를 사용할수도 있습니다.:</p>
+
+<code>
+$query = $this->db->query("YOUR QUERY");<br />
+$fields = $query->field_data();
+</code>
+
+
+<p>이 함수를 호출하면, 여러분이 사용하는 데이터베이스에서 지원한다는 가정하에 다음의 데이터들이 사용가능합니다.</p>
+
+<ul>
+<li>name - 칼럼명(column name)</li>
+<li>max_length - 칼럼의 최대길이(maximum length of the column)</li>
+<li>primary_key - 해당칼럼이 기본키라면 1이됩니다(1 if the column is a primary key)</li>
+<li>type - 칼럼타입(the type of the column)</li>
+</ul>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="table_data.html"> Table Data</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="call_function.html">Custom Function Calls</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

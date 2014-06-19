@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URL Helper : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+URL Helper
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>URL Helper</h1>
+
+<p>URL 헬퍼는 URL조작에 필요한 함수들을 제공합니다.</p>
+
+
+<h2>헬퍼로딩 Loading this Helper</h2>
+
+<p>다음과같이 헬퍼를 로드합니다:</p>
+<code>$this->load->helper('url');</code>
+
+<p>다음 함수들이 사용가능 합니다:</p>
+
+<h2>site_url()</h2>
+
+  <p>설정파일에 정의된 사이트의 URL을 리턴합니다. URL 에는 index.php(혹은 인덱스파일로 지정한 파일) 파일 및 함수로 전달된
+    URL 세그먼트들이 포함됩니다.그리고 설정파일에 있는 <dfn>url_suffix</dfn> 도 포함됩니다.</p>
+
+<p>URL 이 변경되었을 경우에도 영향을 받지 않도록 하려면 로컬URL 을 생성하실때 이 함수를 이용하시는것이 좋습니다.</p>
+
+<p>새그먼트를 전달하는것은 옵션이며 문자열이나 배열을 사용하실 수 있습니다. 문자열 예제:</p>
+
+<code>echo site_url("news/local/123");</code>
+
+<p>위 예제는 다음과 같은 결과를 리턴합니다: http://example.com/index.php/news/local/123</p>
+
+<p>배열을 사용하는 예제:</p>
+
+<code>
+$segments = array('news', 'local', '123');<br />
+<br />
+echo site_url($segments);</code>
+
+
+<h2>base_url()</h2>
+<p>설정파일에 정의된 기반(base) URL을 리턴합니다. 예:</p>  <code>echo base_url();</code>
+  <p><dfn>index_page</dfn> 나<dfn>url_suffix</dfn> 이 추가되지않는다는 점을 제외하면 site_url
+    과 동일한 결과를 리턴합니다.</p>  <p>site_url처럼 세그먼트를 문자열이나 배열로 넘겨줄 수 있습니다. 예:</p>
+
+<code>echo base_url("blog/post/123");</code>
+
+  <p>위 예제는 다음 비스무리한 결과를 냅니다: http://example.com/blog/post/123</p>  <p>이 함수는 site_url ()와 달리 이미지와 스타일 시트 같은 파일에 문자열을 전달할 수있는 것이 편리합니다. 예 :</p>
+
+  <code>echo base_url("images/icons/edit.png");</code>
+  <p>위 예제는 다음 비스무리한 결과를 냅니다:http://example.com/images/icons/edit.png</p>
+
+
+
+<h2>current_url()</h2>
+<p>현재 보여지고 있는 페이지의 전체URL (새그먼트 포함)을 리턴합니다.</p>
+
+
+<h2>uri_string()</h2>
+<p>함수를 호출하고 있는 페이지의 URI 새그먼트를 리턴합니다.  예를들어, URL이 아래와 같다면:</p>
+<code>http://some-site.com/blog/comments/123</code>
+
+<p>함수는 아래와같은 결과를 리턴합니다:</p>
+<code>blog/comments/123</code>
+
+
+<h2>index_page()</h2>
+<p>설정파일에 정의 된 인덱스페이지를 리턴합니다. 예:</p>
+<code>echo index_page();</code>
+
+
+
+<h2>anchor()</h2>
+
+<p>표준 HTML 앵커 링크(anchor link)를 사이트 URL 에 맞도록 생성해 줍니다:</p>
+
+<code>&lt;a href="http://example.com">Click Here&lt;/a></code>
+
+<p>이 태그는 옵션으로 3개의 파라미터를 가질 수 있습니다:</p>
+
+<code>anchor(<var>uri segments</var>, <var>text</var>, <var>attributes</var>)</code>
+
+<p>첫번째 파라미터는 URL 에 덧붙이고 싶은 새그먼트들 입니다.위의 <dfn>site_url()</dfn> 함수와 같이 새그먼트는 문자열이나 배열로 전달할 수 있습니다.</p>
+
+<p><strong>참고:</strong>&nbsp; 프로그램               안에서 사용하는 URL 을 만드실경우 기반URL (http://...) 을 포함하지 마세요.  자동으로 붙습니다. 필요한 URI 새그먼트만 넘겨주시면 됩니다.</p>
+
+<p>두번째 파라미터는 링크로 표시할 텍스트입니다. 공백으로 두시면, URL 그 자체가 사용됩니다.</p>
+
+<p>세번째 파라미터는 링크에 추가하고싶은 속성입니다.  속성은 문자열이나, 연관배열로 설정하실 수 있습니다.</p>
+
+<p>예:</p>
+
+<code>echo anchor('news/local/123', 'My News', 'title="News title"');</code>
+
+  <p>결과: &lt;a href="http://example.com/index.php/news/local/123" title="News
+    title">My News&lt;/a></p>
+
+<code>echo anchor('news/local/123', 'My News', array('title' => 'The best news!'));</code>
+
+<p>결과: &lt;a href="http://example.com/index.php/news/local/123" title="The best news!">My News&lt;/a></p>
+
+
+<h2>anchor_popup()</h2>
+
+<p><dfn>anchor()</dfn> 함수와 같으나 URL을 팝업으로 띄웁니다.
+
+세번째 파라미터로 윈도우 형태를 설정하실 수 있습니다.세번째 파라미터를 설정하지 않으시면 여러분의 브라우저 설정에 따라 창이 열립니다. 예:</p>
+
+<code>
+
+$atts = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'width'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> '800',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'height'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> '600',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'scrollbars' => 'yes',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'status'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'yes',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'resizable'&nbsp;&nbsp;=> 'yes',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'screenx'&nbsp;&nbsp;&nbsp;&nbsp;=> '0',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'screeny'&nbsp;&nbsp;&nbsp;&nbsp;=> '0'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo anchor_popup('news/local/123', 'Click Me!', $atts);</code>
+
+<p>참고: 위 속성들은 함수의 기본값이므로, 위설정과 다른부분만 직접 설정하시면 됩니다.
+위 기본값을 그대로 사용하려면, 세번째 파라미터로 빈 배열을 넘겨주시면 됩니다:</p>
+
+<code>echo anchor_popup('news/local/123', 'Click Me!', array());</code>
+
+
+<h2>mailto()</h2>
+
+<p>표준email 링크를 생성합니다.  사용 예:</p>
+
+<code>echo mailto('me@my-site.com', 'Click Here to Contact Me');</code>
+
+<p><dfn>anchor()</dfn> 와 마찬가지로, 세번째 파라미터로 속성을 설정하실 수 있습니다.</p>
+
+
+<h2>safe_mailto()</h2>
+
+<p>위 함수와 같으나, 스팸로봇에게 메일주소가 수집되는것을 막기위해 헷갈리도록 mailto 태그 를 생성합니다. 이때 자바스크립트를 이용하여 순차적으로 생성되는 숫자를 이용합니다 .</p>
+
+
+<h2>auto_link()</h2>
+
+<p>문자열에 포함되어있는 URL 및email 주소를 링크로 변환시켜 줍니다. 예:</p>
+
+<code>$string = auto_link($string);</code>
+
+<p>두번째 파라미터는 이메일만 변환할지, URL 만 변환할지 아니면 모두 변환할지를 결정합니다.  파라미터를 설정하지 않으시면 기본값으로 둘다 변환합니다.  이메일 링크는 위의safe_mailto() 함수로 인코딩 됩니다.</p>
+
+<p>URL만 변환:</p>
+<code>$string = auto_link($string, 'url');</code>
+
+<p>이메일만 변환:</p>
+<code>$string = auto_link($string, 'email');</code>
+
+<p>세번째 파라미터는 링크를 새창으로 열것인지를 결정합니다.  값은 TRUE 나 FALSE 입니다:</p>
+<code>$string = auto_link($string, 'both', TRUE);</code>
+
+
+<h2>url_title()</h2>
+<p>문자열을 입력받아 사람이 읽기쉬운 URL 문자열을 생성해줍니다. 만약 블로그를 만드는데 글제목을 url 로 사용하고자 할경우 유용하겠죠 . 예:</p>
+
+<code>$title = "What's wrong with CSS?";<br />
+<br />
+$url_title = url_title($title);<br />
+<br />
+// 결과:  whats-wrong-with-css
+</code>
+
+
+<p>두번째 파라미터는 단어 구분자를 지정할때 사용합니다.  기본값은 대쉬(-) 입니다.  옵션은:  <dfn>dash</dfn>, 혹은 <dfn>underscore</dfn>:</p>
+
+<code>$title = "What's wrong with CSS?";<br />
+<br />
+$url_title = url_title($title, 'underscore');<br />
+<br />
+// Produces:  whats_wrong_with_css
+</code>
+
+
+<h3>prep_url()</h3>
+<p>이함수는 URL 에서  <kbd>http://</kbd> 이 빠진경우에 추가해주는 기능을 합니다.  URL 문자열을 다음과같이 넘겨주세요:</p>
+<code>
+$url = "example.com";<br /><br />
+$url = prep_url($url);</code>
+
+
+
+
+<h2>redirect()</h2>  <p>&quot;header redirect&quot;를 수행합니다. 전체 url을 지정해도 되지만,사이트 내부에서 이동할경우 ,컨트롤러의
+    URI 세그먼트만 지정해주면, 함수가 Url을 알아서 생성합니다.</p>
+
+<p>옵션인 두번째 파라미터는 "location"
+메소드(기본값)이나 "refresh" 메소드 중 하나를 선택할 수 있도록 해줍니다.  Location 은 더 빠르게 동작하나, 윈도우 서버에서는 문제가 발생할 수 있습니다.  옵션이 세번째 파라미터로 특정 HTTP 응답(Response)코드를  지정할 수 있습니다 - 검색엔진을 위해서  301 리디렉트를 생성할경우 사용하실 수 있습니다. 기본응답코드는 302 입니다. 세번째 파라미터는 'location' 리디렉트를 사용할 경우에만 사용가능합니다. 예:</p>
+<code>if ($logged_in == FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirect('/login/form/', 'refresh');<br />
+}<br />
+<br />
+// with 301 redirect<br />
+redirect('/article/13', 'location', 301);</code>
+
+<p class="important"><strong>참고:</strong> 이 함수는 서버헤더(headers)를 이용하기 때문에 ,이 함수를 사용하기전에 어떠한 출력도 브라우저로 전송되어서는 안됩니다.<br />
+<strong>참고:</strong> 헤더의 상세한 설정을 위해서는,<a href="../libraries/output.html">출력라이브러리</a>의 set_header() 함수를 사용하시면 됩니다.</p>
+
+
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="typography_helper.html">Typography Helper</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="xml_helper.html">XML Helper</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Custom Function Calls : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Custom Function Calls
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>사용자 정의 함수 호출 Custom Function Calls</h1>
+
+<h2>$this->db->call_function();</h2>
+
+<p>이함수는 CodeIgniter에 포함되어있지 않은 PHP 데이터베이스 함수를 호출할수 있도록 해줍니다. 이함수는 플랫폼 독립적으로 사용됩니다.예를들어 ,CodeIgniter에서 지원하지 않는 <dfn>mysql_get_client_info()</dfn> 함수를 호출하고자 한다면, 아래와 같이 합니다. </p>
+
+<code>$this->db->call_function('<var>get_client_info</var>');</code>
+
+<p>첫번째 파라미터로 반드시 함수의 이름을 <var>mysql_</var> 접두어 없이 넘겨주어야 합니다.  접두어는 현재 사용하고 있는 데이터베이스의 종류에 따라서 자동으로 붙여집니다.  이렇게 함으로써 한번작성한것을 여러 다른 데이터베이스 플랫폼에서도 사용할수 있게 됩니다.데이터베이스종류에 따라 함수호출이 다른경우가 있기 때문에,
+이 함수가 언제나 이처럼 유용한것은 아닙니다.</p>
+
+<p>함수에서 필요한 파라미터들은 두번째 파라미터에 추가해줍니다</p>
+
+<code>$this->db->call_function('<var>some_function</var>', $param1, $param2, etc..);</code>
+
+
+<p>데이터베이스 연결아이디(database connection ID)나 데이터베이스 결과아이디(database result ID)가 필요하다면 아래와 같이 참조할수 있습니다.</p>
+<p> 연결아이디:</p>
+<code>$this->db->conn_id;</code>
+
+<p>결과 아이디:</p>
+
+<code>$query = $this->db->query("SOME QUERY");<br />
+<br />
+<var>$query->result_id;</var></code>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="fields.html">Field MetaData</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="caching.html">Query Caching</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

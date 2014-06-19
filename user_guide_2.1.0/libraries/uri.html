@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+URI Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>URI Class</h1>
+
+<p>URI 클래스는 URI 문자열로부터 원하는 정보를 추출할수 있도록 해주는 함수를 제공합니다. 만약 URI 라우팅을 사용하신다면, 재 라우팅(re-routed ) 세그먼트에 대한 정보도 추출할 수 있습니다.</p>
+
+<p class="important"><strong>참고:</strong> 클래스는 시스템에의해 자동으로 로드되므로 직접 로드하실 필요가 없습니다.</p>
+
+<h2>$this->uri->segment(<var>n</var>)</h2>
+
+<p>특정 세그먼트를 추출해 냅니다. <var>n</var> 은 추출하고자하는 세그먼트의 번호입니다.
+세그먼트번호는  왼쪽에서 오른쪽으로 매겨집니다. 예를들어 , URL 이 다음과 같다면:</p>
+
+<code>http://example.com/index.php/news/local/metro/crime_is_up</code>
+
+<p>세그먼트번호는 아래와 같습니다:</p>
+
+<ol>
+<li>news</li>
+<li>local</li>
+<li>metro</li>
+<li>crime_is_up</li>
+</ol>
+
+<p>기본값으로, 세그먼트가 존재하지않으면 FALSE 를 리턴합니다. 필요하다면, 두번째 파라미터로 세그먼트가 없을때 리턴될 기본값을 지정할수 있습니다. 예를들어 , 아래예제는 실패시에 숫자 0을 리턴하도록 합니다:</p>
+
+<code>$product_id = $this->uri->segment(3, 0);</code>
+
+<p>위 코드는 아래와같은 코드를 작성할 필요가 없도록 해줍니다:</p>
+
+<code>if ($this->uri->segment(3) === FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$product_id = 0;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$product_id = $this->uri->segment(3);<br />
+}<br />
+</code>
+
+<h2>$this->uri->rsegment(<var>n</var>)</h2>
+
+<p>이함수는 위의 함수와 동일합니다. 다만, CodeIgniter <a href="../general/routing.html">URI 라우팅</a>을 사용하실때 최종적으로 재 라우팅(re-routed) 되는 URI 의 특정 세그먼트의 값을 추출한다는것만 다릅니다.</p>
+
+
+<h2>$this->uri->slash_segment(<var>n</var>)</h2>
+
+<p>이함수는 <dfn>$this->uri->segment()</dfn>와 거의 같습니다. 다만, 두번째 파라미터에의해 앞(leading),뒤(trailing) 혹은 양쪽(both)에 슬래시(/)를 추가한다는점만 다릅니다.  파라미터를 사용하지않으면 뒤쪽 슬래시가 붙습니다.  예:</p>
+
+<code>$this->uri->slash_segment(<var>3</var>);<br />
+$this->uri->slash_segment(<var>3</var>, 'leading');<br />
+$this->uri->slash_segment(<var>3</var>, 'both');</code>
+
+<p>결과:</p>
+
+<ol>
+<li>segment/</li>
+<li>/segment</li>
+<li>/segment/</li>
+</ol>
+
+
+<h2>$this->uri->slash_rsegment(<var>n</var>)</h2>
+
+<p>이함수는 위의 함수와 동일합니다. 다만, CodeIgniter <a href="../general/routing.html">URI 라우팅</a>을 사용하실때 최종적으로 재 라우팅(re-routed) 되는 URI 의 특정 세그먼트에 슬래시(/)를 추가한다는점만 다릅니다.</p>
+
+
+
+<h2>$this->uri->uri_to_assoc(<var>n</var>)</h2>
+
+<p>이함수는 URI 세그먼트를 키/값 쌍으로된 연관배열로 리턴합니다.아래 URI를 보시죠:</p>
+
+<code>index.php/user/search/name/joe/location/UK/gender/male</code>
+
+<p>이함수를 사용하시면 아래와같은 형태의 연관배열을 얻을 수 있습니다:</p>
+
+<code>[array]<br />
+(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'joe'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'location'	=> 'UK'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'gender'	=> 'male'<br />
+)</code>
+
+<p>첫번째 파라미터는 오프셋을 설정할수 있게 합니다.  기본값은 3인데 왜냐하면 URI는 일반적으로 컨트롤러/함수 를 첫번째및 두번째 세그먼트로 가지기 때문입니다. 예:</p>
+
+<code>
+$array = $this->uri->uri_to_assoc(3);<br />
+<br />
+echo $array['name'];
+</code>
+
+
+<p>두번째 파라미터로 기본 키 이름을 설정할수 있습니다. 그렇게하면 URI에 해당하는값이 없더라도, 언제나 예상되는 인덱스를 포함한 배열을 리턴합니다. 예:</p>
+
+<code>
+$default = array('name', 'gender', 'location', 'type', 'sort');<br />
+<br />
+$array = $this->uri->uri_to_assoc(3, $default);</code>
+
+<p>만약 URI 가 여러분의 default에 있는 값을 포함하지 않더라도, 배열인덱스는 지정한 이름으로 설정되며 값은 FALSE 로 설정됩니다.</p>
+
+<p>마지막으로 , 주어진 키에 대응되는 값을 발견할수 없을때 (URI 세그먼트가 홀수라든지) 값은 FALSE 로 설정됩니다. </p>
+
+
+<h2>$this->uri->ruri_to_assoc(<var>n</var>)</h2>
+
+<p>이함수는 위의 함수와 동일합니다.다만, CodeIgniter<a href="../general/routing.html"> URI 라우팅</a>을 사용하실때 최종적으로 재 라우팅(re-routed) 되는 URI 로부터 연관배열을 생성한다는점만 다릅니다.</p>
+
+
+<h2>$this->uri->assoc_to_uri()</h2>
+
+<p>연관배열을 입력받아  URI 문자열을 생성합니다.  배열키도 문자열에 포함됩니다. 예:</p>
+
+<code>$array = array('product' => 'shoes', 'size' => 'large', 'color' => 'red');<br />
+<br />
+$str = $this->uri->assoc_to_uri($array);<br />
+<br />
+// 결과:  product/shoes/size/large/color/red
+</code>
+
+
+<h2>$this->uri->uri_string()</h2>
+
+<p>완전한  URI 문자열을 리턴합니다 .  예를들어 , 전체 URL이 아래와 같다면 :</p>
+
+<code>http://example.com/index.php/news/local/345</code>
+
+<p>함수는 아래를 리턴합니다:</p>
+
+<code>/news/local/345</code>
+
+
+<h2>$this->uri->ruri_string()</h2>
+
+<p>이 함수는 위의 함수와 완전히 동일합니다.다만, CodeIgniter<a href="../general/routing.html"> URI 라우팅</a>을 사용하실때 최종적으로 재 라우팅(re-routed) 되는 URI 를 리턴한다는 점만 다릅니다.</p>
+
+
+
+<h2>$this->uri->total_segments()</h2>
+
+<p>세그먼트 전체 개수를 리턴합니다.</p>
+
+
+<h2>$this->uri->total_rsegments()</h2>
+
+<p>이 함수는 위의 함수와 완전히 동일합니다.다만, CodeIgniter<a href="../general/routing.html"> URI 라우팅</a>을 사용하실때 최종적으로 재 라우팅(re-routed) 되는 URI 세그먼트의 전체개수를 리턴한다는 점만 다릅니다.</p>
+
+
+
+<h2>$this->uri->segment_array()</h2>
+
+<p>URI 세그먼트를 포함한 배열을 리턴합니다. 예:</p>
+
+<code>
+$segs = $this->uri->segment_array();<br />
+<br />
+foreach ($segs as $segment)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $segment;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo '&lt;br />';<br />
+}</code>
+
+<h2>$this->uri->rsegment_array()</h2>
+
+<p>이 함수는 위의 함수와 완전히 동일합니다.다만, CodeIgniter<a href="../general/routing.html"> URI 라우팅</a>을 사용하실때 최종적으로 재 라우팅(re-routed) 되는 URI 세그먼트를 포함한 배열을  리턴한다는 점만 다릅니다.</p>
+
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="unit_testing.html">Unit Testing Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="user_agent.html">User Agent Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

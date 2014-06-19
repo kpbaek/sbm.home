@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Model-View-Controller : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+MVC
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>모델 뷰 컨트롤러 Model-View-Controller</h1>
+
+<p>CodeIgniter는 모델-뷰-컨트롤러(MVC) 개발 패턴에 기반합니다.
+
+MVC는 프로그램의 로직을 프리젠테이션(표현부분)로부터 분리하는 소프트웨어 접근 방법론 입니다.  실재로, 이것은 여러분의 웹페이지에 최소한의 스크립트만 들어가도록 해 줍니다.</p>
+<ul>
+<li><strong>Model</strong> 은 데이터구조를 표현합니다. 일반적으로 모델 클래스는 데이터를 추출,입력,갱신하는등의 함수를 포함하게 됩니다.</li>
+<li><strong>View</strong> 는 사용자에게 보여질 부분을 표현합니다.  뷰(View)는 일반적으로 웹페이지만,CodeIgniter 에서는 뷰가 헤더나 푸터처럼 웹페이지의 조각일 수도 있습니다. 또한 RSS 페이지나, 혹은 다른 페이지 형태의 것일 수 있습니다.</li>
+<li><strong>Controller</strong> 는 일반적으로 모델과 뷰(혹은 HTTP 요청을 처리하여 웹페이지를 생성하는 어떤 것)사이에서 동작합니다.</li>
+
+</ul>
+
+<p>CodeIgniter는 모델이 필요없도록 MVC를 매우 느슨하게 접근하였습니다.
+만약 모델을 분리할 필요가 없거나, 모델을 따로 분리하는것이 쓸데없이 복잡도를 증가시킨다면, 컨트롤러와 뷰 파일만으로 프로그램을 만드실 수 있습니다. CodeIgniter는 여러분이 이미 가지고 있는 스크립트를 연동해서 사용하거나, 여러분의 기호에 맞게 시스템 코어라이브러리를 개발하여 쓸수도 있도록 했습니다.</p>
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="appflow.html">Application Flow Chart</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="goals.html">Architectural Goals</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

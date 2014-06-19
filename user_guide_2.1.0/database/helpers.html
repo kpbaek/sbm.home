@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Query Helper Functions : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Query Helpers
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>쿼리 헬퍼 함수들(Query Helper Functions)</h1>
+
+
+<h2>$this->db->insert_id()</h2>
+<p>데이터베이스에 레코드를 삽입할때 아이디번호를 삽입해줍니다.</p>
+
+<h2>$this->db->affected_rows()</h2>
+<p>insert, update등 뭔가를 쓰는 형태의 쿼리를 수행할때 적용된 결과 열수를 리턴합니다.</p>
+<p>주의:   MySQL 에서 "DELETE FROM TABLE" 쿼리에 이함수를 사용하면 0을 리턴하는 경우가 있습니다. 데이터베이스 클래스는 제대로된 열수를 리턴하는 방법을 핵(Hack)의 형태로 제공합니다.  기본값은 이 핵이 활성화된 상태이나 , 데이터베이스 드라이버파일에서 비활성으로 바꿀 수 있습니다.</p>
+
+
+<h2>$this->db->count_all();</h2>
+<p>특정 테이블의 열수를 리턴합니다. 테이블 이름을 첫번째 파라미터로 전달해야합니다. 예:</p>
+<code>echo $this->db->count_all('<var>my_table</var>');<br />
+<br />
+// Produces an integer, like 25
+</code>
+
+
+<h2>$this->db->platform()</h2>
+<p>현재 사용중인 데이터베이스 플랫폼(MySQL, MS SQL, Postgres, etc...)을 리턴합니다:</p>
+<code>echo $this->db->platform();</code>
+
+
+<h2>$this->db->version()</h2>
+<p>사용중인 데이터베이스 버전을 리턴합니다:</p>
+<code>echo $this->db->version();</code>
+
+
+<h2>$this->db->last_query();</h2>
+<p>마지막으로 사용한 쿼리 문자열을 리턴합니다(쿼리 실행결과가 아닙니다).  예:</p>
+
+<code>$str = $this->db->last_query();<br />
+<br />
+// Produces:  SELECT * FROM sometable....
+</code>
+
+
+<p>아래 두 함수는 INSERT와 UPDATE를 보다 간단하게 할수있도록 해줍니다.</p>
+
+
+<h2>$this->db->insert_string(); </h2>
+<p>이 함수는 insert 를 간단하게 해줍니다.함수를 실행하면 , SQL insert 쿼리문을 자동으로 생성하여 리턴해 줍니다:</p>
+
+<code>$data = array('name' => $name, 'email' => $email, 'url' => $url);<br />
+<br />
+$str = $this->db->insert_string('table_name', $data);
+</code>
+
+<p>첫번째 파라미터는 테이블 이름이며 , 두번째는 삽입될 데이터의 연관배열 입니다. 위 예제는 아래와같은 쿼리문자열을 자동으로 생성해 줍니다:</p>
+<code>INSERT INTO table_name (name, email, url) VALUES ('Rick', 'rick@example.com', 'example.com')</code>
+
+<p class="important">Note: Values are automatically escaped, producing safer queries.</p>
+
+
+
+<h2>$this->db->update_string(); </h2>
+<p>이함수는 update 를 간단하게 해줍니다.SQL update 문자열을 자동으로 생성해주죠:</p>
+
+<code>$data = array('name' => $name, 'email' => $email, 'url' => $url);<br />
+<br />
+$where = "author_id = 1 AND status = 'active'";
+<br /><br />
+$str = $this->db->update_string('table_name', $data, $where);
+</code>
+
+<p>첫번째 파라미터는 테이블 이름이며 , 두번째 파라미터는 업데이트 되어야할 데이터의 연관배열 입니다. 그리고 세번째 파라미터는 where 절이 들어갑니다. 위 예제는 아래와같은 쿼리문자열을 만들어 줍니다:</p>
+<code> UPDATE table_name SET name = 'Rick', email = 'rick@example.com', url = 'example.com' WHERE author_id = 1 AND status = 'active'</code>
+
+<p class="important">Note: Values are automatically escaped, producing safer queries.</p>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="results.html">Query Results</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="active_record.html">Active Record Pattern</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

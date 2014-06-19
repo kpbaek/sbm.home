@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Web Page Caching : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Page Caching
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>캐싱 Web Page Caching</h1>
+
+<p>성능의 극대화를 위해 CodeIgniter 는 여러분의 페이지를 캐싱할수 있도록 합니다..</p>
+
+<p>비록 CodeIgniter 가 대단히 빠르긴 하지만, 페이지에 표시하고자하는 동적 정보들이 서버의 리소스,메모리,처리사이클등과 직접적으로 연관되어있기때문에 페이지 로드 속도에 영향을 미칩니다. </p>
+<p>페이지를 캐싱하므로써 거의 정적 html 만큼 성능을 향상 시킬 수 있습니다. </p>
+<p>&nbsp;</p>
+<h2>캐싱은 어떻게 작동하나요?</h2>
+
+<p>캐싱은 페이지 단위로 활성화 시킬수 있으며 , 캐시가 얼마동안 존재하고 리프레쉬 될지 설정할 수 있습니다.</p>
+  <p>페이지가 처음으로 로드되면 캐시파일은 <dfn>application/cache</dfn> 폴더에 작성됩니다. 이후에 같은 페이지가 요청되면
+    캐시파일이 브라우저로 전송됩니다. 캐시파일 존재시한이 지나면 캐시는 삭제되고 다시 작성될것입니다.</p>
+<p>Note: 벤치마크 태그는 캐시 되지않으므로 캐시가 활성(enable)화 된 상태에서도 페이지 로드 속도를 보실수 있습니다.</p>
+
+<h2>캐싱 활성화</h2>
+
+<p> 캐시를 활성화 하려면 아래의 코드를 컨트롤러에서 원하는 위치에 삽입하세요.:</p>
+
+<code>$this->output->cache(<var>n</var>);</code>
+
+<p><var>n</var> 은 캐시가 존재할 시간(리프레쉬 주기)을 분단위로 설정하는 값입니다.</p>
+
+<p>위 테그는 어떤 함수 안에서도 쓸수있습니다. 순서에 상관이 없으므로 논리적으로 맞는 위치에 삽입하시면 됩니다. 위 태그가 삽입되면 여러분의 페이지는 캐싱 될것입니다..</p>
+
+<p class="important"><strong>Warning:</strong> 캐싱은 콘트롤러 와 <a href="./views.html">뷰(view)</a>를 같이 사용하여 페이지를 작성할 때만 작동합니다. </p>
+  <p class="important"><strong>Note:</strong> <dfn>application/cache</dfn> 폴더에 반드시
+    쓰기 권한이 있어야 합니다.</p>
+
+<h2>캐시 삭제 </h2>
+
+<p>캐시가 더이상 필요없으면 캐시태그를 삭제하므로서 제거할수 있습니다. 캐시태그가 삭제되면 리프레쉬 주기가 돌아왔을때 기존 캐시를 삭제한후 다시 생성하지 않을것입니다..  Note:
+캐시 태그를 삭제한다고 해서 캐시파일이 즉시 삭제되지는 않습니다. 즉시 삭제를 원하시면 캐시폴더에 있는 캐시파일을 직접 삭제하셔야 합니다. </p>
+
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="errors.html">Error Handling</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="profiling.html">Profiling Your Application</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

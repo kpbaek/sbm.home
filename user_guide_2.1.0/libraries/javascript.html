@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<title>JavaScript Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="../general/drivers.html">Drivers</a> &nbsp;&#8250;&nbsp;
+JavaScript Driver
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content"> 
+  <p class="important"><strong>주의:</strong> 아직 실험중인 드라이버 입니다. 향후 드라이버 구현내용이 바뀔 
+    수 있습니다.</p>
+  <br>
+  <h1>Javascript 클래스</h1>
+  <p>CodeIgniter는Javascript와 함께 사용할 수 있는 일반적인 기능을 제공합니다.CodeIgniter를 실행하기 위해서 
+    jQuery라이브러리가 필요하지는 않습니다. 다른 어떤 스크립트 라이브러리와도 잘 동작합니다. 여기서는 단지 jQuery라이브러리가 
+    편리하다는것을 보여줍니다.</p>  <h2>클래스 초기화 </h2>
+  <p>JavaScript 클래스를 컨트롤러의 생성자에서 수동으로 초기화하려면 <dfn>$this-&gt;load-&gt;library</dfn> 
+    함수를 사용합니다. 현재 자동로드가 가능한 라이브러리는 jQuery뿐이며 다음과 같이 자동으로 로드됩니다.</p>
+  <p></p>
+  <code>$this-&gt;load-&gt;library('javascript');</code> 
+  <p>Javascript 클래스에 파라미터를 넘겨줄 수 있습니다.<dfn>js_library_driver (string) 기본값 'jquery'</dfn> 
+    그리고 <dfn>autoload (bool) 기본값TRUE</dfn>. 연관배열을 넘겨줘서 기본값을 덮어쓸 수 있습니다:</p>  <code>$this-&gt;load-&gt;library('javascript', array('js_library_driver' =&gt; 
+  'scripto', 'autoload' =&gt; FALSE));</code> 
+  <p>다시말하지만, 현재까지 자동로드로 사용할 수 있는것은 'jquery' 뿐입니다.메인 jquery 파일을 인클루드(include)하는 
+    스크립트 태그가 자동으로 만들어지기를 원하지 않는다면, <dfn>autoload</dfn> 를 FALSE로 하세요.jQuery 라이브러리가 
+    Codeigniter 바깥에 있거나, 이미 뷰파일에 jQuery 를 인클루드하는 스크립트가 있을 경우 유용합니다.</p>
+  <p>일단 로드되면, jQuery 라이브러리 객체는 다음과 같이 사용할 수 있습니다: <dfn>$this-&gt;javascript</dfn></p>  <h2>설치및 설정</h2>  <h3>뷰파일에 변수 설정</h3>  <p>자바스크립트 라이브러리 파일들이 프로그램에서 사용가능해야합니다.(역주:당연한 소리를 왜 하는거냐..)</p>  <p>JavaScript는 클라이언트 사이드 언어이므로 라이브러리는 최종 출력에 포함되어야 됩니다.일반적으로 최종 출력은 뷰이며, 뷰의 
+    &lt;head&gt;안에 다음을 include 해야합니다..</p>
+<p><code>&lt;?php echo $library_src;?&gt;<br />
+&lt;?php echo $script_head;?&gt;
+</code></p>  <p>$library_src는 실재 라이브러리 파일이나,같이 사용되는 플러그인 들이 로드되는 곳입니다.</p>
+  <p>$script_head 에는 이벤트,함수,기타 명령들이 렌더링 되는 위치입니다.</p>  <h3>라이브러리 경로등의 설정</h3>
+  <p>JavaScript 라이브러리는 몇 가지 설정이 있습니다.각 설정은 설정파일 파일 application/config.php 또는 config/javascript.php에서 
+    하거나, 컨트롤러에서 set_item () 메소드통해서 합니다.</p>
+  <p>로더나 진행상황 표시에 이미지를 사용할수 있습니다. 이미지를 지정하지 않으면 ajax 호출시 &quot;loading&quot;이라는 
+    텍스트를 보여줍니다.</p>
+<p><code>$config['javascript_location'] = 'http://localhost/codeigniter/themes/js/jquery/';<br />
+		$config['javascript_ajax_img'] = 'images/ajax-loader.gif';</code></p>
+  <p>위 설정은 파일이 다운로드 될위치와 같은 위치에 파일이 있을경우 적용할 필요가 없습니다.(역주:무슨소린지 잘 모르겠음.. 아래 문장이 
+    원문이니 각자해석바람.)<br />
+    If you keep your files in the same directories they were downloaded from, 
+    then you need not set this configuration items.</p>  <h2> jQuery 클래스</h2>
+  <p>jQuery 클래스를 컨트롤러의 생성자에서 수동으로 초기화하려면 다음과 같이<dfn>$this-&gt;load-&gt;library</dfn> 
+    함수를 사용합니다:</p>  <code>$this-&gt;load-&gt;library('jquery');</code> 
+  <p>옵션으로 두번째 파라미터를 FALSE로 설정할 경우, jQuery 를 include 하는 스크립트 태그를 자동으로 만들지 않습니다.(기본값은 
+    자동으로 생성하는 것입니다):</p>
+  <code>$this-&gt;load-&gt;library('jquery', FALSE);</code> 
+  <p>한 번로드하면 jQuery 라이브러리 객체는 다음과 같이 사용할 수 있습니다 : <dfn>$this-&gt;jquery</dfn></p>  <h2>jQuery 이벤트</h2>  <p>이벤트를 추가하려면 아래와같이 하세요.</p>
+
+<p><code>$this-&gt;jquery-&gt;event('element_path', code_to_run());</code></p>  <p>위의 예제:</p>
+  <ul>
+    <li>&quot;event&quot;은 다음 중 하나입니다 : blur, change, click, dblclick, error, 
+      focus, hover, keydown, keyup, load, mousedown, mouseup, mouseover, mouseup, 
+      resize, scroll 또는 unload.</li>
+    <li>&quot;element_path&quot; 유효한 <a href="http://docs.jquery.com/Selectors">jQuery 
+      셀렉터</a> 입니다. jQuery의 독특한 셀렉터 문법에 따라서 이 값은 엘리먼트의 아이디 이거나 , CSS 셀렉터입니다. 예를 
+      들어 &quot;#notice_area&quot; 는 &lt;div id=&quot;notice_area&quot;&gt;에 적용되고, 
+      &quot;#content a.notice&quot; 는 &quot;content&quot; 라는 아이디를 가진 div 안에 &quot;notice&quot;라는 
+      클래스를 속성으로 가진 a 태그들에 적용됩니다.</li>
+    <li>&quot;code_to_run()&quot; 개발자가 직접 작성한 스크립트이거나,아래의 jQuery 라이브러리가 제공하는 효과(effect)와 
+      같은 액션이 될것입니다.</li>
+  </ul>  <h2>효과(Effects)</h2>
+  <p>JQuery 라이브러리는 강력한 <a href="http://docs.jquery.com/Effects">효과(effects</a><a href="http://docs.jquery.com/Effects">)</a>들을 
+    지원합니다. 효과를 사용하기전에 반드시 로드하셔야 합니다:</p>
+
+<p><code>$this->jquery->effect([optional path] plugin name);
+// for example
+$this->jquery->effect('bounce');
+</code></p>
+
+<h3>hide() / show()</h3>  <p>항목을 표시하거나 숨김니다. hide ()는 항목을 숨기고, show ()는 그것을 표시합니다.</p>
+<p><code>$this-&gt;jquery-&gt;hide(target,  optional speed, optional extra information);<br />
+	$this-&gt;jquery-&gt;show(target,  optional speed, optional extra information);</code></p>  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;speed&quot; 옵션변수이며 slow (느림), normal (보통), fast (빠름) 중 하나 또는 밀리초 
+      단위의 숫자를 지정합니다.</li>
+    <li>&quot;extra information&quot; 옵션변수이며, 콜백이나, 기타 추가정보를 포함시킬 수 있습니다.</li>
+  </ul>
+
+<h3>toggle()</h3>  <p>항목의 보이기/숨기기를 전환합니다. 보이는 경우 숨기고 숨어있는 경우 표시합니다.</p>
+<p><code>$this-&gt;jquery-&gt;toggle(target);</code></p>  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다 </li>
+  </ul>
+
+<h3>animate()</h3>
+
+<p><code> $this-&gt;jquery-&gt;animate(target, parameters, optional speed, optional extra information);</code></p>
+  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;paramters&quot;바꾸고 싶은 CSS 속성입니다.</li>
+    <li>&quot;speed&quot; 옵션변수이며 slow (느림), normal (보통), fast (빠름) 중 하나 또는 밀리초 
+      단위의 숫자를 지정합니다.</li>
+    <li>&quot;extra information&quot; 옵션변수이며, 콜백이나, 기타 추가정보를 포함시킬 수 있습니다.</li>
+  </ul>  <p>자세한 내용은 다음 링크를 참조하십시오 :<a href="http://docs.jquery.com/Effects/animate">http://docs.jquery.com/Effects/animate</a></p>  <p>다음은 jQuery의 click()이벤트를 이용하여 id가 &quot;note&quot;인 div에 animate ()를 사용하는 
+    예제입니다..</p>
+<p><code> $params = array(<br />
+	'height' =&gt; 80,<br />
+	'width' =&gt; '50%',<br />
+	'marginLeft' =&gt; 125<br />
+);<br />
+$this-&gt;jquery-&gt;click('#trigger', $this-&gt;jquery-&gt;animate('#note', $params, normal));</code></p>
+
+<h3>fadeIn() / fadeOut()</h3>
+
+<p><code>$this-&gt;jquery-&gt;fadeIn(target,  optional speed, optional extra information);<br />
+	$this-&gt;jquery-&gt;fadeOut(target,  optional speed, optional extra information);</code></p>  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;speed&quot; 옵션변수이며 slow (느림), normal (보통), fast (빠름) 중 하나 또는 밀리초 
+      단위의 숫자를 지정합니다.</li>
+    <li>&quot;extra information&quot; 옵션변수이며, 콜백이나, 기타 추가정보를 포함시킬 수 있습니다.</li>
+  </ul>
+
+<h3>toggleClass()</h3>  <p>대상에 대해 CSS 클래스를 추가하거나 제거합니다.</p>
+<p><code>$this-&gt;jquery-&gt;toggleClass(target, class)</code></p>  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;class&quot; 는 CSS 클래스 이름입니다. 이 클래스는 CSS파일에 이미 정의되어 있어야 합니다.</li>
+  </ul>
+
+<h3>fadeIn() / fadeOut()</h3>  <p>대상을 서서히나타게하거나 서서히 사라지게 합니다.</p>
+<p><code>$this-&gt;jquery-&gt;fadeIn(target,  optional speed, optional extra information);<br />
+	$this-&gt;jquery-&gt;fadeOut(target,  optional speed, optional extra information);</code></p>
+  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;speed&quot; 옵션변수이며 slow (느림), normal (보통), fast (빠름) 중 하나 또는 밀리초 
+      단위의 숫자를 지정합니다.</li>
+    <li>&quot;extra information&quot; 옵션변수이며, 콜백이나, 기타 추가정보를 포함시킬 수 있습니다.</li>
+  </ul>
+
+<h3>slideUp() / slideDown() / slideToggle()</h3>  <p>요소를 슬라이드시킵니다.</p>
+<p><code>$this-&gt;jquery-&gt;slideUp(target,  optional speed, optional extra information);<br />
+	$this-&gt;jquery-&gt;slideDown(target,  optional speed, optional extra information);<br />
+$this-&gt;jquery-&gt;slideToggle(target,  optional speed, optional extra information);</code></p>
+  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;speed&quot; 옵션변수이며 slow (느림), normal (보통), fast (빠름) 중 하나 또는 밀리초 
+      단위의 숫자를 지정합니다.</li>
+    <li>&quot;extra information&quot; 옵션변수이며, 콜백이나, 기타 추가정보를 포함시킬 수 있습니다.</li>
+  </ul>  <h2>플러그인</h2>
+
+<p>
+
+  <p>본 라이브러리에서 몇가지 jQuery 플러그인이 사용가능 합니다.</p>
+
+<h3>corner()</h3>  <p>대상의 모서리에 다양한 모양을 줄 수 있습니다.. 상세정보 <a href="http://www.malsup.com/jquery/corner/">http://www.malsup.com/jquery/corner/</a></p>
+<p><code>$this-&gt;jquery-&gt;corner(target, corner_style);</code></p>  <ul>
+    <li>&quot;target&quot;은 유효한 jQuery의 셀렉터입니다.</li>
+    <li>&quot;corner_style&quot;옵션변수 이며 , 원하는 모서리형태를 지정합니다 round, sharp, bevel, 
+      bite, dog, 등을 사용할 수 있습니다.&quot;tl&quot; (top left), &quot;tr&quot; (top 
+      right), &quot;bl&quot; (bottom left), &quot;br&quot; (bottom right) 등을 사용하여 
+      각모서리가 다른 형태가 되도록 할 수 있습니다.</li>
+  </ul>
+<p><code>$this-&gt;jquery-&gt;corner(&quot;#note&quot;, &quot;cool tl br&quot;);</code></p>
+
+<h3>tablesorter()</h3>  <p>나중에 쓸예정임(역주: 번역이 안된게 아니라 원문이 이렇습니다.)</p>
+
+<h3>modal()</h3>
+  <p>나중에 쓸예정임</p>
+
+<h3>calendar()</h3>
+
+  <p>나중에 쓸예정임</p>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="../database/index.html">Database Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="../helpers/array_helper.html">Array Helper</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">EllisLab, Inc.</a></p>
+</div>
+
+</body>
+</html>

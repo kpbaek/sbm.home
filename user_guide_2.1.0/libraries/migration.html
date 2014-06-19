@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Migration Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='CodeIgniter Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Migration Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content"> 
+  <h1>마이그레이션(Migration) 클래스 </h1>  <p>마이그레이션을 통해서 쉽고 안정적으로 데이터베이스를 변경(alter) 할 수 있습니다. 수작업으로 sql을 만들 수도 있지만, 그럴경우 
+    어떤것이 변경되었는지 ,다음 배포때는 어떤것이 수행되어야하는지, 기억하고 있어야 합니다.</p>  <p>데이터베이스 테이블 <var>마이그레이션</var>은 어떤 마이그레이션이 수행되었는지 지속적으로 추적해 주기 때문에, 개발자는 단지 
+    프로그램 파일을 업데이트 하고 <dfn>$this->migrate->current()</dfn> 만 호출하면,배포에 필요한 마이그레이션이 
+    수행됩니다.현재버전은 <var>config/migration.php</var>에 있습니다.</p>  <h2>마이그레이션 생성</h2>
+  <p>블로그를 포함하고 있는 새 사이트의 첫번째 마이그레이션 일 경우입니다. 모든 마이그레이션은 <var>application/migrations/</var> 
+    으로 들어가며, 이름은 <kbd>001_add_blog.php</kbd> 와 같은 형태가 됩니다.</p>
+
+<pre>
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Migration_Add_blog extends CI_Migration {
+
+	public function up()
+	{
+		$this->dbforge->add_field(array(
+			'blog_id' => array(
+				'type' => 'INT',
+				'constraint' => 5,
+				'unsigned' => TRUE,
+				'auto_increment' => TRUE
+			),
+			'blog_title' => array(
+				'type' => 'VARCHAR',
+				'constraint' => '100',
+			),
+			'blog_description' => array(
+				'type' => 'TEXT',
+				'null' => TRUE,
+			),
+		));
+		
+		$this->dbforge->create_table('blog');
+	}
+
+	public function down()
+	{
+		$this->dbforge->drop_table('blog');
+	}
+</pre>  <p>그리고 <var>application/config/migration.php</var> 에서 <dfn>$config['migration_version'] 
+    = 1;</dfn>으로 설정합니다.
+  <h2>사용예</h2>  <p>예제에서 사용되는 코드는 <var>application/controllers/migrate.php</var> 에 있으며 스키마를 업데이트 
+    합니다.</p>
+
+<pre>
+$this->load->library('migration');
+
+if ( ! $this->migration->current())
+{
+	show_error($this->migration->error_string());
+}
+</pre>  <h1>함수 레퍼런스</h1>
+
+<h2>$this->migration->current()</h2>
+
+  <p><var>application/config/migration.php</var>에 있는 <dfn>$config['migration_version']</dfn> 
+    에 설정된 현재버전</p>
+
+
+<h2>$this->migration->latest()</h2>  <p>current() 와 거의 유사하게 동작하나, <dfn>$config['migration_version']</dfn>를 참조하는 대신, 
+    파일 시스템에 있는 가장 최근의 마이그레이션을 사용합니다.</p>
+
+<h2>$this->migration->version()</h2>  <p>특정버전으로 롤백하거나, 이후 버전으로 바꿀 때 사용합니다. current와 유사하게 동작하나<dfn>$config['migration_version']</dfn>를 
+    사용하지 않습니다.</p>
+
+<pre>
+$this->load->library('migration');
+
+$this->migration->version(5);
+</pre>  <h2>마이그레이션 참조</h2>  <p>마이그레이션 설정 옵션</p>
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+      <th>설정</th>      <th>기본값</th>      <th>옵션</th>      <th>설명</th>
+</tr><tr>
+<td class="td"><strong>migration_enabled</strong></td><td class="td">FALSE</td><td class="td">TRUE / FALSE</td>
+      <td class="td">마이그레이션 사용/비사용 설정</td>
+</tr><tr>
+<td class="td"><strong>migration_version</strong></td><td class="td">0</td><td class="td">None</td>
+      <td class="td">데이터베이스가 사용하고 있는 현재버전</td>
+</tr><tr>
+<td class="td"><strong>migration_path</strong></td><td class="td">APPPATH.'migrations/'</td><td class="td">None</td>
+      <td class="td">마이그레이션 폴더의 경로</td>
+</tr>
+</table>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="form_validation.html">Form Validation Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="table.html">HTML Table Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">EllisLab, Inc.</a></p>
+</div>
+
+</body>
+</html>

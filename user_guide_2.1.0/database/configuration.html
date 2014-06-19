@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Database Configuration : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Configuration
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>데이터베이스 설정 Database Configuration</h1>
+
+<p>CodeIgniter 는 데이터베이스 설정(username, password, 데이터베이스 이름 등)을 저장하는 설정파일을 제공합니다.설정파일은 아래의 위치에 있습니다:</p>
+
+<p><kbd>application/config/database.php</kbd></p>
+
+<p>설정은 다차원배열로 아래예제 처럼 저장됩니다.:</p>
+
+<code>$db['default']['hostname'] = "localhost";<br />
+$db['default']['username'] = "root";<br />
+$db['default']['password'] = "";<br />
+$db['default']['database'] = "database_name";<br />
+$db['default']['dbdriver'] = "mysql";<br />
+$db['default']['dbprefix'] = "";<br />
+$db['default']['pconnect'] = TRUE;<br />
+$db['default']['db_debug'] = FALSE;<br />
+$db['default']['cache_on'] = FALSE;<br />
+$db['default']['cachedir'] =  &quot;&quot;;<br />
+$db['default']['char_set'] = "utf8";<br />
+$db['default']['dbcollat'] = "utf8_general_ci";</code>
+
+<p>단순한배열대신 다차원배열을 사용하는 이유는 선택적으로 여러개의  커넥션셋을 쉽게 사용하도록 하기 위해서 입니다.예를 들어 ,당신이 하나의 CoideIgniter 설치로 개발,라이브,테스트 등 여러가지 환경에서 작업한다고 했을때 ,여러개의 커넥션셋을 설정해 둔 다음 각 환경에 맞는 커넥션셋으로 각각 전환할 수 있습니다. 예를들어 &quot;test&quot; 환경에 대한 정보를 다음과 같이 설정합니다.:</p>
+
+<code>$db['test']['hostname'] = "localhost";<br />
+$db['test']['username'] = "root";<br />
+$db['test']['password'] = "";<br />
+$db['test']['database'] = "database_name";<br />
+$db['test']['dbdriver'] = "mysql";<br />
+$db['test']['dbprefix'] = "";<br />
+$db['test']['pconnect'] = TRUE;<br />
+$db['test']['db_debug'] = FALSE;<br />
+$db['test']['cache_on'] = FALSE;<br />
+$db['test']['cachedir'] =  &quot;&quot;;<br />
+$db['test']['char_set'] = "utf8";<br />
+$db['test']['dbcollat'] = "utf8_general_ci";</code>
+
+
+<p>그런다음, 설정(config)파일에서 사용하고자는 커넥션셋을 아래변수에 지정해줌으로써 글로벌하게 사용할 수 있게됩니다.:</p>
+
+<code>$active_group = "test";</code>
+
+<p>Note: "test" 는 당신이 원하는데로 지정할 수 있는 이름입니다. 원하는 어떤것이라도 사용하실 수 있습니다. 기본적으로 CodeIgniter 는 &quot;defalut&quot;를 사용합니다.그러나, 그것또한 당신의 프로젝트에 좀더 적합한 이름으로 변경 가능합니다..</p>
+
+<h3>액티브 레코드 Active Record</h3>
+
+<p><a href="active_record.html">액티브레코드 클래스</a> 는 데이터베이스 설정파일에 있는$active_record 변수를 TRUE혹은 FALSE 로 설정하므로써 글로벌하게 활성혹은 비활성화 시킬수 있습니다.만약 액티브레코드 사용을 FALSE 로 설정하시면 데이터베이스 클래스가 초기화될때 더 적은 시스템리소스를 사용하게 될것입니다.</p>
+
+<code>$active_record = TRUE;</code>
+
+<p class="important"><strong>Note:</strong>  세션(Sessions) 클래스등 몇몇 클래스는 액티브 레코드가 활성화된 상태에서만 동작합니다.</p>
+
+<h3>값 설명(Explanation of Values):</h3>
+  <ul>
+    <li><strong>hostname</strong> -데이터베이스 서버이름 입니다. 대체로 "localhost"이죠 .</li>
+    <li><strong>username</strong> - 사용자아이디</li>
+    <li><strong>password</strong> - 암호</li>
+    <li><strong>database</strong> - 연결할데이터베이스</li>
+    <li><strong>dbdriver</strong> - 데이터베이스 타입 예를들어 mysql, postgres, odcc, etc.반드시
+      소문자여야함</li>
+    <li><strong>dbprefix</strong> - 옵션임.<a href="active_record.html">액티브레코드</a>
+      를 사용하여 쿼리할경우 테이블명에 자동으로 접두어를 붙임. 하나의 데이터베이스로 여러개의 CodeIgniter 를 사용할때 유용함.</li>
+    <li><strong>pconnect</strong> - TRUE/FALSE (boolean) - 영속적연결(persistent connection)을
+      사용할것인지 말것인지 결정합니다.</li>
+    <li><strong>db_debug</strong> - TRUE/FALSE (boolean) - 데이터베이스 에러를 표시할지말지를
+      결정.</li>
+    <li><strong>cache_on</strong> - TRUE/FALSE (boolean) - 데이터베이스 쿼리를 캐시할것인지 말것인지결정<a href="caching.html">
+      데이터베이스캐시</a>페이지를 참고할것. </li>
+    <li><strong>cachedir</strong> - 데이터베이스 쿼리 캐시가 저장될 절대경로.</li>
+    <li><strong>char_set</strong> - 데이터베이스와 통신할때 사용할 문자셋.</li>
+    <li><strong>dbcollat</strong> - 데이터베이스와 통신할때 사용되는 문자열 대조법(character collation).
+      <a href="http://dev.mysql.com/doc/refman/4.1/en/charset-connection.html" target="_blank">문자열대조
+      참고자료</a> </li>
+    <li><strong>dbcollat</strong> - 데이터베이스와 통신할때 사용되는 문자열 대조법(character collation).
+      <a href="http://dev.mysql.com/doc/refman/4.1/en/charset-connection.html" target="_blank">문자열대조
+      참고자료</a>
+      <p class="important"><strong>주의:</strong> MySQL 이나 MySQLi 디비사용 시,PHP &lt;
+        5.2.3 이거나,MySQL &lt; 5.0.7 일때(테이블 생성 을 DB Forge에서 할경우),이 세팅은 단지 백업 용도로만
+        사용하세요. PHP의 mysql_real_escape_string() 함수에 호환성 문제 때문에 ,멀티바이트 문자셋을 위 버전
+        이하에서 사용할 경우 사이트가 sql인젝션 공격에 취약하게 됩니다. Latin-1 이나 UTF-8 의경우는 안전합니다.</p>
+    </li>
+    <li><strong>port</strong> - 데이터베이스 포트번호 .현재는 Postgres 에서만 사용. 이 값을 사용하려면 데이터베이스
+      설정배열에 아래와같이 추가해야함.<code>$db['default']['port'] = 5432;</code></li>
+  </ul>
+
+<p class="important"><strong>Note:</strong> 사용하는 데이터베이스 종류에 따라 (MySQL, Postgres, etc.) 꼭 필요한 설정값들이 달라집니다.(몇몇 설정값은 필요없을수도 있음)예를 들어 ,SQLite를 사용하면  username 이나 password는 필요없습니다.그리고 database name은 데이터베이스 파일의 경로가 될것입니다.위에 기술된 정보는 당신이 MySQL을 사용하고있다고 가정합니다..</p>
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="examples.html">Quick Start: Usage Examples</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="connecting.html">Connecting to your Database</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

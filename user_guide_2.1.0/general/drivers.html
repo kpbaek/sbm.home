@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Using CodeIgniter Drivers : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Using CodeIgniter Drivers
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+  <h1>CodeIgniter 드라이버 사용하기</h1>
+  <p>드라이버는 특별한 형태의 라이브러리이며, 하나의 부모클래스를 가지고, 여러개의 자식클래스들을 가질 수 있습니다.자식 클래스는 부모클래스에
+    접근할 수 있으나, 같은 수준의 클래스(siblings)에는 접근할 수 없습니다. </p>
+  드라이버는 컨트롤러에서 라이브러리 호출할때 우아한 문법 사용할 수 있는 혜택을 제공하며, 별도의 클래스로 분리할 것을 요구합니다. (드라이버에
+  들어가야할 코드를 컨트롤러에 두지말고 별도의 드라이버 클래스를 만들어 사용하므로써, 컨트롤러의 코드가 간소화 되어 우아한 문법을 사용할
+  수 있다는 의미인듯합니다)
+  <p>드라이버는 <dfn>system/libraries</dfn> 폴더 안에 있으며, 각 드라이버의 폴더명은 부모클래스의 이름과 동일합니다.
+    폴더 안에는 <kbd>drivers</kbd> 라는 하위 폴더를두고 모든 자식 클래스 파일을 그 안에 넣습니다.</p>
+  <p>드라이버를 사용하기 위해서는 다음의 초기화 메서드를 사용하여 컨트롤러에서 초기화합니다:</p>
+  <code>$this->load->driver('<var>class name</var>'); </code>
+  <p>여기서 <var>class name</var>e 은 호출하려는 드라이버 클래스의 이름입니다. 예를 들어, &quot;Some Parent&quot;라는
+    드라이버를로드하려면 다음과 같이합니다:</p>
+  <code>$this->load->driver('<var>some_parent</var>');</code>
+  <p>해당 클래스의 메서드는 다음과 같이 호출합니다:</p>
+
+<code>$this->some_parent->some_method();</code>
+
+  <p>자식클래스를 초기화 하지않고 ,부모클래스에서 직접 호출할 수 있습니다:</p>
+
+<code>$this->some_parent->child_one->some_method();<br />
+$this->some_parent->child_two->another_method();</code>
+
+  <h2>직접 드라이버 만들기 </h2>  <p><a href="creating_drivers.html">드라이버 만들기</a>섹션을 참고 해 주세요.</p>
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="creating_libraries.html">Creating Libraries</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="creating_drivers.html">Creating Drivers</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">EllisLab, Inc.</a></p>
+</div>
+
+</body>
+</html>

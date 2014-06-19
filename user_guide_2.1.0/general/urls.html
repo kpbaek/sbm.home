@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CodeIgniter URLs : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+URLS
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>CI 에서의 URL 규칙 CodeIgniter URLs</h1>
+
+<p> CodeIgniter 에서 생성한 URL 은 깔끔하고 검색엔진에서 색인되기 좋은 구조입니다. 일반적인 쿼리스트링 기반의 URL 이 아니라 세그먼트 기반의 URL 을 사용합니다. </p>
+
+<code>example.com/<var>news</var>/<dfn>article</dfn>/<samp>my_article</samp></code>
+
+<p class="important"><strong>Note:</strong> 아래 기술된바와같이 쿼리스트링(Query string) URL 또한 사용할 수 있습니다(옵션).</p>
+
+<h2>URI 세그먼트 </h2>
+
+<p>URL 세그먼트는 MVC패턴을 기반으로 아래와같이 표현됩니다. <code>example.com/<var>class</var>/<dfn>function</dfn>/<samp>ID</samp></code></p>
+<ol>
+<li>첫세그먼트는 호출될 컨트롤러<strong> class </strong> 를 나타냅니다.</li>
+<li>두번째 세그먼트는 클래스안의 호출될  <strong>function</strong>, 혹은 메쏘드를 나타냅니다.</li>
+<li>세번째 이후는 컨트롤러로 전달될 어떤 변수라도 될수 있습니다.(예제에서는 ID) </li>
+</ol>
+
+<p><a href="../libraries/uri.html">URI 클래스</a> 및 <a href="../helpers/url_helper.html">URL 헬퍼</a>
+의 함수들을 이용하시면 손쉽게 URI 데이터를 조작하실 수 있습니다.그리고, URL 은 <a href="routing.html">URI Routing</a> 을 이용하시면 좀더 유연하게 재 매핑 될수 있습니다..</p>
+<p>&nbsp;</p>
+<h2>index.php 파일 제거하기</h2>
+
+<p>기본적으로 <strong>index.php</strong> 파일은 URL 에 아래와같이 포함됩니다:</p>
+
+<code>example.com/<var>index.php</var>/news/article/my_article</code>
+
+<p>.htaccess 파일을 규칙에 따라 사용하시면 쉽게 index.php 를 제거하실 수있습니다. 지정된것이 아니면 모두 리디렉션 하는 "negative" method(제한 메소드)를 아래와 같이 사용하세요:</p>
+
+<code>RewriteEngine on<br />
+RewriteCond $1 !^(index\.php|images|robots\.txt)<br />
+RewriteRule ^(.*)$ /index.php/$1 [L]</code>
+
+<p>위 예제의 설정을 통하여 index.php, images, robots.txt 를 제외한 HTTP 요청은 index.php 파일을 요청한 것으로 취급됩니다. </p>
+
+
+<h2>URL 에 확장자 추가하기 </h2>
+
+<p><dfn>config/config.php</dfn> 파일에서 URL 끝에 확장자를 추가하도록 설정할수 있습니다</p>
+<p>만약 URL 이 아래와 같다면:</p>
+<code>example.com/index.php/products/view/shoes</code>
+
+<p><kbd>.html </kbd>등의 확장자를 추가하여 일반적인 웹페이지인것 처럼 보이게 할수있습니다.:</p>
+
+<code>example.com/index.php/products/view/shoes.html</code>
+
+
+<h2>쿼리스트링(Query Strings) 사용하기 </h2>
+
+<p>아래와같이 URL 에서 쿼리스트링을 사용하는게 필요한경우도 있을것입니다.:</p>
+
+<code>index.php?c=products&amp;m=view&amp;id=345</code>
+
+<p><dfn>application/config.php</dfn> 파일에서 아래부분을 찾아보세요.</p>
+
+<code>$config['enable_query_strings'] = FALSE;<br />
+$config['controller_trigger'] = 'c';<br />
+$config['function_trigger'] = 'm';</code>
+
+<p>"enable_query_strings" 을 TRUE 로 바꾸면 됩니다. 이때 컨트롤러와 함수는 당신이 설정한 값에 따라서 호출할 수 있습니다(위의 경우 c 는 컨트롤러 호출 m 은 함수 호출):</p>
+
+<code>index.php?c=controller&amp;m=method</code>
+
+<p class="important"><strong>Please note:</strong> 쿼리스트링을 이용하시면 URL 헬퍼 ( form 헬퍼와 같이 URLs을 생성하는 헬퍼들) 을 사용하실수 없습니다. </p>
+
+
+</div>
+<div id="footer">
+<p>
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="controllers.html">Controllers</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

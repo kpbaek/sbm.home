@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Array Helper : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Array Helper
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>배열 Array Helper</h1>
+
+<p>배열헬퍼는 배열과 관련된일을 돕는 함수들을 포함하고 있습니다.</p>
+
+
+<h2>헬퍼 로딩 Loading this Helper</h2>
+
+<p>아래코드로 헬퍼를 로딩합니다:</p>
+<code>$this->load->helper('array');</code>
+
+<p>아래는 사용가능한 함수들 입니다:</p>
+
+<h2>element()</h2>
+
+<p>배열에서 하나의 아이템을 가져옵니다. 이 함수는 배열인덱스가 설정되어있는지, 그리고 값을 가지고있는지를 검사합니다.  값이 있다면 그 값을 리턴합니다.  값이 없으면 FALSE를 리턴하거나, 3번째 파라미터로 여러분이 설정한 기본값을 리턴합니다. 예:</p>
+
+<code>
+$array = array('color' => 'red', 'shape' => 'round', 'size' => '');<br />
+<br />
+// returns "red"<br />
+echo element('color', $array);<br />
+<br />
+// returns NULL<br />
+echo element('size', $array, NULL);
+</code>
+
+
+<h2>random_element()</h2>
+
+<p>배열을 입력받아서 랜덤하게 하나의 요소를 리턴합니다. 예:</p>
+
+<code>$quotes = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"I find that the harder I work, the more luck I seem to have. - Thomas Jefferson",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Don't stay in bed, unless you can make money in bed. - George Burns",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"We didn't lose the game; we just ran out of time. - Vince Lombardi",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"If everything seems under control, you're not going fast enough. - Mario Andretti",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Reality is merely an illusion, albeit a very persistent one. - Albert Einstein",<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Chance favors the prepared mind - Louis Pasteur"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo random_element($quotes);</code>
+
+
+<h2>elements()</h2>  <p>배열에서 아이템을 가지고 옵니다. 이 함수는 배열에 주어진 배열인덱스가 있는지 테스트 합니다.인덱스가 없으면 FALSE를 설정합니다.
+    세번째 파라미터로 이 값을 바꿀 수 있습니다.:</p>
+
+<code>
+$array = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'color' => 'red',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'shape' => 'round',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'radius' => '10',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'diameter' => '20'<br />
+);<br />
+<br />
+$my_shape = elements(array('color', 'shape', 'height'), $array);<br />
+</code>
+
+  <p>위 코드는 아래의 배열을 리턴합니다:</p>
+
+<code>
+array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'color' => 'red',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'shape' => 'round',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'height' => FALSE<br />
+);
+</code>
+
+  <p>세번째 파라미터로 배열인덱스가 없는경우의 기본값을 바꿀 수 있습니다.:</p>
+
+<code>
+$my_shape = elements(array('color', 'shape', 'height'), $array, NULL);<br />
+  </code>
+  <p>위 코드는 아래의 배열을 리턴합니다:</p>
+
+<code>
+array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'color' => 'red',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'shape' => 'round',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'height' => NULL<br />
+);
+</code>
+
+  <p><kbd>$_POST</kbd> 배열을 모델 객체로 보낼때 유용합니다.이 함수는 사용자의 추가적인 POST 데이터입력을 막으려는 경우
+    유용합니다. </p>
+
+<code>
+$this->load->model('post_model');<br />
+<br />
+  $this->post_model->update(elements(array('id', 'title', 'content'), $_POST));
+  </code>
+  <p>위예제에서는 id, title 및 content 필드만 업데이트 됩니다.</p>
+
+</div>
+<!-- END CONTENT -->
+
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp; <a href="../libraries/javascript.html">Javascript Class</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="captcha_helper.html">CAPTCHA Helper</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">EllisLab, Inc.</a></p>
+</div>
+
+</body>
+</html>

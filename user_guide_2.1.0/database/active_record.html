@@ -1,0 +1,808 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Active Record : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Active Record
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>액티브 레코드(Active Record Class)</h1>
+
+<p>CodeIgniter 는 수정된 형태의 액티브레코드 데이터베이스 패턴(Active Record Database Pattern)을 사용합니다. 이 패턴은 정보의 추출,삽입, 업데이트를 최소한의 코드로 수행할수 있게 해줍니다. 때에따라서 한두줄의 코드만으로 원하는 처리를 할수도 있습니다. 또한 , 각 데이터베이스 테이블이 그 자신의 클래스에 반드시 존재할 필요도 없습니다.  CodeIgniter 는 보다 간단한 인터페이스를 제공합니다.</p>
+
+<p>단순성 보다 더 중요한 장점은 바로 데이터베이스에 독립된 프로그램을 만들 수 있다는 점입니다. 액티브레코드는 사용하는 데이터베이스 어댑터에 맞게 쿼리를 자동으로 생성합니다. 게다가, 자동으로 값들을 이스케이프(escape)하기 때문에 보다 안전한 쿼리를 만들어 냅니다.</p>
+
+<p class="important"><strong>Note:</strong> 쿼리를 직접 작성하여 사용하고자한다면, 데이터베이스 설정파일에서 액티브레코드를 비활성(disable)화 시킬수 있습니다. 그렇게 하면 코어 데이터베이스 라이브러리및 어댑터를 사용할때 리소스를 절약할 수 있습니다..<br />
+</p>
+
+<ul>
+<li><a href="#select">데이터조회 (Selecting Data</a>)</li>
+<li><a href="#insert">데이터 삽입( Inserting Data</a>)</li>
+<li><a href="#update">데이터 업데이트 (Updating Data</a>)</li>
+<li><a href="#delete">데이터 삭제 (Deleting Data</a>)</li>
+<li><a href="#chaining">함수 연결 (Method Chaining</a>)</li>
+<li><a href="#caching">액티브레코드 캐싱 (Active Record Caching</a>)</li>
+</ul>
+
+<h1><a name="select">&nbsp;</a>데이터 조회 (Selecting Data)</h1>
+
+<p>다음 함수들은 SQL <strong>SELECT</strong> 문을 생성할수 있도록 해줍니다.</p>
+
+<p><strong>알림: PHP 5 에서는 함수 연결(method chaining)을 사용하여 좀더 단순한 문법을 사용할 수 있습니다.이 방법은 본 페이지의 맨 아래 에 있습니다. </strong></p>
+
+
+<h2>$this->db->get();</h2>
+
+<p>조회 쿼리를 수행하며 결과를 리턴합니다.함수 그자체를 사용하면 모든 레코드를 가져오는 쿼리를 자동으로 실행합니다.:</p>
+
+<code>$query = $this->db->get('mytable');<br />
+<br />
+// 생성결과: SELECT * FROM mytable</code>
+
+<p>두번째, 세번째 파라미터는 리미트(limit)와 오프셋(offset)을 설정하는데 사용됩니다.:</p>
+
+<code>$query = $this->db->get('mytable', 10, 20);<br />
+<br />
+// 생성결과: SELECT * FROM mytable LIMIT 20, 10 (in MySQL. Other databases have slightly different syntax)</code>
+
+<p>위 함수에서는 결과를 <kbd>$query</kbd>변수에 할당하며 , 아래와 같이 활용할수 있습니다.:</p>
+
+<code>$query = $this->db->get('mytable');<br />
+<br />
+foreach ($query->result() as $row)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $row->title;<br />
+}</code>
+
+<p><a href="results.html">쿼리결과생성(result functions</a>) 페이지를 참조하시면 좀더 자세한 정보가 있습니다..</p>
+
+
+<h2>$this->db->get_where();</h2>
+
+<p>$db-&gt;where() 함수 대신 where 절을 두번째 파라미터로 사용할수 있다는 점을 빼면 위의 함수와 동일합니다.:</p>
+
+<code>$query = $this->db->get_where('mytable', array('id' => $id), $limit, $offset);</code>
+
+<p>아래쪽에 있는 where 함수의 내용을 보시면 더 자세한 정보를 얻으실 수 있습니다.</p>
+<p class="important">Note: get_where() 함수의 이전버전인 getwhere()는 제거되었습니다.</p>
+
+<h2>$this->db->select();</h2>
+<p>쿼리에서  SELECT 부분을 직접 입력할수 있도록 해 줍니다:</p>
+<p><code>
+$this->db->select('title, content, date');<br />
+<br />
+$query = $this->db->get('mytable');<br />
+<br />
+// 생성결과: SELECT title, content, date FROM mytable</code></p>
+<p class="important"><strong>Note:</strong> 전부(*) 를 조회할때는 이 함수가 필요없습니다. 파라미터가 생략되면  CodeIgniter 는 자동으로  SELECT * 를 수행합니다. </p>
+
+<p>$this-&gt;db-&gt;select() 함수에서는 옵션으로 두번째 파라미터를 설정할 수 있습니다. 만약  FALSE 로 설정하면  CodeIgniter 는 필드나 테이블명을 백틱(`) 으로 감싸 보호하지 않습니다.복잡한 select 문을 사용할때 이것이 유용합니다.</p>
+<p><code>$this-&gt;db-&gt;select('(SELECT SUM(payments.amount) FROM payments WHERE payments.invoice_id=4') AS amount_paid', FALSE); <br />
+$query = $this-&gt;db-&gt;get('mytable');<br />
+</code></p>
+<h2>$this->db->select_max();</h2>
+<p>"SELECT MAX(field)" 부분을 사용할 수 있게 합니다. 두번째 파라미터를 사용하면 결과값의 필드명을 다른 이름으로 바꿀 수 있습니다..</p>
+<p><code>
+$this->db->select_max('age');<br />
+$query = $this->db->get('members');<br />
+
+// 생성결과: SELECT MAX(age) as age FROM members<br />
+<br />
+$this-&gt;db-&gt;select_max('age', 'member_age');<br />
+$query = $this-&gt;db-&gt;get('members');<br />
+// 생성결과: SELECT MAX(age) as member_age FROM members</code></p>
+
+<h2>$this->db->select_min();</h2>
+<p>"SELECT MIN(field)" 부분을 사용할 수 있게 합니다.<dfn>select_max()</dfn>와 같이,두번째 파라미터를 사용하면 결과값의 필드명을 다른 이름으로 바꿀 수 있습니다.</p>
+<p><code>
+$this->db->select_min('age');<br />
+$query = $this->db->get('members');<br />
+// 생성결과: SELECT MIN(age) as age FROM members</code></p>
+
+<h2>$this->db->select_avg();</h2>
+<p>"SELECT AVG(field)" 부분을 사용할 수 있게 합니다.<dfn>select_max()</dfn>와 같이,두번째 파라미터를 사용하면 결과값의 필드명을 다른 이름으로 바꿀 수 있습니다..</p>
+<p><code>
+$this->db->select_avg('age');<br />
+$query = $this->db->get('members');<br />
+// 생성결과: SELECT AVG(age) as age FROM members</code></p>
+
+<h2>$this->db->select_sum();</h2>
+<p>"SELECT SUM(field)" 부분을 사용할 수 있게 합니다.<dfn>select_max()</dfn>와 같이,두번째 파라미터를 사용하면 결과값의 필드명을 다른 이름으로 바꿀 수 있습니다.</p>
+<p><code>
+$this->db->select_sum('age');<br />
+$query = $this->db->get('members');<br />
+// 생성결과: SELECT SUM(age) as age FROM members</code></p>
+
+<h2>$this->db->from();</h2>
+
+<p> FROM 부분을 사용할 수 있게 합니다.:</p>
+
+<code>
+$this->db->select('title, content, date');<br />
+$this->db->from('mytable');<br />
+<br />
+$query = $this->db->get();<br />
+<br />
+// 생성결과: SELECT title, content, date FROM mytable</code>
+
+<p class="important">Note: 앞서 보여준대로 , FROM 부분은 <dfn>$this->db->get()</dfn> 함수에서 정의해줄수 있습니다. 그러니까 위 함수를이용하거나 말거나는 당신의 선택입니다. </p>
+
+<h2>$this->db->join();</h2>
+
+<p>JOIN 부분을 사용할 수 있게 해줍니다.:</p>
+
+<code>
+$this->db->select('*');<br />
+$this->db->from('blogs');<br />
+$this->db->join('comments', 'comments.id = blogs.id');<br />
+<br />
+$query = $this->db->get();<br />
+<br />
+// 생성결과: <br />
+// SELECT * FROM blogs<br />
+// JOIN comments ON comments.id = blogs.id<br />
+</code>
+
+<p>여러개의 조인을 단일쿼리에 사용할 경우 여러개의 함수호출(function calls)를 사용할 수 있습니다.</p>
+
+<p>기본 조인(JOIN)외의 조인을 할때는 세번째 파라미터를 사용할 수 있습니다.</p>
+<p>옵션은 다음과 같습니다: left, right, outer, inner, left outer, and right outer.</p>
+<code>
+$this->db->join('comments', 'comments.id = blogs.id', <strong>'left'</strong>);<br />
+<br />
+// 생성결과: LEFT JOIN comments ON comments.id = blogs.id</code>
+
+
+
+
+
+<h2>$this->db->where();</h2>
+<p>이함수는 4가지중 한가지 방법을 사용하여  <strong>WHERE</strong>절을 설정할수 있게 합니다:</p>
+
+<p class="important"><strong>주의:</strong> 이 함수로 전달되는 모든 변수는 자동으로 이스케이프 되어 안전한 쿼리를 생성합니다.</p>
+
+<ol>
+	<li><strong>단순 키/값 방법:</strong>
+
+	<code>$this->db->where('name', $name);
+	<br />
+	<br />// 생성결과: WHERE name = 'Joe'	</code>
+
+	<p>같다(=) 부분을 자동으로 추가해줍니다.</p>
+
+	<p>이 방법을 여러번 사용하면 모두  <var>AND</var> 로 연결됩니다.:</p>
+
+	<code>$this->db->where('name', $name);<br />
+	$this->db->where('title', $title);<br />
+	$this->db->where('status', $status);
+	<br /><br />// WHERE name ='Joe' AND title = 'boss' AND status = 'active'	</code>	</li>
+
+	<li><strong>사용자 키/값 방법:</strong>
+
+	  <p>첫번째 파라미터에 연산기호를 삽입하여 원하는 쿼리를 만들수 있습니다:</p>
+
+	<code>$this->db->where('name !=', $name);<br />
+	$this->db->where('id <', $id);
+	<br /><br />// 생성결과: WHERE name != 'Joe' AND id < 45	</code>	</li>
+	<li><strong>연관배열 방법:</strong>
+
+
+	<code>
+	$array = array('name' => $name, 'title' => $title, 'status' => $status);<br /><br />
+
+	$this->db->where($array);
+	<br /><br />// 생성결과: WHERE name = 'Joe' AND title = 'boss' AND status = 'active'	</code>
+
+	<p>아래와 같이 직접 연산기호를 사용할 수도 있습니다.:</p>
+
+	<code>
+	$array = array('name !=' => $name, 'id <' => $id, 'date >' => $date);<br /><br />
+
+	$this->db->where($array);</code>	</li>
+		<li><strong>사용자 문자열 방법:</strong>
+
+		  <p> 아래와 같이 Where 절을 직접 입력할 수 도 있습니다:</p>
+
+		<code>
+		$where = "name='Joe' AND status='boss' OR status='active'";<br /><br />
+		$this->db->where($where);</code></li>
+  </ol>
+
+
+<p>$this-&gt;db-&gt;where() 에는 세번째 파라미터가 옵션으로 제공됩니다. 이 파라미터를  FALSE 로하면 , CodeIgniter 는 필드나 테이블명을 백틱(`) 으로 감싸 보호하지 않습니다.</p>
+<p><code> 		$this-&gt;db-&gt;where('MATCH (field) AGAINST (&quot;value&quot;)', NULL, FALSE);<br />
+</code></p>
+<h2>$this->db->or_where();</h2>
+<p>여러개의 조건들이 OR 로 연결되는것을 제외하면 본함수는 위의 함수와 동일합니다.:</p>
+
+<code>
+$this->db->where('name !=', $name);<br />
+$this->db->or_where('id >', $id);
+<br />
+<br />// 생성결과: WHERE name != 'Joe' OR id > 50</code>
+
+<p class="important">주의: or_where() 의 이전버전인  orwhere()는 제거되었습니다.</p>
+
+
+<h2>$this->db->where_in();</h2>
+<p>WHERE 절의 IN ('item', 'item') 부분을 생성하며 필요한 경우 AND 로 연결해줍니다.</p>
+<p><code>
+	$names = array('Frank', 'Todd', 'James');<br />
+	$this->db->where_in('username', $names);<br />
+	// 생성결과: WHERE username IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this->db->or_where_in();</h2>
+<p>WHERE 절의 IN ('item', 'item') 부분을 생성하며 필요한 경우 OR 로 연결해줍니다.</p>
+<p><code>
+	$names = array('Frank', 'Todd', 'James');<br />
+	$this->db->or_where_in('username', $names);<br />
+	// 생성결과: OR username IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this->db->where_not_in();</h2>
+<p> WHERE 절의 NOT IN ('item', 'item') 부분을 생성하며 필요한경우 AND 로 연결해줍니다 </p>
+<p><code>
+	$names = array('Frank', 'Todd', 'James');<br />
+	$this->db->where_not_in('username', $names);<br />
+	// 생성결과: WHERE username NOT IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this->db->or_where_not_in();</h2>
+<p>WHERE 절의 NOT IN ('item', 'item') 부분을 생성하며 필요한경우 OR 로 연결해줍니다 </p>
+<p><code>
+	$names = array('Frank', 'Todd', 'James');<br />
+	$this->db->or_where_not_in('username', $names);<br />
+	// 생성결과: OR username NOT IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this->db->like();</h2>
+<p>이 함수는 <strong>LIKE</strong> 절을 생성해줍니다. 검색시에 유용합니다..</p>
+
+<p class="important"><strong>Note:</strong> 전달된 모든값은 자동으로 이스케이프 됩니다.</p>
+  <ol>
+    <li><strong>단순 키/값 방법:</strong> <code>$this->db->like('title', 'match'); <br />
+      <br />
+      // 생성결과: WHERE title LIKE '%match%' </code>
+      <p>이함수를 여러번 호출하면 각각을 <var>AND</var> 로 연결해줍니다:</p>
+      <code>$this->db->like('title', 'match');<br />
+      $this->db->like('body', 'match'); <br />
+      <br />
+      // WHERE title LIKE '%match%' AND body LIKE '%match%</code> like 절에서 와일드카드(%)를
+      사용해야 한다면 옵션인 세번째 파라미터를 사용할수 있습니다.<br />
+      옵션은 다음과같습니다:'before', 'after', 'both' (기본값). <code>$this->db->like('title',
+      'match', 'before'); <br />
+      // 생성결과: WHERE title LIKE '%match' <br />
+      <br />
+      $this-&gt;db-&gt;like('title', 'match', 'after'); <br />
+      // 생성결과: WHERE title LIKE 'match%' <br />
+      <br />
+      $this-&gt;db-&gt;like('title', 'match', 'both'); <br />
+      // 생성결과: WHERE title LIKE '%match%' </code><br />
+    </li>
+    와일드 카드(%)를 사용하지 않을때는 세번째 파라미터를 'none'으로 한다.. <code> $this-&gt;db-&gt;like('title',
+    'match', 'none'); <br />
+    // 생성결과: WHERE title LIKE 'match' </code>
+    <li><strong>연관배열 방법:</strong> <code> $array = array('title' => $match, 'page1'
+      => $match, 'page2' => $match);<br />
+      <br />
+      $this->db->like($array); <br />
+      <br />
+      // WHERE title LIKE '%match%' AND page1 LIKE '%match%' AND page2 LIKE '%match%'</code></li>
+  </ol>
+
+
+<h2>$this->db->or_like();</h2>
+<p>본 함수는 여러개의 조건들이 OR 로 연결된 경우를 제외하고는 위함수와 같습니다.:</p>
+
+<code>
+$this->db->like('title', 'match');<br />
+$this->db->or_like('body', $match);
+<br />
+<br />// WHERE title LIKE '%match%' OR  body LIKE '%match%'</code>
+
+
+
+
+<p class="important">Note: or_like() 의 이전버전인 orlike()는 제거되었습니다.</p>
+<h2>$this-&gt;db-&gt;not_like();</h2>
+<p>NOT LIKE 문을 생성한다는 점을 제외하면 <strong>like()</strong>함수와 완전히 동일합니다.:</p>
+<code> $this-&gt;db-&gt;not_like('title', 'match');<br />
+<br />
+// WHERE title NOT LIKE '%match%</code>
+<h2>$this-&gt;db-&gt;or_not_like();</h2>
+<p>여러개의 조건들이 OR 로 연결된다는점을 제외하면 <strong>not_like()</strong>함수와 같습니다:</p>
+<code> $this-&gt;db-&gt;like('title', 'match');<br />
+$this-&gt;db-&gt;or_not_like('body', 'match'); <br />
+<br />
+// WHERE title  LIKE '%match% OR body NOT LIKE '%match%'</code>
+<h2>$this->db->group_by();</h2>
+<p>GROUP BY 부분을 생성합니다:</p>
+
+<code>$this->db->group_by("title");
+<br /><br />// 생성결과: GROUP BY title
+</code>
+
+<p>여러개의 값을 전달하기위해서 배열도 사용할 수 있습니다.</p>
+
+<code>$this->db->group_by(array("title", "date"));
+<br />
+<br />// 생성결과: GROUP BY title, date</code>
+
+<p class="important">Note: group_by() 의 이전버전인 groupby() 는 제거되었습니다.</p>
+
+<h2> $this-&gt;db-&gt;distinct();<br />
+</h2>
+<p>쿼리에 &quot;DISTINCT&quot; 키워드를 추가합니다 </p>
+<p><code>$this-&gt;db-&gt;distinct();<br />
+	$this-&gt;db-&gt;get('table');<br />
+		<br />
+	// 생성결과: SELECT DISTINCT * FROM table</code></p>
+<h2>$this->db->having();</h2>
+<p>HAVING 부분을 생성합니다. 하나의 파라미터를 사용할수도 있고 두개의 파라미터를 사용할 수도 있습니다:</p>
+
+<code>$this->db->having('user_id = 45');
+<br />
+// 생성결과: HAVING user_id = 45<br />
+<br />
+$this-&gt;db-&gt;having('user_id',  45); <br />
+// 생성결과: HAVING user_id = 45<br />
+<br />
+</code>
+
+<p>여러개의 값을 전달하기위해서 배열도 사용할 수 있습니다:</p>
+
+
+<p><code>$this->db->having(array('title =' => 'My Title', 'id <' => $id)); <br />
+		<br />
+	// 생성결과: HAVING title = 'My Title', id < 45</code></p>
+<p>CodeIgniter 자동으로 쿼리를 이스케이프 하는 데이터베이스(ex:Mysql)를 사용하고 있고 이 자동 이스케이프를 끄고싶다면, 세번째 파라미터를 FALSE 로 설정합니다. 아래 예제를 봐주세요 .</p>
+<p><code>$this-&gt;db-&gt;having('user_id',  45); <br />
+// 생성결과: HAVING `user_id` = 45 in some databases such as MySQL
+		<br />
+		$this-&gt;db-&gt;having('user_id',  45, FALSE); <br />
+// 생성결과: HAVING user_id = 45</code></p>
+<h2>$this-&gt;db-&gt;or_having();</h2>
+<p>여러 조건을 OR 로 연결한다는 점을 제외하면 having()과 같습니다..</p>
+<h2>$this->db->order_by();</h2>
+<p>ORDER BY 부분을 생성합니다. 첫번째파라미터는 정렬기준이 되는 컬럼명입니다. 두번째 파라미터는 정렬 방향입니다. 정렬방향은 <kbd>asc</kbd> 나 <kbd>desc</kbd>, 혹은<kbd>random</kbd> 입니다 </p>
+
+<code>$this->db->order_by("title", "desc");
+<br />
+<br />// 생성결과: ORDER BY title DESC
+</code>
+
+<p>첫번째 파라미터로 직접문자열을 입력할수 있습니다:</p>
+
+<code>$this->db->order_by('title desc, name asc');
+<br />
+<br />// 생성결과: ORDER BY title DESC, name ASC
+</code>
+
+<p>아니면 함수를 여러번 호출하여 여러 필드에 대한 정렬을 수행할수 있습니다.</p>
+
+<p><code>$this->db->order_by("title", "desc");<br />
+	$this->db->order_by("name", "asc"); <br />
+	<br />
+	// 생성결과: ORDER BY title DESC, name ASC
+	</code></p>
+<p class="important">Note: order_by() 의 이전버전인  orderby()는 제거되었습니다.</p>
+<p class="important">Note: 랜덤(random)정렬은 현재 Oracle , MSSQL 에서는 사용할수 없습니다. 그러므로 해당 데이터베이스사용시 random은 자동으로 'ASC' 로 설정됩니다.</p>
+<h2>$this->db->limit();</h2>
+<p>쿼리결과로 리턴받을 열의 개수를 설정할때 사용합니다:</p>
+
+<code>
+$this->db->limit(10);<br />
+<br />
+// 생성결과: LIMIT 10</code>
+
+
+<p> 두번째 파라미터는 오프셋을 설정할때 사용합니다.</p>
+
+<code>
+$this->db->limit(10, 20);<br />
+<br />
+// 생성결과: LIMIT 20, 10 (in MySQL.  Other databases have slightly different syntax)</code>
+
+
+<h2>$this->db->count_all_results();</h2>
+
+<p>특정 액티브레코드 쿼리를 통해 적용될 레코드의 수를 확인하도록 해줍니다.쿼리는 where(),  or_where(), like(), or_like(), 등과같은 액티브레코드 한정자 들을 허용합니다. 예:</p>
+<code>echo $this->db->count_all_results('<var>my_table</var>');<br />
+
+// Produces an integer, like 25<br />
+<br />
+$this-&gt;db-&gt;like('title', 'match');<br />
+$this-&gt;db-&gt;from('<var>my_table</var>');<br />
+echo $this-&gt;db-&gt;count_all_results();<br />
+// Produces an integer, like 17 </code>
+
+<h2>$this->db->count_all();</h2>
+
+<p>특정테이블의 레코드수를 리턴합니다.  첫번째 파라미터에는 테이브명이 들어갑니다. 예:</p>
+
+<code>echo $this->db->count_all('<var>my_table</var>');<br />
+<br />
+// Produces an integer, like 25</code>
+
+
+
+<a name="insert">&nbsp;</a>
+<h1>데이터 삽입(Inserting Data)</h1>
+
+<h2>$this->db->insert();</h2>
+<p>당신이 제공한 데이터를 가지고 insert 쿼리를 생성한후 실행합니다. 이때 배열 혹은 객체를 사용하여 데이터를 제공합니다.다음은 배열을 사용한 예입니다:</p>
+
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;'title' => 'My title' ,<br />
+&nbsp;&nbsp;&nbsp;'name' => 'My Name' ,<br />
+&nbsp;&nbsp;&nbsp;'date' => 'My date'<br />
+);<br />
+<br />
+$this->db->insert('mytable', $data);
+<br /><br />
+// 생성결과: INSERT INTO mytable (title, name, date) VALUES ('My title', 'My name', 'My date')</code>
+
+<p>첫번째 파라미터는 테이블명 ,두번째 파라미터는 필드명과 값을 포함한 연관배열 입니다.</p>
+
+<p>다음은 객체를 사용한 예제입니다:</p>
+
+<code>
+/*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;class Myclass {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $title = 'My Title';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $content = 'My Content';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $date = 'My Date';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+*/<br />
+<br />
+$object = new Myclass;<br />
+<br />
+$this->db->insert('mytable', $object);
+<br /><br />
+// 생성결과: INSERT INTO mytable (title, content, date) VALUES ('My Title', 'My Content', 'My Date')</code>
+
+<p>첫번째 파라미터는 테이블 명이며, 두번째 파라미터는 값에대한  객체입니다.</p>
+
+<p class="important"><strong>Note:</strong> 전달된 모든값은 자동으로 이스케이프되어 보다 안전한 쿼리로 생성됩니다.</p>
+
+
+<h2>$this->db->insert_batch();</h2>
+  <p>제공된 데이터를 가지고 Insert 쿼리를 생성한후 수행합니다.파라미터로 배열이나 객체를 사용할 수 있습니다. 예:</p>
+
+<code>
+$data = array(<br/>
+&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => 'My title' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'My Name' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => 'My date'<br />
+&nbsp;&nbsp;&nbsp;),<br />
+&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => 'Another title' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'Another Name' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => 'Another date'<br />
+&nbsp;&nbsp;&nbsp;)<br/>
+);<br />
+<br />
+$this->db->insert_batch('mytable', $data);
+<br /><br />
+  // 결과: INSERT INTO mytable (title, name, date) VALUES ('My title', 'My name',
+  'My date'), ('Another title', 'Another name', 'Another date')</code>
+  <p>첫번째 파라미터는 테이블명,두번째는 값들의 연관배열입니다.</p>
+  <p class="important"><strong>주의:</strong> 모든값은 특수문자를 자동으로 이스케이프처리합니다.</p>
+
+
+
+
+<h2>$this->db->set();</h2>
+<p>이 함수는 입력(<dfn>insert)</dfn> 혹은 업데이트(<dfn>update)</dfn>시 값을 설정할수 있도록 합니다. </p>
+
+<p><strong>이 함수는 입력,업데이트시 데이터 배열을 사용하는 방법 대신 사용할 수 있습니다:</strong> </p>
+
+<code>$this->db->set('name', $name);
+<br />
+$this->db->insert('mytable');
+<br /><br />
+// 생성결과: INSERT INTO mytable (name) VALUES ('{$name}')</code>
+
+<p>함수를 여러번 호출했을때는 입력인지 업데이트인지에 따라 적절하게 자동으로 연결해줍니디다:</p>
+
+<code>$this-&gt;db-&gt;set('name', $name);<br />
+$this-&gt;db-&gt;set('title', $title);<br />
+$this-&gt;db-&gt;set('status', $status);<br />
+$this-&gt;db-&gt;insert('mytable'); </code>
+<p><strong>set()</strong> 함수는 옵션으로 세번째파라미터($escape)를 받아들입니다.이 파라미터를 FALSE로 하면 쿼리를 자동으로 이스케이프 하지않습니다. 아래예제는 set() 함수를 호출할때 세번째 파라미터를 사용한것과 안한것을 비교하여 보여줍니다.</p>
+<p><code>$this-&gt;db-&gt;set('field', 'field+1', FALSE);<br />
+	$this-&gt;db-&gt;insert('mytable'); <br />
+	// gives INSERT INTO mytable (field) VALUES (field+1)<br />
+	<br />
+	$this-&gt;db-&gt;set('field', 'field+1');<br />
+	$this-&gt;db-&gt;insert('mytable'); <br />
+	// gives INSERT INTO mytable (field) VALUES ('field+1')</code></p>
+<p>이함수를 사용할때 연관배열을 사용할 수도 있습니다:</p>
+<code>
+$array = array('name' => $name, 'title' => $title, 'status' => $status);<br /><br />
+
+$this->db->set($array);<br />
+$this->db->insert('mytable');
+</code>
+
+<p>혹은 아래와같이 객체도 가능하구요:</p>
+
+
+<code>
+/*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;class Myclass {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $title = 'My Title';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $content = 'My Content';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $date = 'My Date';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+*/<br />
+<br />
+$object = new Myclass;<br />
+<br />
+$this->db->set($object);<br />
+$this->db->insert('mytable');
+</code>
+
+
+
+<a name="update">&nbsp;</a>
+<h1>데이터 업데이트 (Updating Data)</h1>
+
+<h2>$this->db->update();</h2>
+<p>제공된 데이터를 가지고 업데이트 쿼리를 생성하고 실행합니다. 당신은 배열혹은 객체를 사용하여 데이터를 전달할수 있습니다. </p>
+<p>다음은 배열을 사용한 예입니다.:</p>
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => $title,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => $name,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => $date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->db->where('id', $id);<br />
+$this->db->update('mytable', $data);
+<br /><br />
+// 생성결과:<br />
+// UPDATE mytable <br />
+// SET title = '{$title}', name = '{$name}', date = '{$date}'<br />
+// WHERE id = $id</code>
+
+<p>아래를 객체를 사용한 예입니다:</p>
+
+<code>
+/*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;class Myclass {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $title = 'My Title';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $content = 'My Content';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $date = 'My Date';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+*/<br />
+<br />
+$object = new Myclass;<br />
+<br />
+$this->db->where('id', $id);<br />
+$this->db->update('mytable', $object);
+<br />
+<br />
+// 생성결과:<br />
+// UPDATE mytable <br />
+// SET title = '{$title}', name = '{$name}', date = '{$date}'<br />
+// WHERE id = $id</code>
+
+
+
+<p class="important"><strong>Note:</strong> 전달된 모든값은 자동으로 이스케이프 됩니다.</p>
+
+<p><dfn>$this->db->where()</dfn> 함수를 이용하면 WHERE 절을 사용할수 있다는것을 이미 아실겁니다.
+update 함수에서는 옵션으로 where 조건을 세번째 파라미터로 전달할 수 있습니다.:</p>
+
+<code>$this->db->update('mytable', $data, "id = 4");</code>
+
+<p>아래와같이 배열로도 전달할수 있구요 .:</p>
+
+<code>$this->db->update('mytable', $data, array('id' => $id));</code>
+
+<p><dfn> 업데이트 시 $this->db->set()</dfn> 함수도 사용할수 있습니다.</p>
+<h2>$this->db->update_batch();</h2>
+  <p>제공된 데이터를 가지고 업데이트 쿼리를 생성한 후 실행한다..데이터는 배열이나 객체로 제공할 수 있다. 배열을 사용한 예:</p>
+
+<code>
+$data = array(<br/>
+&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => 'My title' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'My Name 2' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => 'My date 2'<br />
+&nbsp;&nbsp;&nbsp;),<br />
+&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => 'Another title' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'Another Name 2' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => 'Another date 2'<br />
+&nbsp;&nbsp;&nbsp;)<br/>
+);<br />
+<br />
+$this->db->update_batch('mytable', $data, 'title');
+<br /><br />
+// Produces: <br />
+// UPDATE `mytable` SET `name` = CASE<br />
+// WHEN `title` = 'My title' THEN 'My Name 2'<br />
+// WHEN `title` = 'Another title' THEN 'Another Name 2'<br />
+// ELSE `name` END,<br />
+// `date` = CASE <br />
+// WHEN `title` = 'My title' THEN 'My date 2'<br />
+// WHEN `title` = 'Another title' THEN 'Another date 2'<br />
+// ELSE `date` END<br />
+// WHERE `title` IN ('My title','Another title')</code>
+
+  <p>첫파라미터는 테이블 명, 둘째 파라미터는 연관배열, 세번째 파라미터는 where 키이다.</p>
+
+  <p class="important"><strong>주의:</strong> 모든값은 자동으로 escape 된다.(보다 안전한 쿼리가 생성
+    됨).</p>
+
+
+
+<a name="delete">&nbsp;</a>
+<h1>데이터 삭제 (Deleting Data)</h1>
+
+
+
+<h2>$this->db->delete();</h2>
+<p>삭제 쿼리를 생성하고 실행합니다.</p>
+
+<code>
+$this->db->delete('mytable', array('id' => $id));
+<br /><br />
+// 생성결과:<br />
+// DELETE FROM mytable <br />
+// WHERE id = $id</code>
+
+<p>첫번째 파라미터는 테이블 이름입니다. 두번째 파라미터는 where 절이구요.두번째 파라미터를 사용하는 대신에<dfn>where()</dfn> 나 <dfn>or_where()</dfn> 함수를 사용하여 where 절을 설정해도 됩니다.:</p>
+
+<p><code> $this->db->where('id', $id);<br />
+	$this->db->delete('mytable'); <br />
+	<br />
+	// 생성결과:<br />
+	// DELETE FROM mytable <br />
+	// WHERE id = $id</code></p>
+<p>한개이상의 테이블에서 데이터를 삭제해야 한다면 여러개의 테이블명을 배열로 delete() 함수에 넘길 수 있습니다. </p>
+<p><code>$tables = array('table1', 'table2', 'table3');<br />
+$this-&gt;db-&gt;where('id', '5');<br />
+$this-&gt;db-&gt;delete($tables);</code></p>
+<p>테이블의 모든 데이터를 삭제하려면<dfn>truncate()</dfn> 혹은 <dfn>empty_table()</dfn> 함수를 사용하시면 됩니다.</p>
+<h2>$this-&gt;db-&gt;empty_table();</h2>
+<p>삭제 쿼리를 생성하고 실행합니다<code>	$this-&gt;db-&gt;empty_table('mytable'); <br />
+	<br />
+// Produces<br />
+// DELETE FROM mytable</code></p>
+<h2>$this-&gt;db-&gt;truncate();</h2>
+<p> truncate 쿼리를 생성하고 실행합니다.</p>
+<code> $this-&gt;db-&gt;from('mytable'); <br />
+$this-&gt;db-&gt;truncate(); <br />
+// or <br />
+$this-&gt;db-&gt;truncate('mytable'); <br />
+<br />
+// Produce:<br />
+// TRUNCATE mytable <br />
+</code>
+<p class="important"><strong>Note:</strong>  TRUNCATE 명령이 사용불가능한 상황이라면  truncate() 함수는 &quot;DELETE FROM table&quot; 쿼리를 실행할것입니다.</p>
+
+<h1><a name="chaining">&nbsp;</a>함수연결(Method Chaining)</h1>
+
+<p>함수연결은 여러개의 함수를 연결하므로써 ,좀더 단순한 문법을 사용할 수 있게합니다. <br />
+  아래예제를 살펴보세요 :</p>
+
+<code>
+<dfn>$this->db</dfn><kbd>-></kbd><var>select</var>('title')<kbd>-></kbd><var>from</var>('mytable')<kbd>-></kbd><var>where</var>('id', $id)<kbd>-></kbd><var>limit</var>(10, 20);<br />
+<br />
+$query = $this->db->get();</code>
+
+<p class="important"><strong>Note:</strong> 함수연결은 PHP 5 에서만 사용합니다.</p>
+
+<p>&nbsp;</p>
+
+<h1><a name="caching">&nbsp;</a>액티브레코드 캐싱 (Active Record Caching)</h1>
+
+<p>캐싱이&quot;true&quot;가 아닐지라도, 액티브레코드는 쿼리의 특정부분을 나중에 실행할때에 대비해 저장(혹은 캐시) 하도록 되어있습니다. 보통은, 액티브레코드 호출이 완료되면, 모든 저장된 데이터는 다음 호출을 위해서 리셋 됩니다. 캐싱을 하면, 이러한 리셋을 막고 데이터재사용을 쉽게 할수 있습니다</p>
+
+<p>캐시된 호출은 누적됩니다.만약 2개의 캐시된 select() 호출과 2개의 캐시되지않은 select() 호출이 있다면, 4개의  select() 를 호출한 결과가 됩니다.캐시를 위한 함수는 3개가 있습니다:</p>
+
+<h2>$this-&gt;db-&gt;start_cache()</h2>
+
+<p>이함수는 캐싱을 시작하기 위하여 반드시 호출되어야 합니다. 캐싱이 지원되는 모든 액티브 레코드 쿼리는 나중을 위해서 저장됩니다.</p>
+
+<h2>$this-&gt;db-&gt;stop_cache()</h2>
+
+<p>이함수는 캐싱을 정지하기 위하여 호출합니다.</p>
+
+<h2>$this-&gt;db-&gt;flush_cache()</h2>
+
+<p>이함수는 액티브레코드 캐시로 저장된 모든 아이템을 제거합니다.</p>
+
+<p>사용예:</p>
+
+<p><code>$this-&gt;db-&gt;start_cache();<br />
+$this-&gt;db-&gt;select('field1');<br />
+$this-&gt;db-&gt;stop_cache();<br /><br />
+$this-&gt;db-&gt;get('tablename');<br />
+<br />
+//Generates: SELECT `field1` FROM (`tablename`)<br />
+<br />
+$this-&gt;db-&gt;select('field2');<br />
+$this-&gt;db-&gt;get('tablename');<br />
+<br />
+//Generates:  SELECT `field1`, `field2` FROM (`tablename`)<br />
+<br />
+$this-&gt;db-&gt;flush_cache();<br />
+<br />
+$this-&gt;db-&gt;select('field2');<br />
+$this-&gt;db-&gt;get('tablename');<br />
+<br />
+//Generates:  SELECT `field2` FROM (`tablename`)</code></p>
+
+  <p class="important"> <strong>Note:</strong> 다음의 쿼리문은 캐시될수 있습니다: select, from,
+    join, where, like, group_by, having, orde_rby, set</p>
+<p>&nbsp;</p>
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="helpers.html">Query Helper Functions</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="transactions.html">Transactions</a>
+</p>
+  <p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright
+    &#169; 2006-2011&nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab,
+    Inc.</a></p>
+</div>
+
+</body>
+</html>

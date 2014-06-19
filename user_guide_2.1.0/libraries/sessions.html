@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Session Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Session Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>세션 Session Class</h1>
+
+<p>세션클래스는 사용자의 상태를 관리하고 사이트에서 하는 행위를 추적할수 있도록 해줍니다.세션클래스는 각 사용자에대한 정보를 직렬화하여 쿠키에 저장합니다.이때 필요하다면 암호화도 같이 할수 있습니다. 보안을 강화하기 위하여 
+세션데이터를 데이터베이스 테이블에 저장할수도 있습니다.이때 세션아이디는 사용자의 쿠키에 저장되며 이 아이디를 가지고 매칭되는 정보를 데이터베이스에서 찾게 됩니다. 기본값은 쿠키에 저장하는것입니다.  만약 데이터베이스에 저장하고자한다면 아래에 설명한 대로 세션테이블을 만들어야합니다.</p>
+
+<p class="important"><strong>참고:</strong> 세션클래스는 PHP에 내장된 세션을 사용하지 않습니다. 자체적인 세션데이터를 생성하여 보다 유연하게 개발할수 있도록 해 줍니다.</p>  
+  <p class="important"><strong>참고:</strong> 암호화 세션을 사용하지 않는 경우에도 설정 파일에서 <a href="./encryption.html">encryption 
+    key</a> 를 지정하지 않으면 안됩니다. 제삼자에 의한 세션 데이터 조작을 방지합니다.</p>
+
+<h2>세션 초기화 Initializing a Session</h2>
+
+<p>세션은 통상 페이지 로드와 함께 전역적으로 동작하므로 세션클래스는 <a href="../general/controllers.html">컨트롤러(controller)</a>의 생성자에서  <a href="../general/libraries.html">초기화</a> 하거나 시스템이<a href="../general/autoloader.html"> 자동로드</a> 하도록 해야합니다.대부분 세션클래스는 백그라운드에서 스스로 동작하므로 간단히 클래스를 초기화하는것으로 세션을 읽고,생성하고, 업데이트할 수 있게 됩니다.</p>
+
+
+<p>세션클래스를 컨트롤러의 생성자에 직접 등록하시려면<dfn> $this->load->library</dfn> 함수를 이용합니다:</p>
+
+<code>$this->load->library('session');</code>
+<p>일단 로드되면 , 세션 라이브러리객체는 <dfn>$this->session </dfn> 로 접근합니다.</p>
+
+
+<h2>세션을 어떻게 작동하는가 How do Sessions work?</h2>
+
+<p>페이지가 로드되었을때 , 세션클래스는 사용자의 세션쿠키에 유효한 세션데이터가 있는지를 확인합니다.
+세션데이터가 없다면(혹은 유효기간이 지났다면) 새로운 세션이 생성되어 쿠키에 저장됩니다.
+세션이 있다면, 그 세션의 정보가 업데이트되고 쿠키도 업데이트 됩니다. 각 업데이트에서 , 세션아이디(session_id)가 생성됩니다.</p>
+
+<p>한번 초기화되면 세션클래스는 자동으로 동작한다는점을 명심하세요 . 위에서 설명한 작업을 위해서 여러분이 직접하셔야할 일은 없습니다.  아래에서 보여주는대로 세션데이터를 조작하거나,여러분이 만든 데이터를 사용자의 세션에 넣거나 할수 있습니다. 그러나 읽고,쓰고,업데이트하고 하는것은 자동으로 이루어 집니다.</p>
+
+
+<h2>세션데이터는 무엇인가 What is Session Data?</h2>
+
+<p>CodeIgniter에서 세션은 다음 정보를 포함하는 배열입니다:</p>
+
+<ul>
+<li>사용자별로 유일한 세션아이디(Session ID) (이 값은 통계적랜덤 문자열 이며 대단히 높은 수준의 무작위생성을 사용하고 편의를 위해 MD5를 통해 해쉬(hash)됩니다. 이 값은 매 5분(기본값)마다 새로 생성됩니다.</li>
+<li>사용자의 IP 주소 </li>
+<li>사용자의 User Agent 정보(브라우저 정보 문자열에서 첫 120글자)</li>
+<li>마지막행동(last activity)에 대한 시간값(time stamp).</li>
+</ul>
+
+<p>위 데이터들은 아래의 형태를 가지며 , 직렬화(serialized)되어 쿠키에 저장됩니다:</p>
+
+<code>[array]<br />
+(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'session_id'&nbsp;&nbsp;&nbsp;&nbsp;=> random hash,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ip_address'&nbsp;&nbsp;&nbsp;&nbsp;=> 'string - user IP address',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'user_agent'&nbsp;&nbsp;&nbsp;&nbsp;=> 'string - user agent data',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'last_activity' => timestamp<br />
+)</code>
+
+<p>암호화 옵션이 활성화 되어있으면, 쿠키에 저장하기 전에 직렬화된 배열은 암호화되어 보안수준이 높아지고 다른사람에 의해 읽히거나 조작되는것을 방지할수 있습니다. 암호화에대해 더 자세한정보는 <a href="encryption.html">여기</a>를 참조하세요. 세션클래스가 데이터의 초기화 및 암호화를 책임집니다.</p>
+
+  <p>참고: 부하를 줄이기위해서 세션쿠키는 5분(기본값)에 한번만 업데이트 됩니다.만약 한페이지를 반복적으로 새로고침하시면 마지막행동(last 
+    activity)시간값이 쿠키가 생성된후 5분이상지냐야 업데이트 되는것을 확인하실 수 있습니다. 시간설정은 system/config/config.php 
+    파일의 $config[<font color="#990000">sess_time_to_update</font>] 에서 가능합니다.</p>
+
+<h2>세션데이터 가져오기 Retrieving Session Data</h2>
+
+<p>아래 함수를 이용하시면 세션배열에 있는 어떤정보라도 가져올수 있습니다:</p>
+
+<code>$this->session->userdata('<samp>item</samp>');</code>
+
+<p><samp>item</samp> 은 가져오고자하는 데이터의 배열 인덱스입니다. 예를들어, 세션아이디를 가져오려면 아래와같이 합니다:</p>
+
+<code>$session_id = $this->session->userdata('<samp>session_id</samp>');</code>
+
+<p><strong>참고:</strong> 접근하고자하는 아이템이 존재하지 않는경우에는 FALSE 를 리턴합니다.</p>
+
+
+<h2>직접 세션데이터를 만들어 추가하기 Adding Custom Session Data</h2>
+
+<p>세션배열의 유용한 부분은 여러분이 직접만든 데이터를 추가하여 사용자의 쿠키에 저장할수 있다는 점입니다. 왜 이게 필요할까요?  여기 하나의 예제가 있습니다:</p>
+
+<p>특정 사용자가 사이트에 접속했다고 칩시다. 일단 로그인하면, 사용자의 아이디와 이메일주소를 세션쿠키에 저장할수 있습니다. 그러면 , 데이터베이스에 접근할 필요없이 그 정보를 전역적으로 사용할수 있게 됩니다.</p>
+
+<p>여러분의 데이터를 세션에 추가하려면, 데이터가 들어있는 배열을 아래와같이 넘겨줍니다:</p>
+
+<code>$this->session->set_userdata(<samp>$array</samp>);</code>
+
+<p><samp>$array</samp> 는 여러분의 데이터가 들어있는 연관배열입니다. 예:</p>
+
+
+<p><code>$newdata = array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'username'&nbsp; => 'johndoe',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'email'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'johndoe@some-site.com',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'logged_in' => TRUE<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+	<br />
+	$this->session->set_userdata(<samp>$newdata</samp>);</code></p>
+<p>만약 데이터를 한번에 하나만 추가하고싶다면, 아래와같이하시면됩니다</p>
+<p><code>$this-&gt;session-&gt;set_userdata('some_name', 'some_value');</code></p>
+<p class="important"><strong>참고:</strong> 쿠키의 저장용량은  4KB 가 한계입니다, 그러므로 그 한계치를 넘지않도록 주의하세요 .  특정 암호화 프로세스는 원본데이터보다 더 긴 데이터를 생성하므로, 항상 데이터 길이에 신경쓰셔야 합니다.</p>
+
+  <h2>모든 세션 데이터 추출</h2>
+  <p>모든 사용자 데이터를 배열로 리턴합니다:</p>
+<code>$this-&gt;session-&gt;all_userdata()</code>
+
+  <p>아래와 같은 형태입니다:</p>
+
+<pre>
+Array
+(
+    [session_id] => 4a5a5dca22728fb0a84364eeb405b601
+    [ip_address] => 127.0.0.1
+    [user_agent] => Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7;
+    [last_activity] => 1303142623
+)
+</pre>
+
+<h2>세션데이터의 제거 Removing Session Data</h2>
+<p>set_userdata() 함수가 데이터를 세션에 추가 하는방식대로  , unset_userdata() 는 세션키를 넘겨줌으로써 데이터를 제거 합니다. 예를들어, 'some_name' 을 세션에서 제거하고싶다면: </p>
+<p><code>$this-&gt;session-&gt;unset_userdata('some_name');</code></p>
+<p>이함수는 제거하고자 하는 아이템의 여러개일경우 아래와 같이 연관배열로 넘겨주어 처리할수 있습니다.</p>
+<p><code>$array_items = array('username' => '', 'email' => '');<br />
+<br />
+$this-&gt;session-&gt;unset_userdata(<samp>$array_items</samp>);</code></p>
+<h2>Flashdata</h2>
+<p>CodeIgniter는 &quot;flashdata&quot;나 혹은 다음 번 서버요청(server request)에서만 사용가능하며 사용후 자동으로 지워지는 세션데이터를 지원합니다. 이것은 매우 유용하며, 일반적으로 정보성이나 상태표시 메세지에 사용합니다.(예: &quot;record 2 deleted&quot;).</p>
+<p>참고: Flash 변수는 &quot;flash_&quot;로 시작하므로 여러분이 직접만든 세션데이터의 키는 이 접두어를 피해주세요.</p>
+<p> flashdata 추가예제:</p>
+<p><code>$this-&gt;session-&gt;set_flashdata('item', 'value');</code></p>
+<p>set_userdata()에서 처럼 set_flashdata() 에 배열을 넘겨줄수 있습니다.. </p>
+<p>flashdata 변수 읽기:</p>
+<p><code>$this-&gt;session-&gt;flashdata('item');</code></p>
+<p>만약 추가적인 서버요청후에도  flashdata 변수를 유지하고싶다면 keep_flashdata() 함수를 사용합니다.</p>
+<p><code>$this-&gt;session-&gt;keep_flashdata('item');</code></p>
+<h2>세션데이터를 데이터베이스에 저장하기 Saving Session Data to a Database</h2>
+  <p>세션배열을 데이터베이스에 저장하지않고 세션아이디를 포함하여 사용자의 쿠키에만 저장한다면, 그 세션이 정당한것인지 확인할수 있는 방법이 
+    없습니다. 보안이 필요없는 프로그램에서는 세션아이디 검증이 필요없을수도 있으나, 보안이 필요하다면, 검증은 필수항목이 될것입니다.그렇지 
+    않으면, 사용자가 쿠키를 변조할 경우 그 변조된 쿠키가 재사용될 것입니다.</p>
+
+<p>세션데이터를 데이터베이스에 저장하면,데이터베이스 쿼리를 통해서 사용자쿠키에 있는 세션아이디와 일치하는 '검증된'세션을 찾을 수 있습니다.  세션아이디가 일치하지않는다면,세션은 파괴됩니다.  세션아이디는 절대로 업데이트될수 없으며, 새로운 세션이 생성될때만 생성될수 있습니다.</p>
+
+<p>세션을 저장하려면, 그에맞는 데이터베이스 테이블을 생성해야만 합니다 . 아래는 기본 프로토타입입니다( MySQL용) :</p>
+
+<textarea class="textarea" style="width:100%" cols="50" rows="10">
+CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+	session_id varchar(40) DEFAULT '0' NOT NULL,
+	ip_address varchar(16) DEFAULT '0' NOT NULL,
+	user_agent varchar(120) NOT NULL,
+	last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+	user_data text NOT NULL,
+	PRIMARY KEY (session_id),
+	KEY `last_activity_idx` (`last_activity`)
+);
+</textarea>
+
+<p><strong>참고:</strong> 기본값으로 테이블명은 <dfn>ci_sessions</dfn>입니다. 원하는 이름으로 바꾸려면<kbd>application/config/config.php</kbd> 파일을 업데이트 하시면됩니다.
+테이블이 생성되면  config.php 파일을 아래와 같이 수정하여 , 데이터베이스 옵션을 활성화 시킬수 있습니다:</p>
+
+<code>$config['sess_use_database'] = TRUE;</code>
+
+<p>일단 활성화되면, 세션클래스는 데이터를 DB에 저장하게 됩니다.</p>
+
+<p>config 파일에서 테이블명이 정확히 지정되었는지 확인하세요 :</p>
+
+<code>$config['sess_table_name'] = 'ci_sessions';</code>
+
+<p class="important"><strong>참고:</strong> 세션클래스는 가비지컬렉션기능을 내장하고 있으므로 , 유효기간이 경과한 세션을 제거하기위한 루틴을 별도로 만들 필요가 없습니다.</p>
+
+
+<h2>세션 제거 Destroying a Session </h2>
+<p>현재세션을 제거하려면: </p>
+<code>$this-&gt;session-&gt;sess_destroy();</code>
+<p class="important"><strong>참고:</strong> 이함수는 맨 마지막에 호출되어야하며,flash 변수또한 더이상 사용할수 없게됩니다. 몇몇 아이템만 제거하려면 <dfn>unset_userdata()</dfn>를 사용하세요. </p>
+
+
+
+<h2>세션설정항목 Session Preferences</h2>
+<p><kbd>application/config/config.php</kbd> 파일에 아래와같은 세션관련설정들이 있습니다:</p>
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+	<th>설정</th>
+	<th>기본값</th>
+	<th>옵션</th>
+	<th>설명</th>
+</tr>
+<tr>
+	<td class="td"><strong>sess_cookie_name</strong></td>
+	<td class="td">ci_session</td>
+	<td class="td">None</td>
+	<td class="td">저장되는 세션쿠키의 이름입니다.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_expiration</strong></td>
+	<td class="td">7200</td>
+	<td class="td">None</td>
+	<td class="td">세션이 존재할 시간을 초로 지정합니다. 기본값은 2 시간입니다(7200 초). 유효기간을 무한대로 하시려면 0으로 설정하세요.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_expire_on_close</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>  <td class="td">브라우저가 닫힐때 세션이 자동만료 되도록 할것인지 여부.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_encrypt_cookie</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">세션데이터를 암호화 할것인지 설정합니다.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_use_database</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">세션데이터를 데이터베이스에 저장할지 설정합니다. 이옵션을 활성화하기전에 반드시 테이블을 생성해두셔야 합니다.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_table_name</strong></td>
+	<td class="td">ci_sessions</td>
+	<td class="td">Any valid SQL table name</td>
+	<td class="td">세션데이터베이스 테이블의 이름입니다.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_time_to_update</strong></td>
+	<td class="td">300</td>
+	<td class="td">Time in seconds</td>
+	<td class="td">세션이 얼마나자주 재생성되어 새로운 세션아이디를 만들지를 결정합니다.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_match_ip</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">세션데이터를 읽을때 사용자의 IP주소를 일치시킬지 설정합니다.어떤 ISP들은 IP를 동적으로 변경시킵니다. 그러므로, 유효기간이 무한대인 세션을 만드시려면 이 설정을 FALSE 로 두셔야합니다.</td>
+</tr>
+<tr>
+	<td class="td"><strong>sess_match_useragent</strong></td>
+	<td class="td">TRUE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">세션데이터를 읽어들일때 User Agent 를 일치시킬지 설정합니다.</td>
+</tr>
+</table>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="pagination.html">Pagination Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="trackback.html">Trackback Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

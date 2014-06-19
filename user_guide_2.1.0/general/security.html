@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Security : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Security
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>보안Security</h1>
+
+<p>본 페이지에서는 웹 보안에 대한 실용적기법들(best practices) 과 CodeIgniter 의 보안 항목에 관한 상세 설명을 제공합니다.</p>
+
+
+<h2>URI 보안</h2>
+
+<p>CodeIgniter 는 악의있는 데이터가 프로그램으로 전달되는것을 방지하기 위하여 URI 에 쓰는 문자를 상당히 제한하기 있습니다.URL 은 아래 사항들만 포함해야 합니다:
+</p>
+
+<ul>
+<li>Alpha-numeric text(알파벳과 숫자) </li>
+<li>Tilde: ~ </li>
+<li>Period: .</li>
+<li>Colon: :</li>
+<li>Underscore(밑줄): _</li>
+<li>Dash: -</li>
+</ul>
+
+  <h2>Register_globals</h2>
+
+  <p>시스템 초기화과정에서 모든 글로벌 변수(global variables)들은 해제( <strong>unset</strong> ) 됩니다
+    .단 , $_GET,$_POST 및 $_COOKIE 배열은 예외입니다.해제 루틴은 register_globals = off 와 동일한
+    동작을 합니다. </p>
+
+  <a name="error_reporting"></a>
+  <h2>오류보고</h2>
+
+  <p> 실제 서비스에서는 PHP의 에러표시기능을 꺼두는것이 좋습니다(internal error_reporting 플레그를 0 으로). 그렇게
+    하므로써 민감한 정보가 포함될 수있는 PHP 에러가 사용자에게 보이지 않도록 합니다.</p>
+
+  <p> index.php에 포함된 CodeIgniter 상수 ENVIRONMENT 값을 ' production '으로 설정하면 오류메세지는
+    표시되지않습니다.개발 모드에서는 ' development '를 사용하는 것을 추천합니다 .<a href="environments.html">환경별
+    처리</a> 에서 환경별로 달리 처리할 수 있는 사항들을 확인하세요.</p>
+
+
+<h2>magic_quotes_runtime</h2>
+
+<p> magic_quotes_runtime지시자는 시스템 초기화과정에서 off 되므로 데이터베이스에서 데이터를 조회할때 슬래쉬를 제거할 필요가 없습니다..</p>
+
+<h1>실용적 기법들 Best Practices</h1>
+
+<p>서버로 부터 전달된데이터(사용자가 입력한 POST 데이터, COOKIE 데이터, URI 데이터,
+  XML-RPC 데이터, SERVER 배열에 있는데이터 등)들을 처리하기전에 아래의 3단계를 거치는것이 좋습니다.</p>
+<p>&nbsp;</p>
+<ol>
+<li>오염된 데이터를 필터합니다</li>
+<li>올바른 타입,크기,길이 등의 사항들을 검증합니다. (이 단계가 1번단계를 대신할때도 있습니다.)</li>
+<li>데이터베이스에 입력하기 전에 이스케이프(Escape)  합니다.</li>
+</ol>
+
+<p>CodeIgniter 는 이러한 단계를 지원하기 위하여 다음 함수들을 지원합니다:</p>
+
+<ul>
+
+<li>
+  <h2>XSS 필터링</h2>
+
+<p>CodeIgniter 는 크로스 사이트 스크립팅(Cross Site Scripting) 필터를 제공합니다.  이 필터는 악의적인 자바스크립트를 데이터에 포함하는것이라든지, 쿠키등을 가로채려는것을 찾아냅니다.  XSS 필터는 <a href="../libraries/security.html">여기</a> 에 상세한 설명이 있습니다.
+</p>
+</li>
+
+<li>
+  <h2>데이터 검증</h2>
+
+<p>CodeIgniter는 검증,필터링,데이터 준비를 위해서<a href="../libraries/form_validation.html"> 폼검증 클래스</a> 를 제공합니다. </p>
+</li>
+
+<li>
+  <h2>데이터베이스 입력 전에 이스케이프(Escape)하기</h2>
+
+<p>이스케이프 없이 데이터 베이스에 입력하지 마시기 바랍니다. 더자세한 정보는 데이터베이스 의 <a href="../database/queries.html">쿼리</a> 항목을 살펴보세요 . </p>
+
+</li>
+
+</ul>
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="alternative_php.html">Alternative PHP</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="styleguide.html">PHP Style Guide</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

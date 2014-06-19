@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Typography Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Typography Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>타이포그라피 Typography Class</h1>
+
+<p>타이포그라피 클래스는 텍스트의 형태를 지정할수 있도록 해 줍니다(format text).</p>
+
+
+<h2>클래스 초기화 Initializing the Class</h2>
+
+<p>다른 모든 클래스들 처럼 , 타이포그라피 클래스도 <dfn>$this->load->library</dfn> 함수로 초기화 합니다:</p>
+
+<code>$this->load->library('typography');</code>
+<p>일단 로드되면, 타이포그라피 라이브러리 객체는 <dfn>$this->typography  </dfn>로 사용하실 수 있습니다.</p>
+
+
+<h2>auto_typography()</h2>
+
+<p>의미상,문자상의 텍스트 형태로 HTML을  변경합니다.  문자열을 입력받은후 아래의 형태들로 리턴합니다:</p>
+
+<ul>
+<li>단락을 &lt;p&gt;&lt;/p&gt;로 감쌉니다 (단락을 식별할수 있도록 2줄 줄바꿈 한것 처럼 보이게 됩니다).</li>
+<li>한줄바꿈은&lt;br /&gt;로 변경합니다.이때 &lt;pre&gt; 안에 있는것은 변경하지 않습니다.</li>
+<li>&lt;div&gt; 태그같은 블록수준의 요소들은 단락으로 감싸지 않으며, 포함하고 있는 텍스트가 단락을 포함한다면 그부분은 감쌉니다.</li>
+<li>태그안에 있는경우를 제외하면, 따옴표는 꼬인(curly) 따옴표 엔티티로 적절하게 변환됩니다.</li>
+<li>아포스트로피(Apostrophes: ' ) 는 꼬인(curly) 아포스트로피엔티티로 변경됩니다.</li>
+<li>이중 대쉬(-- this 혹은 --this)는 em&#8212;대쉬로 변경됩니다.</li>
+<li>단어앞 혹은 뒤에 있는 3개의 연속되는 점들은 생략표시(...)로 변환됩니다.</li>
+<li>문장뒤에 나오는 두개의 공백은 실재공백이 아닌 non-breaking 공백으로 변환되어 두개공백을 표현합니다.</li>
+</ul>
+
+<p>사용예:</p>
+
+<code>$string = $this->typography->auto_typography($string);</code>
+
+<h3>파라미터 Parameters</h3>
+
+<p>옵션으로 사용하는 파라미터는 아래와 같이 두개가 있습니다.:</p>
+
+<ol>
+	<li><strong>Strip JavaScript Event Handlers</strong>. 보안을 위해서 모든 자바스크립트 핸들러를 벗길것인지를 결정합니다.  <kbd>TRUE</kbd> 나 <kbd>FALSE</kbd>를 사용합니다. </li>
+	<li><strong>Reduce Linebreaks</strong>.  2개이상의 줄바꿈을 2개로 줄일것인지 여부를 결정합니다<kbd>. TRUE</kbd> 나 <kbd>FALSE</kbd>를 사용합니다. </li>
+</ol>
+
+<p>기본값으로, 파서는 자바스크립트 이벤트 핸들러는 벗기고, 줄바꿈 줄이기는 적용하지 않습니다. 다시말해, 파라미터를 적용하지 않으면 아래를 적용한것과 같이 동작합니다:</p>
+
+<code>$string = $this->typography->auto_typography($string, <kbd>TRUE</kbd>, <kbd>FALSE</kbd>);</code>
+
+
+<p class="important"><strong>참고:</strong> 타이포그라피 포멧팅(Typographic formatting)은 처리해야할 양이 많은 경우 프로세서를 집중적으로 사용할 수도 있습니다(부하가 높아짐).만약 이 함수를 사용하고자 한다면, 
+페이지를 <a href="../general/caching.html">캐싱(caching)</a> 하는것을 고려해보세요.</p>
+
+
+
+<h2>convert_characters()</h2>
+
+<p>이함수는 문자변환만을 수행한다는점을 제외하고는 위의 <dfn>auto_typography</dfn> 함수와 유사합니다:</p>
+
+<ul>
+<li>태그안에 있는경우를 제외하면, 따옴표는 꼬인(curly) 따옴표 엔티티로 적절하게 변환됩니다.</li>
+<li>아포스트로피(Apostrophes: ' ) 는 꼬인(curly)  아포스트로피엔티티로 변경됩니다.</li>
+<li>이중 대쉬(-- this 혹은 --this)는  em&#8212;대쉬로 변경됩니다.</li>
+<li>단어앞 혹은 뒤에 있는 3개의 연속되는 점들은 생략표시(...)로 변환됩니다.</li>
+<li>문장뒤에 나오는 두개의 공백은 실재공백이 아닌 non-breaking 공백으로 변환되어 두개공백을 표현합니다.</li>
+</ul>
+
+<p>사용예:</p>
+
+<code>$string = $this->typography->convert_characters($string);</code>
+
+
+<h2>nl2br_except_pre()</h2>
+
+<p>&lt;pre&gt;안에 있는경우를 제외하면 줄바꿈을 &lt;br /&gt;로 변경합니다.
+&lt;pre&gt;를 무시한다는점을 빼면  PHP내장함수인 <dfn>nl2br()</dfn> 함수와 동일합니다..</p>
+
+<p>사용예:</p>
+
+<code>$string = $this->typography->nl2br_except_pre($string);</code>
+
+<h2>protect_braced_quotes</h2>
+
+<p>타이포그라피 라이브러리를 템플릿파서 라이브러리와 함께 사용할때 , 괄호(curly brace)안의 따옴표(' 혹은 &quot;)를 보호해야할 경우가 많이 생깁니다.  그럴경우 <kbd>protect_braced_quotes</kbd> 속성을 <samp>TRUE</samp>로	하세요
+<p>사용예:</p>
+
+<code>$this->load->library('typography');<br />
+$this->typography->protect_braced_quotes = TRUE;
+</code>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="parser.html">Template Parser</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="unit_testing.html">Unit Testing Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

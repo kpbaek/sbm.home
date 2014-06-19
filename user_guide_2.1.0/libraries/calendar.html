@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Calendaring Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Calendaring Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+
+
+<h1>캘린더Calendaring Class</h1>
+
+<p>캘린더 클래스를 이용하여 동적으로 캘린더를 만들 수 있습니다. 캘린더는 캘린더 템플릿을 통해서 형태가 결정되며 , 100% 커스터마이징이 가능합니다. 게다가, 켈린더 셀(cells)에 데이터를 전달하여 사용할 수 있습니다.</p>
+
+<h2>클래스 초기화Initializing the Class</h2>
+
+<p>CodeIgniter의 다른 대부분의 클래스들 처럼 캘린더 클래스또한 컨트롤러에서 초기화 하며,<dfn>$this->load->library</dfn> 함수를 사용합니다:</p>
+
+<code>$this->load->library('calendar');</code>
+<p>일단 로드된후에는 <dfn>$this->calendar</dfn> 코드로 캘린더 객체를 사용할 수 있습니다. </p>
+
+
+<h2>캘린더 표시 (Displaying a Calendar)</h2>
+
+<p>다음과 같은 코드를 이용하여 캘린더를 표시할 수 있습니다.:</p>
+
+<code>$this->load->library('calendar');<br />
+<br />
+echo $this->calendar->generate();</code>
+
+<p>서버 시간을 기준으로 한 캘린더 대신 특정 월의 캘린더를 만들고 싶다면 다음과같이 년,월을 캘린더 생성함수에 넘겨줍니다.:</p>
+
+<code>$this->load->library('calendar');<br />
+<br />
+echo $this->calendar->generate(<kbd>2006</kbd>, <kbd>6</kbd>);</code>
+
+<p>위의 코드를 이용하면 2006년 6월의 캘린더가 생성됩니다..첫 파라미터는 년을 두번째파라미터는 월을 나타냅니다..</p>
+
+<h2>캘린더 셀로 데이터 전달 (Passing Data to your Calendar Cells)</h2>
+
+<p>캘린더 셀로 데이터를 전달하려면 아래의 예제처럼 연상배열을 만들어서 캘린더 생성함수의 세번째 파라미터로 넘겨줍니다. 연상배열의 키는 날짜를 나타내고, 값은  데이터를 나타냅니다.:</p>
+
+<code>$this->load->library('calendar');<br />
+<br />
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp; => 'http://example.com/news/article/2006/03/',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp; => 'http://example.com/news/article/2006/07/',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13 => 'http://example.com/news/article/2006/13/',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;26 => 'http://example.com/news/article/2006/26/'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo $this->calendar->generate(<kbd>2006</kbd>, <kbd>6</kbd>, <var>$data</var>);</code>
+
+<p>위 예제에서는 3, 7, 13,  26 일이 설정된 URL 을 카리키는 링크가 될것입니다.</p>
+
+<p class="important"><strong>Note:</strong> 기본(default)적으로 당신이 만든 배열은 링크가 포함되어있다고 가정합니다.아래 템플릿 항목을 보시면 당신은 전달된데이터가 어떻게 사용되는지, 어떻게 커스터마이징할지, 어떻게 다른 타입의 정보를 전달해서 사용할지 알수 있을겁니다. </p>
+
+
+<h2>표시 설정 (Setting Display Preferences)</h2>
+
+<p>캘린더 표시 설정을 위해서 7가지 변수를 설정할 수 있습니다. 로드함수의두번째 파라미터로  설정배열을 넘겨주어 설정을 적용시킵니다.예제입니다:</p>
+
+
+<code>
+$prefs = array (<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'start_day'&nbsp;&nbsp;&nbsp; => 'saturday',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'month_type'&nbsp;&nbsp; => 'long',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'day_type'&nbsp;&nbsp;&nbsp;&nbsp; => 'short'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->load->library('calendar', $prefs);<br />
+<br />
+echo $this->calendar->generate();</code>
+
+<p>위코드에서는 캘린더가 토요일부터 시작하며,긴(long)월 이름,짧은(short) 날짜이름을 사용하도록 세팅합니다.더 많은 정보는 아래테이블을 참조하세요 </p>
+
+
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>Preference</th>
+<th>Default&nbsp;Value</th>
+<th>Options</th>
+<th>Description</th>
+</tr><tr>
+<td class="td"><strong>template</strong></td><td class="td">None</td><td class="td">None</td><td class="td">A string containing your calendar template. See the template section below.</td>
+</tr><tr>
+<td class="td"><strong>local_time</strong></td><td class="td">time()</td><td class="td">None</td><td class="td">A Unix timestamp corresponding to the current time.</td>
+</tr><tr>
+<td class="td"><strong>start_day</strong></td><td class="td">sunday</td><td class="td">Any week day (sunday, monday, tuesday, etc.)</td><td class="td">Sets the day of the week the calendar should start on.</td>
+</tr><tr>
+<td class="td"><strong>month_type</strong></td><td class="td">long</td><td class="td">long, short</td><td class="td">Determines what version of the month name to use in the header. long = January, short = Jan.</td>
+</tr><tr>
+<td class="td"><strong>day_type</strong></td><td class="td">abr</td><td class="td">long, short, abr</td><td class="td">Determines what version of the weekday names to use in the column headers. long = Sunday, short = Sun, abr = Su.</td>
+</tr><tr>
+<td class="td"><strong>show_next_prev</strong></td><td class="td">FALSE</td><td class="td">TRUE/FALSE (boolean)</td><td class="td">Determines whether to display links allowing you to toggle to next/previous months. See information on this feature below.</td>
+</tr><tr>
+<td class="td"><strong>next_prev_url</strong></td><td class="td">None</td><td class="td">A URL</td><td class="td">Sets the basepath used in the next/previous calendar links.</td>
+</tr>
+</table>
+
+
+
+<h2>이전달,다음달 링크 만들기 Showing Next/Previous Month Links</h2>
+
+<p>이전달 다음달 링크를 만들어 동적으로 달을 이동하도록하고싶다면 다음코드가 필요합니다.</p>
+
+
+<code>$prefs = array (<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'show_next_prev'&nbsp;&nbsp;=> TRUE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'next_prev_url'&nbsp;&nbsp; => 'http://example.com/index.php/calendar/show/'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this-&gt;load-&gt;library('calendar', $prefs);<br />
+<br />
+echo $this->calendar->generate(<var>$this->uri->segment(3)</var>, <var>$this->uri->segment(4)</var>);</code>
+
+<p>위코드를 통해서 몇몇가지를 알 수 있으실 겁니다.:</p>
+
+<ul>
+<li>"show_next_prev"를  TRUE 로 세팅해야합니다.</li>
+<li>"next_prev_url" 에 캘린더가 포함된 컨트롤러의 URL 을 세팅해야합니다.</li>
+<li>URI 세그먼트(segment)를 통해 년과 월을 캘린더 생성(generating)함수에 전달해야합니다.(Note:  캘린더 클래스는 자동으로 년,월을 기본 URL에 추가할것입니다.)</li>
+</ul>
+
+
+
+<h2>캘린더 템플릿 만들기 </h2>
+
+<p>캘린더 템플릿을 통해서 디자인을 원하는 형태로 100% 수정 가능합니다. </p>
+<p>캘린더의 각 부분은 아래와같이 각각 한쌍의 축약코드변수(pseudo-variables) 안에 삽입됩니다.:</p>
+<code>
+$prefs['template'] = '<br /><br />
+&nbsp;&nbsp;&nbsp;<dfn>{table_open}</dfn><var>&lt;table border="0" cellpadding="0" cellspacing="0"></var><dfn>{/table_open}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{heading_row_start}</dfn><var>&lt;tr></var><dfn>{/heading_row_start}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{heading_previous_cell}</dfn><var>&lt;th>&lt;a href="</var><kbd>{previous_url}</kbd><var>">&amp;lt;&amp;lt;&lt;/a>&lt;/th></var><dfn>{/heading_previous_cell}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{heading_title_cell}</dfn><var>&lt;th colspan="</var><kbd>{colspan}</kbd><var>"></var><kbd>{heading}</kbd><var>&lt;/th></var><dfn>{/heading_title_cell}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{heading_next_cell}</dfn><var>&lt;th>&lt;a href="</var><kbd>{next_url}</kbd><var>">&amp;gt;&amp;gt;&lt;/a>&lt;/th></var><dfn>{/heading_next_cell}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{heading_row_end}</dfn><var>&lt;/tr></var><dfn>{/heading_row_end}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{week_row_start}</dfn><var>&lt;tr></var><dfn>{/week_row_start}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{week_day_cell}</dfn><var>&lt;td></var><dfn>{week_day}</dfn><var>&lt;/td></var><dfn>{/week_day_cell}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{week_row_end}</dfn><var>&lt;/tr></var><dfn>{/week_row_end}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_row_start}</dfn><var>&lt;tr></var><dfn>{/cal_row_start}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_start}</dfn><var>&lt;td></var><dfn>{/cal_cell_start}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_content}</dfn><var>&lt;a href="</var><kbd>{content}</kbd><var>"></var><kbd>{day}</kbd><var>&lt;/a></var><dfn>{/cal_cell_content}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_content_today}</dfn><var>&lt;div class="highlight">&lt;a href="</var><kbd>{content}</kbd><var>"></var><kbd>{day}</kbd><var>&lt;/a>&lt;/div></var><dfn>{/cal_cell_content_today}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_no_content}</dfn><var></var><kbd>{day}</kbd><var></var><dfn>{/cal_cell_no_content}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_no_content_today}</dfn><var>&lt;div class="highlight"></var><kbd>{day}</kbd><var>&lt;/div></var><dfn>{/cal_cell_no_content_today}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_blank}</dfn><var>&amp;nbsp;</var><dfn>{/cal_cell_blank}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_cell_end}</dfn><var>&lt;/td></var><dfn>{/cal_cell_end}</dfn><br />
+&nbsp;&nbsp;&nbsp;<dfn>{cal_row_end}</dfn><var>&lt;/tr></var><dfn>{/cal_row_end}</dfn><br />
+<br />
+&nbsp;&nbsp;&nbsp;<dfn>{table_close}</dfn><var>&lt;/table></var><dfn>{/table_close}</dfn><br />
+';<br />
+<br />
+$this->load->library('calendar', $prefs);<br />
+<br />
+echo $this->calendar->generate();</code>
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="benchmark.html">Benchmarking Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="config.html">Config Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

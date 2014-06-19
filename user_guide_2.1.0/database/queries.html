@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Queries : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Queries
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>쿼리 실행 Queries</h1>
+
+<h2>$this->db->query();</h2>
+
+<p>쿼리를 실행하기위해서는 다음 함수를 사용합니다.:</p>
+
+<code>$this->db->query('YOUR QUERY HERE');</code>
+
+<p><dfn>query()</dfn> 함수는 데이터를 읽어오는 쿼리 실행시 결과 객체를 리턴합니다. 이 결과객체는 <a href="results.html">쿼리결과생성</a>에서 사용할수 있습니다. 데이터를 쓰거나, 업데이트 하는 쿼리를 실행하면 그 성공여부에 따라서 TRUE 나FALSE
+를 리턴합니다. 결과값을 가져오려면 아래와같이 쿼리함수를 특정 변수에 할당합니다.:</p>
+
+<code><var>$query</var> = $this->db->query('YOUR QUERY HERE');</code>
+
+<h2>$this->db->simple_query();</h2>
+
+<p>이 함수는 <dfn>$this->db->query()</dfn> 함수의 간단 버전입니다.실행시 그 결과여부만을 단순히 TRUE 나 FALSE로 리턴합니다.또한 데이터베이스 결과셋이라든지 쿼리타이머,데이터바인딩의 컴파일(compile bind data), 디버깅을 위한 쿼리 저장등도 수행하지않습니다. 이 함수는 단순히 쿼리를 실행하는 역할만합니다. 대부분의 경우 이함수를 사용하지 않습니다.</p>
+
+
+  <h1>데이터베이스 접두어를 수동으로 관리</h1>
+  <p>데이터베이스 접두어가 설정되어 있고, 일반적인 SQL에서 테이블 이름에 그 접두어를 사용하고 싶다면, 아래와 같이 합니다</p>
+<p><code>$this-&gt;db-&gt;dbprefix('tablename');<br />
+// outputs prefix_tablename</code></p>
+  <p>새로 연결하지 않고 프로그램에서 접두사를 변경하려면 다음 방법을 사용합니다:</p>
+<p><code>$this-&gt;db-&gt;set_dbprefix('newprefix');<br /><br />
+$this-&gt;db-&gt;dbprefix('tablename');<br />
+// outputs newprefix_tablename</code></p>
+
+
+<h1>식별자 보호 Protecting identifiers</h1>
+<p>데이터베이스를 사용할때 테이블과 필드 이름을 보호하는것이 좋습니다. 예를 들어  MySQL을 사용할경우 액티브레코드( <strong>Active Record )쿼리들은 자동으로 보호됩니다.</strong>, 그러나, 수동으로 식별자를 보호하려면 아래와같이 합니다.:</p>
+<p><code>$this-&gt;db-&gt;protect_identifiers('table_name');</code></p>
+
+<p>이 함수는 테이블명에 접두어를 붙여주며 데이터베이스 설정파일에 접두어를 이미 설정해 두었다고 가정합니다. 접두어를 활성(enable)화 하려면 두번째 파라미터로<kbd>TRUE</kbd> (boolen)를 넘겨줍니다.:</p>
+<p><code>$this-&gt;db-&gt;protect_identifiers('table_name', <kbd>TRUE</kbd>);</code></p>
+
+
+<h1>쿼리 이스케이프 하기 Escaping Queries</h1>
+<p>쿼리를 실행하기전에 데이터를 이스케이프하는것은 대단히 실용적인 보안강화 방법입니다. CI 에서는 이 작업을 돕기위해서 두가지 방법을 제공합니다.:</p>
+
+<ol>
+<li><strong>$this->db->escape()</strong> 이 함수는 데이터형을 확인하여 문자열형(string)에만 자동으로 '( single quotes) 를 붙여줍니다.:
+
+<code>$sql = "INSERT INTO table (title) VALUES(".$this->db->escape($title).")";</code></li>
+
+<li><strong>$this->db->escape_str()</strong>  이 함수는 데이터형에 상관없이 이스케이프 시킵니다. 대부분의 경우 위의 함수를 사용하는것이 이 함수를 사용하는것보다 좋습니다.이 함수는 아래와 같이 사용합니다.:
+
+<code>$sql = "INSERT INTO table (title) VALUES('".$this->db->escape_str($title)."')";</code></li>
+</ol>
+
+
+<h1>쿼리 바인딩Query Bindings</h1>
+
+
+<p>바인딩 쿼리를 좀더 간단하게 해줍니다. 아래 예제를 보세요:</p>
+
+<code>
+$sql = "SELECT * FROM some_table WHERE id = <var>?</var> AND status = <var>?</var> AND author = <var>?</var>";
+<br /><br />
+$this->db->query($sql, array(3, 'live', 'Rick'));
+</code>
+
+<p>쿼리안에 있는 물음표는 자동으로 두번째 파라미터로 전달되는 배열의 값으로 치환 됩니다.</p>
+<p class="important">바인딩으로 사용하면 값들은 자동으로 이스케이프 되기때문에 보안에도 좋습니다. 이경우 수동으로 이스케이프해야하는 부담이 없으며, CI가 알아서 해줍니다.</p>
+
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="connecting.html">Connecting to your Database</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="results.html">Query Results</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

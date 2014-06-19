@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Date Helper : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Date Helper
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+  <h1>날짜 Date Helper</h1>
+
+<p>날짜 헬퍼는 날짜조작에 필요한 함수들을 제공합니다.</p>
+
+
+<h2>헬퍼로딩 Loading this Helper</h2>
+
+<p>다음과같이 헬퍼를 로드합니다:</p>
+<code>$this->load->helper('date');</code>
+
+
+<p>다음 함수들이 사용가능 합니다:</p>
+
+<h2>now()</h2>
+
+<p>현재시간을 유닉스 타임스탬프로 리턴합니다.설정(config)파일의  "time reference" 에 의해 서버의 로컬타임이나 GMT 를 참조한 값입니다. 기본 시간 값을 GMT (각 사용자가 자신의 고유한 타임존을 설정하도록 하기위해서 여러분이 일반적으로 사용하는 설정)외의 것으로 설정하신다면 PHP의 내장 time()함수 를사용하는것에비해 특별한 잇점은 없습니다.
+</p>
+
+
+
+
+<h2>mdate()</h2>
+
+<p>이함수는 PHP내장 함수인 <a href="http://www.php.net/date">date()</a> 와 거의 동일합니다만, MySQL 스타일의 날짜 코드를 사용할수 있게 해준다는점이 다릅니다.MySQL 스타일을 사용하시면 각 코드문자앞에 % 가 붙습니다:  %Y %m %d 등.</p>
+
+<p>날짜를 이방법으로 사용할때의 잇점은 날짜코드가 아닌 부분을 이스케이프 할 필요가 없다는 점입니다. 예:</p>
+
+<code>$datestring = "Year: %Y Month: %m Day: %d - %h:%i %a";<br />
+$time = time();<br />
+<br />
+echo mdate($datestring, $time);</code>
+
+<p>타임스템프가 두번째 파라미터로 주어지지않으면 현재 시간을 사용합니다.</p>
+
+
+<h2>standard_date()</h2>
+
+<p>정해진 표준 날짜 포멧에 따라 날짜 문자열을 생성합니다. 예:</p>
+
+<code>
+$format = 'DATE_RFC822';<br />
+$time = time();<br />
+<br />
+echo standard_date($format, $time);
+</code>
+
+<p>첫번째 파라미터로 날짜 포멧을 지정하고, 두번재 파라미터로 Unix 타임스템프를 지정합니다. .</p>
+
+<p>지원되는 포멧:</p>
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+	<tr>
+		<th>상수</th>
+		<th>설명</th>
+		<th>예제</th>
+	</tr>
+	<tr>
+		<td>DATE_ATOM</td>
+		<td>Atom</td>
+		<td>2005-08-15T16:13:03+0000</td>
+	</tr>
+	<tr>
+		<td>DATE_COOKIE</td>
+		<td>HTTP Cookies</td>
+		<td>Sun, 14 Aug 2005 16:13:03 UTC</td>
+	</tr>
+	<tr>
+		<td>DATE_ISO8601</td>
+		<td>ISO-8601</td>
+			<td>2005-08-14T16:13:03+00:00</td>
+	</tr>
+	<tr>
+		<td>DATE_RFC822</td>
+		<td>RFC 822</td>
+		<td>Sun, 14 Aug 05 16:13:03 UTC</td>
+	</tr>
+	<tr>
+		<td>DATE_RFC850</td>
+		<td>RFC 850</td>
+		<td>Sunday, 14-Aug-05 16:13:03 UTC</td>
+	</tr>
+	<tr>
+		<td>DATE_RFC1036</td>
+		<td>RFC 1036</td>
+		<td>Sunday, 14-Aug-05 16:13:03 UTC</td>
+	</tr>
+	<tr>
+		<td>DATE_RFC1123</td>
+		<td>RFC 1123</td>
+		<td>Sun, 14 Aug 2005 16:13:03 UTC</td>
+	</tr>
+	<tr>
+		<td>DATE_RFC2822</td>
+		<td>RFC 2822</td>
+		<td>Sun, 14 Aug 2005 16:13:03 +0000</td>
+	</tr>
+	<tr>
+		<td>DATE_RSS</td>
+		<td>RSS</td>
+		<td>Sun, 14 Aug 2005 16:13:03 UTC</td>
+	</tr>
+	<tr>
+		<td>DATE_W3C</td>
+		<td>World Wide Web Consortium</td>
+		<td>2005-08-14T16:13:03+0000</td>
+	</tr>
+</table>
+
+<h2>local_to_gmt()</h2>
+
+<p>Unix 타임스템프를 받아서 GMT 를 리턴합니다.  예:</p>
+
+<code>$now = time();<br />
+<br />
+$gmt = local_to_gmt($now);</code>
+
+
+<h2>gmt_to_local()</h2>
+
+<p>Unix 타임스템프를 받아서 ( GMT 기반) , 타임존 및 섬머타임을 적용한 로컬 타임스템프로 변환합니다. 예:</p>
+
+<code>
+$timestamp = '1140153693';<br />
+$timezone  = 'UM8';<br />
+$daylight_saving = TRUE;<br />
+<br />
+echo gmt_to_local($timestamp, $timezone, $daylight_saving);</code>
+
+<p><strong>참고:</strong> 타임존에대한 목록을 보시려면 이 페이지의 맨 하단을 보세요.</p>
+
+<h2>mysql_to_unix()</h2>
+
+<p>MySQL 타임스템프를 입력받아 Unix 타임스템프를 리턴합니다. 예:</p>
+
+<code>$mysql = '20061124092345';<br />
+<br />
+$unix = mysql_to_unix($mysql);</code>
+
+
+<h2>unix_to_human()</h2>
+
+<p>Unix 타임스템프를 받아서 사람이 읽기좋은 포멧으로 리턴합니다. 아래는 프로토타입입니다:</p>
+
+<code>YYYY-MM-DD HH:MM:SS AM/PM</code>
+
+<p>전송하기전에 날짜를 폼필드에 표시할경우 유용합니다.</p>
+
+<p>시간은 초단위를 포함할수도 있고 안할수도 있으며, 유럽식 혹은 미국식 포멧으로 표시할수 있습니다.타임스템프만 전송(submit) 되었다면, 초단위를 포함하지 않은채 미국식으로 포멧된 시간값을 리턴합니다. 예:</p>
+
+<code>$now = time();<br />
+<br />
+echo unix_to_human($now); // U.S. time, no seconds<br />
+<br />
+echo unix_to_human($now, TRUE, 'us'); // U.S. time with seconds<br />
+<br />
+echo unix_to_human($now, TRUE, 'eu'); // Euro time with seconds</code>
+
+
+<h2>human_to_unix()</h2>
+
+<p>위의 함수와는 반대로 작동합니다.  사람이 사용하는 시간을 입력받아서 Unix 타임스템프를 리턴합니다.이함수는 사람이 사용하는 시간을 입력받을 경우 유용합니다  .  위에 표시한것과 다른포멧을 입력받았을 경우 FALSE 를 리턴합니다.예:</p>
+
+<code>$now = time();<br />
+<br />
+$human = unix_to_human($now);<br />
+<br />
+$unix = human_to_unix($human);</code>
+
+
+
+
+
+<h2>timespan()</h2>
+
+<p>unix 타임스템프를 아래와 비슷하게 표현합니다:</p>
+
+<code>1 Year, 10 Months, 2 Weeks, 5 Days, 10 Hours, 16 Minutes</code>
+
+<p>첫번째 파라미터는Unix 타입스탬프여야 합니다.  두번째 파라미터는 첫번째 파라미터보다 큰 Unix 타입스탬프 입니다.두번째 파라미터가 비어있으면 현재시간을 이용합니다.  대부분 이함수를 쓰는 이유는 어떤 시점으로부터 현재까지 얼마나 시간이 흘렀는지를 알기위해서 입니다. 예:</p>
+
+<code>$post_date = '1079621429';<br />
+$now = time();<br />
+<br />
+echo timespan($post_date, $now);</code>
+
+<p class="important"><strong>참고:</strong> 이 함수를 통해서 생성되는 텍스트는 다음 경로에서 확인하실 수 있습니다: language/&lt;your_lang&gt;/date_lang.php</p>
+
+
+<h2>days_in_month()</h2>
+
+<p>연,월을 입력받아 해당월의 날수가 얼마나 되는지를 리턴합니다. 윤년도 고려합니다. 예:</p>
+<code>echo days_in_month(06, 2005);</code>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p> 두번째 파라미터가 공백이면 현재년을 사용합니다.</p>
+<h2>timezones()</h2>
+<p> 타임존(맨 아래 타임존 목록을 참고하세요)을 받아서 UTC로부터의 시간 차이(offset)을 반환합니다.</p>
+<p><code>echo timezones('UM5');</code></p>
+<p>이 함수는 timezone_menu() 함수와 함께 사용할때 유용합니다. </p>
+<h2>timezone_menu()</h2>
+<p>타임존 풀다운(pull-down) 메뉴를 아래와 같이 생성합니다:</p>
+
+<form action="#">
+<select name="timezones">
+<option value='UM12'>(UTC - 12:00) Enitwetok, Kwajalien</option>
+<option value='UM11'>(UTC - 11:00) Nome, Midway Island, Samoa</option>
+<option value='UM10'>(UTC - 10:00) Hawaii</option>
+<option value='UM9'>(UTC - 9:00) Alaska</option>
+<option value='UM8'>(UTC - 8:00) Pacific Time</option>
+<option value='UM7'>(UTC - 7:00) Mountain Time</option>
+<option value='UM6'>(UTC - 6:00) Central Time, Mexico City</option>
+<option value='UM5'>(UTC - 5:00) Eastern Time, Bogota, Lima, Quito</option>
+<option value='UM4'>(UTC - 4:00) Atlantic Time, Caracas, La Paz</option>
+<option value='UM25'>(UTC - 3:30) Newfoundland</option>
+<option value='UM3'>(UTC - 3:00) Brazil, Buenos Aires, Georgetown, Falkland Is.</option>
+<option value='UM2'>(UTC - 2:00) Mid-Atlantic, Ascention Is., St Helena</option>
+<option value='UM1'>(UTC - 1:00) Azores, Cape Verde Islands</option>
+<option value='UTC' selected='selected'>(UTC) Casablanca, Dublin, Edinburgh, London, Lisbon, Monrovia</option>
+<option value='UP1'>(UTC + 1:00) Berlin, Brussels, Copenhagen, Madrid, Paris, Rome</option>
+<option value='UP2'>(UTC + 2:00) Kaliningrad, South Africa, Warsaw</option>
+<option value='UP3'>(UTC + 3:00) Baghdad, Riyadh, Moscow, Nairobi</option>
+<option value='UP25'>(UTC + 3:30) Tehran</option>
+<option value='UP4'>(UTC + 4:00) Adu Dhabi, Baku, Muscat, Tbilisi</option>
+<option value='UP35'>(UTC + 4:30) Kabul</option>
+<option value='UP5'>(UTC + 5:00) Islamabad, Karachi, Tashkent</option>
+<option value='UP45'>(UTC + 5:30) Bombay, Calcutta, Madras, New Delhi</option>
+<option value='UP6'>(UTC + 6:00) Almaty, Colomba, Dhaka</option>
+<option value='UP7'>(UTC + 7:00) Bangkok, Hanoi, Jakarta</option>
+<option value='UP8'>(UTC + 8:00) Beijing, Hong Kong, Perth, Singapore, Taipei</option>
+<option value='UP9'>(UTC + 9:00) Osaka, Sapporo, Seoul, Tokyo, Yakutsk</option>
+<option value='UP85'>(UTC + 9:30) Adelaide, Darwin</option>
+<option value='UP10'>(UTC + 10:00) Melbourne, Papua New Guinea, Sydney, Vladivostok</option>
+<option value='UP11'>(UTC + 11:00) Magadan, New Caledonia, Solomon Islands</option>
+<option value='UP12'>(UTC + 12:00) Auckland, Wellington, Fiji, Marshall Island</option>
+</select>
+</form>
+
+<p>회원가입 폼에서 회원의 로컬 타임존을 설정해야할때 사용하면 유용하겠지요 ..</p>
+
+<p>첫번재 파라미터는 기본타임존을 자동선택되도록 하는데 쓰입니다.  예,태평양 시간(Pacific time)을 기본값으로 설정하고 싶으면 아래와같이 합니다:</p>
+
+<code>echo timezone_menu('UM8');</code>
+
+<p>타임존 참고값은 맨 아래를 보세요.</p>
+
+<p>두번째 파라미터는 메뉴에 사용할 CSS 클래스 명을 적용할 때 사용합니다.</p>
+
+<p class="important"><strong>참고:</strong> 메뉴에 포함된 텍스트는 language/&lt;your_lang&gt;/date_lang.php 파일에서 발견하실 수 있습니다.</p>
+
+
+
+<h2>Timezone Reference</h2>
+
+<p>아래는 위치에 따른 타임존 입니다.</p>
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>Time Zone</th>
+<th>Location</th>
+</tr><tr>
+
+<td class="td">UM12</td><td class="td">(UTC - 12:00) Enitwetok, Kwajalien</td>
+</tr><tr>
+<td class="td">UM11</td><td class="td">(UTC - 11:00) Nome, Midway Island, Samoa</td>
+</tr><tr>
+<td class="td">UM10</td><td class="td">(UTC - 10:00) Hawaii</td>
+</tr><tr>
+<td class="td">UM9</td><td class="td">(UTC - 9:00) Alaska</td>
+</tr><tr>
+<td class="td">UM8</td><td class="td">(UTC - 8:00) Pacific Time</td>
+</tr><tr>
+<td class="td">UM7</td><td class="td">(UTC - 7:00) Mountain Time</td>
+</tr><tr>
+<td class="td">UM6</td><td class="td">(UTC - 6:00) Central Time, Mexico City</td>
+</tr><tr>
+<td class="td">UM5</td><td class="td">(UTC - 5:00) Eastern Time, Bogota, Lima, Quito</td>
+</tr><tr>
+<td class="td">UM4</td><td class="td">(UTC - 4:00) Atlantic Time, Caracas, La Paz</td>
+</tr><tr>
+<td class="td">UM25</td><td class="td">(UTC - 3:30) Newfoundland</td>
+</tr><tr>
+<td class="td">UM3</td><td class="td">(UTC - 3:00) Brazil, Buenos Aires, Georgetown, Falkland Is.</td>
+</tr><tr>
+<td class="td">UM2</td><td class="td">(UTC - 2:00) Mid-Atlantic, Ascention Is., St Helena</td>
+</tr><tr>
+<td class="td">UM1</td><td class="td">(UTC - 1:00) Azores, Cape Verde Islands</td>
+</tr><tr>
+<td class="td">UTC</td><td class="td">(UTC) Casablanca, Dublin, Edinburgh, London, Lisbon, Monrovia</td>
+</tr><tr>
+<td class="td">UP1</td><td class="td">(UTC + 1:00) Berlin, Brussels, Copenhagen, Madrid, Paris, Rome</td>
+</tr><tr>
+<td class="td">UP2</td><td class="td">(UTC + 2:00) Kaliningrad, South Africa, Warsaw</td>
+</tr><tr>
+<td class="td">UP3</td><td class="td">(UTC + 3:00) Baghdad, Riyadh, Moscow, Nairobi</td>
+</tr><tr>
+<td class="td">UP25</td><td class="td">(UTC + 3:30) Tehran</td>
+</tr><tr>
+<td class="td">UP4</td><td class="td">(UTC + 4:00) Adu Dhabi, Baku, Muscat, Tbilisi</td>
+</tr><tr>
+<td class="td">UP35</td><td class="td">(UTC + 4:30) Kabul</td>
+</tr><tr>
+<td class="td">UP5</td><td class="td">(UTC + 5:00) Islamabad, Karachi, Tashkent</td>
+</tr><tr>
+<td class="td">UP45</td><td class="td">(UTC + 5:30) Bombay, Calcutta, Madras, New Delhi</td>
+</tr><tr>
+<td class="td">UP6</td><td class="td">(UTC + 6:00) Almaty, Colomba, Dhaka</td>
+</tr><tr>
+<td class="td">UP7</td><td class="td">(UTC + 7:00) Bangkok, Hanoi, Jakarta</td>
+</tr><tr>
+<td class="td">UP8</td><td class="td">(UTC + 8:00) Beijing, Hong Kong, Perth, Singapore, Taipei</td>
+</tr><tr>
+<td class="td">UP9</td><td class="td">(UTC + 9:00) Osaka, Sapporo, Seoul, Tokyo, Yakutsk</td>
+</tr><tr>
+<td class="td">UP85</td><td class="td">(UTC + 9:30) Adelaide, Darwin</td>
+</tr><tr>
+<td class="td">UP10</td><td class="td">(UTC + 10:00) Melbourne, Papua New Guinea, Sydney, Vladivostok</td>
+</tr><tr>
+<td class="td">UP11</td><td class="td">(UTC + 11:00) Magadan, New Caledonia, Solomon Islands</td>
+</tr><tr>
+<td class="td">UP12</td><td class="td">(UTC + 12:00) Auckland, Wellington, Fiji, Marshall Island</td>
+</tr>
+</table>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="cookie_helper.html">Cookie Helper</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="directory_helper.html">Directory Helper</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

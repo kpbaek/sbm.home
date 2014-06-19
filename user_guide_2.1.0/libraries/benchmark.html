@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Benchmarking Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Benchmarking Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>벤치마크 Benchmarking Class</h1>
+
+<p>CodeIgniter에는 항상 활성화되어있는 벤치마크 클래스가 포함되어있습니다.이 클래스로 어떤 두 지점(marked points) 사이의 시간 간격을 계산할수 있습니다. </p>
+<p class="important"><strong>Note:</strong> 이 클래스는 시스템이 자동으로 초기화하기때문에 수동으로 할 필요가 없습니다.</p>
+
+
+<p>벤치마크는 프레임워크가 호출되는 순간 언제나 시작되며, 최종적으로 뷰페이지가 브라우저로 전송되기 직전에 종료됩니다. 이러한 특성이 시스템 동작시간을 상당히 정확하게 측정할수 있습니다.</p>
+<h3>목차</h3>
+
+<ul>
+<li><a href="#using">벤치마크 클래스의 사용방법</a></li>
+<li>설정한 <a href="#profiler">벤치마크 포인트에서 성능검사하기</a></li>
+<li><a href="#execution">전체 수행시간 표시</a></li>
+<li><a href="#memory">메모리 사용량 표시</a></li>
+</ul>
+
+
+
+<a name="using"></a>
+<h2>벤치마크 클래스 사용방법 </h2>
+
+<p>벤치마크 클래스는 <a href="../general/controllers.html">컨트롤러</a>,  <a href="../general/views.html">뷰</a>, 혹은 <a href="../general/models.html">모델</a>에서 사용할 수 있습니다.사용방법은 다음과 같습니다:</p>
+
+<ol>
+<li>시작포인트를 설정(Mark)한다</li>
+<li>끝 포인트를 설정한다.</li>
+<li>"elapsed time" 함수를 실행하여 결과를 확인한다.</li>
+</ol>
+
+<p>실재 사용사례입니다:</p>
+
+<code>$this->benchmark->mark('code_start');<br />
+<br />
+// Some code happens here<br />
+<br />
+$this->benchmark->mark('code_end');<br />
+<br />
+echo $this->benchmark->elapsed_time('code_start', 'code_end');</code>
+
+<p class="important"><strong>Note:</strong> "code_start" 나 "code_end" 는 여러분이 임의로 정할 수 있습니다..  단지 두 지점을 설정하기 위한 말일뿐입니다. 당신은 어떤 말이든 원하는대로 집어넣을수 있고 , 몇개의 마커(markers)를 설정해도 상관이 없습니다. 다음예제를 봐주세요 :</p>
+
+<code>$this->benchmark->mark('dog');<br />
+<br />
+// Some code happens here<br />
+<br />
+$this->benchmark->mark('cat');<br />
+<br />
+// More code happens here<br />
+<br />
+$this->benchmark->mark('bird');<br />
+<br />
+echo $this->benchmark->elapsed_time('dog', 'cat');<br />
+echo $this->benchmark->elapsed_time('cat', 'bird');<br />
+echo $this->benchmark->elapsed_time('dog', 'bird');</code>
+
+
+<a name="profiler"></a>
+<h2>설정한 벤치마크 포인트에서 성능검사하기(Profiling Your Benchmark Points)</h2>
+
+<p>벤치마크 데이터를 <a href="../general/profiling.html">프로파일러</a> 에서 사용할 수 있습니다.그러기 위해서는 설정된 마크(marks)들이 모두 짝을 이루어야하며, 각 마크 포인트(mark poin)이름은 반드시 <kbd>_start</kbd> 와 <kbd>_end</kbd>로 끝나야합니다.
+각 쌍의 마크포인트 이름은 _start,_end 부분을제외하고 반드시 동일해야합니다.예:</p>
+
+<code>
+$this->benchmark->mark('my_mark<kbd>_start</kbd>');<br />
+<br />
+// Some code happens here...<br />
+<br />
+$this->benchmark->mark('my_mark<kbd>_end</kbd>');
+<br /><br />
+
+$this->benchmark->mark('another_mark<kbd>_start</kbd>');<br />
+<br />
+// Some more code happens here...<br />
+<br />
+$this->benchmark->mark('another_mark<kbd>_end</kbd>');
+</code>
+
+<p>더 자세한정보는 <a href="../general/profiling.html">프로파일러</a> 페이지를 참고하세요 . </p>
+
+
+<a name="execution"></a>
+<h2>전체수행시간 표시 </h2>
+
+<p>CodeIgniter 가 시작하여 최종 출력이 브라우저로 보내질때까지의 전체시간을 표시하고싶다면 뷰 페이지에 아래의 코드를 삽입하시면 됩니다.<code>&lt;?php echo $this->benchmark->elapsed_time();?&gt;</code></p>
+
+<p>위코드를 보시면 두개의 포인트사이에서 시간경과를 측정하던 함수와 동일한 함수를 사용한다는것을 알수 있습니다. 파라미터가 없다면 CI 는 전체시간을 최종출력이 이루어질때까지 계속 시간을 측정합니다. 그러므로 어느위치에 이 코드를 삽입하든 최종출력이 브라우저로 전송될때까지의 시간을 측정한다는점에는 차이가 없으므로 위치에 구애받지 않으셔도 됩니다. </p>
+<p>PHP 코드를 쓰는게 귀찮으시면, 아래의 축약 코드를 써도 같은 결과를 얻으실 수 있습니다.</p>
+<code>{elapsed_time}</code>
+
+<p class="important"><strong>Note:</strong> 만약 벤치마크를 컨트롤러에서 수행한다면 반드시 시작/끝 포인트를 지정하셔야 합니다.</p>
+
+<a name="memory"></a>
+<h2>메모리 사용량 표시</h2>
+
+<p>만약 설치된 PHP 가 --enable-memory-limit 설정(configured with --enable-memory-limit)과 함께 설치되었다면, 전체시스템에서 사용된 메모리의 총량을 표시하실 수 있습니다. 아래의 코드를 참고하세요 . </p>
+
+<code>&lt;?php echo $this->benchmark->memory_usage();?&gt;</code>
+<p>Note:이 함수는 오직 뷰 파일에서만 쓸수있습니다. 사용량은 전체 어플리케이션에서 사용된 총량을 반영합니다.</p>
+
+<p>PHP 코드를 쓰는게 귀찮으시면, 아래의 축약 코드를 써도 같은 결과를 얻으실 수 있습니다.</p>
+<code>{memory_usage}</code>
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="../doc_style/index.html">Writing Documentaion</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="calendar.html">Calendaring Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,651 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+
+ 
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Shopping Cart Class : CodeIgniter User Guide</title>
+
+ 
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+ 
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+ 
+
+<meta http-equiv='expires' content='-1' />
+
+<meta http-equiv= 'pragma' content='no-cache' />
+
+<meta name='robots' content='all' />
+
+<meta name='author' content='ExpressionEngine Dev Team' />
+
+<meta name='description' content='CodeIgniter User Guide' />
+
+ 
+
+</head>
+
+<body>
+
+ 
+
+<!-- START NAVIGATION -->
+
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+
+<div id="masthead">
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+
+<tr>
+
+<td><h1>CodeIgniter User Guide Version 2.1.0.2</h1></td>
+
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+
+</tr>
+
+</table>
+
+</div>
+
+<!-- END NAVIGATION -->
+
+ 
+
+ 
+
+<!-- START BREADCRUMB -->
+
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+
+<tr>
+
+<td id="breadcrumb">
+
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+
+Shopping Cart Class
+
+</td>
+
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+
+</tr>
+
+</table>
+
+<!-- END BREADCRUMB -->
+
+ 
+
+<br clear="all" />
+
+ 
+
+ 
+
+<!-- START CONTENT -->
+
+<div id="content">
+
+ 
+
+ 
+
+<h1>장바구니 Shopping Cart Class</h1>
+
+ 
+
+<p>장바구니 클래스는 유저가 사이트를 이용하는 동안 아이템들이 세션에 추가되어 유효한 상태를 유지하도록 해줍니다.
+
+세션에 추가된 아이템들은 장바구니 형식으로 검색되거나 출력될수있고, 유저가 장바구니에서 아이템의 수량을 고치거나 삭제할수 있도록 해줍니다.</p>
+
+
+
+<p>장바구니 클래스는 오직 장바구니의 핵심 기능들만을 제공하므로, 배송, 신용카드 승인, 또는 다른 처리 컴포넌트들은 제공하지 않습니다.</p>
+
+<h2>장바구니 클래스 초기화 Initializing the Shopping Cart Class</h2>
+
+ 
+
+<p><strong>중요:</strong> 장바구니 클래스는 장바구니 정보를 데이타베이스에 저장하기위해 CodeIgniter의 <a 에ref="sessions.html">세션 클래스</a>를 사용합니다. 그러므로 장바구니 클래스를 사용하기전에 <a href="sessions.html">세션</a> 문서에 제시되어 있는 것 처럼 데이타베이스 테이블을 설정해야 합니다. 그리고 데이타베이스를 사용하기위해 <kbd>application/config/config.php</kbd> 파일 안에있는 세션 환경설정을 설정합니다.</p>
+
+
+
+<p>컨트롤러에서 장바구니 클래스를 초기화하기위해 <dfn>$this->load->library</dfn> 함수을 사용합니다.</p>
+
+ 
+
+<code>$this->load->library('cart');</code>
+
+
+
+<p>장바구니 클래스가 로드되면, <dfn>$this->cart</dfn>를 사용할수 있게 됩니다.</p>
+
+ 
+
+<p class="important"><strong>Note:</strong> 장바구니 클래스는 자동으로 세션클래스를 로드하고 초기화합니다. 그러므로 세션을 다른 곳에서 사용하지 않는 이상, 세션 클래스를 로드 할 필요는 없습니다.</p>
+
+ 
+
+<h2>장바구니에 아이템 추가 Adding an Item to The Cart</h2>
+
+ 
+
+<p>장바구니에 아이템을 추가하려면, 아래와 같이 상품 정보가 담긴 배열을 <dfn>$this->cart->insert()</dfn>으로 넘기면 됩니다. </p>
+
+ 
+
+<code>
+
+$data = array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_123ABC',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 39.95,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'T-Shirt',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'options' => array('Size' => 'L', 'Color' => 'Red')<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+
+<br />
+
+ 
+
+$this->cart->insert($data);
+
+ 
+
+</code>
+
+ 
+
+<p class="important"><strong>Important:</strong> 위의 배열에서 처음 4개의 인덱스들 (<dfn>id</dfn>, <dfn>qty</dfn>, <dfn>price</dfn>, <dfn>name</dfn>)은 <strong>필수</strong>입니다.
+
+저것들 중에 하나라도 빠질경우, 데이타는 장바구니에 저장되지 않습니다. 다섯번째 인덱스인 (<dfn>options</dfn>)는 선택사항 입니다. 다섯번째 인덱스는 상품이 추가 옵션을 가질 경우 사용될 수 있도록 되어있습니다. 위에 보이는것처럼 <dfn>options</dfn>는 배열을 사용합니다.</p>
+
+
+
+<p>다섯개의 정해진 인덱스:</p>
+
+ 
+
+<ul>
+
+<li><strong>id</strong> - 각각의 상품은 고유번호를 가져야 합니다. 이것은 보통 SKU 또는 고유번호가 됩니다.</li>
+
+<li><strong>qty</strong> - 구입될 수량입니다.
+
+<li><strong>price</strong> - 상품의 가격입니다.
+
+<li><strong>name</strong> - 상품의 이름 입니다.
+
+<li><strong>options</strong> - 상품을 식별할 추가적인 정보입니다. 이것들은 배열을 통해서 전달되어야 합니다.
+
+</ul>
+
+ 
+
+<p>위에 있는 다섯개의 인덱스 말고도 2개의 정해진 인덱스 <dfn>rowid</dfn> and <dfn>subtotal</dfn>가 있습니다.
+
+이것들은 장바구니 클래스 내부에서 사용되므로 장바구니에 데이타를 추가할때 이 단어들을 인덱스로 사용해서는 안됩니다.</p>
+
+ 
+
+<p>배열은 추가적인 데이타 포함 할 수 있습니다. 배열에 포함된 모든 것은 무엇이든지 세션에 저장됩니다. 그렇지만, 좀더 쉽게 상품들을 테이블에 출력하기 위해서 데이타를 형식에 맞춰 통일시키면 좋습니다</p>
+
+  <p> insert() 함수로 아이템을 입력에 성공하면 $rowid 가 리턴됩니다.</p>
+
+<h2>다량의 아이템들을 장바구니에 추가 Adding Multiple Items to The Cart</h2>
+
+ 
+
+<p>아래처럼 다중배열을 사용하여 여러개의 아이템을 한번에 장바구니로 추가하는것이 가능합니다. 이것은 같은 페이지 안에 있는 여러 상품들 중에 사용자가 선택할수 있도록 할때 편리합니다.</p>
+
+ 
+
+<code>
+
+$data = array(<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_123ABC',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 39.95,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'T-Shirt',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'options' => array('Size' => 'L', 'Color' => 'Red')<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_567ZYX',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 9.95,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'Coffee Mug'<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_965QRS',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 29.95,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'Shot Glass'<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+
+<br />
+
+ 
+
+$this->cart->insert($data);
+
+ 
+
+</code>
+
+ 
+
+ 
+
+ 
+
+ 
+
+<h2>장바구니 출력 Displaying the Cart</h2>
+
+ 
+
+<p>장바구니를 출력하려면 아래에 보이는 코드와 비슷하게 <a href="../general/views.html">뷰 파일</a>을 만듭니다.</p>
+
+ 
+
+<p>이 예제는 <a href="../helpers/form_helper.html">폼 헬퍼</a>를 사용 한다는 점을 주의해주세요.</p>
+
+ 
+
+<textarea class="textarea" style="width:100%" cols="50" rows="55">
+
+&lt;?php echo form_open('path/to/controller/update/function'); ?>
+
+ 
+
+&lt;table cellpadding="6" cellspacing="1" style="width:100%" border="0">
+
+ 
+
+&lt;tr>
+
+  &lt;th>QTY&lt;/th>
+
+  &lt;th>Item Description&lt;/th>
+
+  &lt;th style="text-align:right">Item Price&lt;/th>
+
+  &lt;th style="text-align:right">Sub-Total&lt;/th>
+
+&lt;/tr>
+
+ 
+
+&lt;?php $i = 1; ?>
+
+ 
+
+&lt;?php foreach($this->cart->contents() as $items): ?>
+
+ 
+
+	&lt;?php echo form_hidden($i.'[rowid]', $items['rowid']); ?>
+
+	
+
+	&lt;tr>
+
+	  &lt;td>&lt;?php echo form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?>&lt;/td>
+
+	  &lt;td>
+
+		&lt;?php echo $items['name']; ?>
+
+					
+
+			&lt;?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
+
+					
+
+				&lt;p>
+
+					&lt;?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value): ?>
+
+						
+
+						&lt;strong>&lt;?php echo $option_name; ?>:&lt;/strong> &lt;?php echo $option_value; ?>&lt;br />
+
+										
+
+					&lt;?php endforeach; ?>
+
+				&lt;/p>
+
+				
+
+			&lt;?php endif; ?>
+
+				
+
+	  &lt;/td>
+
+	  &lt;td style="text-align:right">&lt;?php echo $this->cart->format_number($items['price']); ?>&lt;/td>
+
+	  &lt;td style="text-align:right">$&lt;?php echo $this->cart->format_number($items['subtotal']); ?>&lt;/td>
+
+	&lt;/tr>
+
+ 
+
+&lt;?php $i++; ?>
+
+ 
+
+&lt;?php endforeach; ?>
+
+ 
+
+&lt;tr>
+
+  &lt;td colspan="2">&nbsp;&lt;/td>
+
+  &lt;td class="right">&lt;strong>Total&lt;/strong>&lt;/td>
+
+  &lt;td class="right">$&lt;?php echo $this->cart->format_number($this->cart->total()); ?>&lt;/td>
+
+&lt;/tr>
+
+ 
+
+&lt;/table>
+
+ 
+
+&lt;p>&lt;?php echo form_submit('', 'Update your Cart'); ?>&lt;/p>
+
+</textarea>
+
+ 
+
+ 
+
+ 
+
+ 
+
+<h2>장바구니 업데이트</h2>
+
+ 
+
+<p>장바구니에 있는 정보를 업데이트 하려면 <kbd>Row ID</kbd> 와 <strong>수량</strong>이 들어간 배열을 <dfn>$this->cart->update()</dfn>에  전달하면 됩니다.</p>
+
+ 
+
+<p class="important"><strong>Note:</strong> 만약 수량이 0 으로 지정된다면, 아이템은 장바구니에서 삭제됩니다.</p>
+
+ 
+
+<code>
+
+$data = array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid' => 'b99ccdf16028f015540f341130b6d8ec',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp; => 3<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+
+<br />
+
+ 
+
+$this->cart->update($data);
+
+<br /><br />
+
+// Or a multi-dimensional array<br /><br />
+
+$data = array(<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid'&nbsp;&nbsp; => 'b99ccdf16028f015540f341130b6d8ec',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 3<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid'&nbsp;&nbsp; => 'xw82g9q3r495893iajdh473990rikw23',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 4<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid'&nbsp;&nbsp; => 'fh4kdkkkaoe30njgoe92rkdkkobec333',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 2<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+
+ 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+
+<br />
+
+ 
+
+$this->cart->update($data);
+
+ 
+
+ 
+
+ 
+
+ 
+
+</code>
+
+ 
+
+<p><strong>Row ID가 뭥미?</strong>&nbsp; <kbd>row ID</kbd>는 아이템이 장바구니에 추가될때 장바구니 코드에 의해 생성되는 유니크한 식별자 입니다. 유니크한 ID가 생성되는 이유는 다른 옵션의 똑같은 상품들이 장바구니에 의해 관리 될수있기 때문입니다.</p>
+
+
+
+<p>예를 들어, 어떤 사람이 2장의 각각 다른 사이즈의 똑같은 티셔츠(같은 상품 ID)를 산다고 합시다. 두개의 티셔츠는 똑같은 티셔츠이므로 상품 ID (그리고 다른 옵션들)는 같습니다. 2장의 티셔츠의 다른점은 사이즈 뿐입니다. 이렇게 두개의 셔츠가 따로 관리되어야 하기때문에 장바구니는 서로 다른 식별자를 가져야 합니다. 여기서 두장의 티셔츠는 상품ID를 기반으로 유니크한 "row ID"를 가짐으로서 따로 관리될수 있고 어떠한 옵션하고도 연결될 수있습니다.</p>
+
+
+
+<p>거의 대부분, 장바구니를 업데이트 하는것은 "장바구니 보기" 페이지를 통해 사용자가 하는것입니다. 개발자 입장에서는, "장바구니 보기" 페이지의 히든 폼 필드에 이 정보를 가지고 있고 폼이 섭밋 될때 그 정보가 업데이트 함수으로 잘 전달 되도록 만드는 것 말고는 "rod ID"에 대해서 염려하지 않아도 됩니다. 더 많은 정보를 위해서는 위에 있는 "장바구니 보기" 페이지 구조를 검토해주세요.</p>
+
+ 
+
+<p>&nbsp;<br /></p>
+
+ 
+
+ 
+
+<h1>장바구니 함수 설명 Function Reference</h1>
+
+ 
+
+<h2>$this->cart->insert();</h2>
+
+
+
+<p>위에 개요된것처럼, 아이템들을 장바구니에 추가할수 있게 해줍니다.</p>
+
+
+
+ 
+
+<h2>$this->cart->update();</h2>
+
+ 
+
+<p>위에 개요된것처럼, 장바구니에 있는 아이템들을 업데이트 할수있게 해줍니다.</p>
+
+
+
+ 
+
+<h2>$this->cart->total();</h2>
+
+ 
+
+<p>장바구니에 있는 상품의 총 가격을 출력합니다.</p>
+
+ 
+
+<h2>$this->cart->total_items();</h2>
+
+ 
+
+<p>장바구니에 있는 아이템의 갯수를 출력합니다.</p>
+
+
+
+ 
+
+<h2>$this->cart->contents();</h2>
+
+ 
+
+<p>장바구니에 있는 모든것을 포함한 배열을 리턴합니다</p>
+
+ 
+
+ 
+
+<h2>$this->cart->has_options(rowid);</h2>
+
+
+
+<p>장바구니에 특정 row가 옵션들을 포함하고있으면 TRUE를 리턴합니다. 이 함수는 위의 장바구니 출력 예제에서 보이는것과 같이, 이 함수에 <kbd>rowid</kbd>를 건내줘야 하기때문에 <dfn>$this->cart->contents()</dfn> 함수를 사용한 룹 안에서 사용되게끔 되어있습니다.</p> 
+
+
+
+ 
+
+<h2>$this->cart->product_options(rowid);</h2>
+
+ 
+
+<p>특정 상품의 옵션들을 배열로 리턴합니다. 이 함수는 위의 장바구니 출력 예제에서 보이는것과 같이, 이 함수에 <kbd>rowid</kbd>를 건내줘야 하기때문에 <dfn>$this->cart->contents()</dfn> 함수를 사용한 룹 안에서 사용되게끔 되어있습니다.</p> </p>
+
+ 
+
+ 
+
+<h2>$this->cart->destroy();</h2>
+
+
+
+<p>장바구니를 삭제하도록 해줍니다. 이 함수는 보통 당신이 구매자의 주문 처리를 끝냈을 경우 쓰여집니다.</p>
+
+
+
+ 
+
+</div>
+
+<!-- END CONTENT -->
+
+ 
+
+ 
+
+<div id="footer">
+
+<p>
+
+Previous Topic:&nbsp;&nbsp;<a href="calendar.html">Calendar Class</a>
+
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+
+Next Topic:&nbsp;&nbsp;<a href="config.html">Config Class</a>
+
+</p>
+
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+
+</div>
+
+ 
+
+</body>
+
+</html>
+

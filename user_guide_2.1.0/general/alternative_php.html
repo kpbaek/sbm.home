@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Alternate PHP Syntax for View Files : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+<style type="text/css">
+<!--
+.style1 {
+	color: #FF6600;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Alternate PHP Syntax
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>View 에서 PHP문법을 CI 문법으로 대체 Alternate PHP Syntax for View Files</h1>
+
+<p>CodeIgniter의 <a href="../libraries/parser.html">템플릿엔진</a> 을 사용하지않는다면 ,아마 님하는 View 파일에서 순수 PHP 를 쓰실겁니다.
+  뷰 파일에서  PHP 코드를 최소화 하기위해서 루프등 코드 블록에서는 PHP 대체문법을 사용하시고 , echo 문의 경우에는 단축태그를 사용하시길 권장합니다. 여러분이 이런 문법에 익숙하지않았다면, 이 문법은 여러분의 코드에서 대괄호(brace)를 제거해주고 echo 문을 제거해줄것입니다.</p>
+
+<h2> 자동화된 짧은 태그 지원 Automatic Short Tag Support</h2>
+
+<p><strong>Note:</strong> 본페이지에서 설명하는 문법이 당신의 서버에서는 작동하지 않는다면, 아마 php.ini 파일에서 짧은태그(short tags) 가 비활성화(disabled)되어있기 때문일것입니다.CodeIgniter는 만약 서버에서 지원하지않는다고해도 본페이지의 문법을 사용할 수 있도록 옵션을 제공합니다. 해당 옵션을 적용하면 짧은태그(short tags)를 즉석해서 다시 쓸것(rewrite)입니다. 이 옵션은 <dfn>config/config.php</dfn> 파일에서 설정 할 수 있습니다.</p>
+<p class="important">주의 : 만약 이 옵션을 사용하지 않으시면, 뷰(View)파일에서 PHP 에러가 발생했을때 , 에러메시지와 줄번호가 정확하게 표시되지 않을것입니다. 대신에 모든 에러는 <kbd>eval()</kbd> 에러처럼 표시될것입니다. </p>
+<h2>에코문 대체 Alternative Echos</h2>
+
+<p>일번적으로 에코문을 사용하여 변수를 출력하려면 아래와 같이 할것입니다:</p>
+
+<code>&lt;?php echo $variable; ?></code>
+
+<p>대체문법은 아래와 같습니다.:</p>
+
+<code>&lt;?=$variable?></code>
+
+
+
+<h2>대체 분기,루프 구조 Alternative Control Structures</h2>
+
+<p><var>if</var>, <var>for</var>, <var>foreach</var> 및 <var>while</var> 과 같은 분기, 루프 구조 또한 단순한 구조로 사용될 수 있습니다.아래는 foreach 문의 예제입니다:</p>
+
+<code>
+&lt;ul><br />
+<br />
+<var>&lt;?php foreach($todo as $item): ?></var><br />
+<br />
+&lt;li><var>&lt;?=$item?></var>&lt;/li><br />
+<br />
+<var>&lt;?php endforeach; ?></var><br />
+<br />
+&lt;/ul></code>
+
+<p>보시는 바와 같이 대괄호가 없고 대신 괄호 닫는부분이 <var>endforeach</var>로 변경되었습니다.
+앞에 나열된 각종 분기,루프 구조는 유사한 구조를 가집니다.닫는괄호 부분은 <var>endif</var>, <var>endfor</var>, <var>endforeach</var>, <var>endwhile </var>를 사용하시면 됩니다.</p>
+<p> 또한 각 구조 뒤에 세미콜론이 아닌 콜론을 사용한다는점을 <span class="style1">주의하세요</span>(끝부분 제외).</p>
+<p>if 문을 사용하는 예제입니다.콜론에 주목해 주세요:</p>
+<code><var>&lt;?php if ($username == 'sally'): ?></var><br />
+<br />
+&nbsp;&nbsp;&nbsp;&lt;h3>Hi Sally&lt;/h3><br />
+<br />
+<var>&lt;?php elseif ($username == 'joe'): ?></var><br />
+<br />
+&nbsp;&nbsp;&nbsp;&lt;h3>Hi Joe&lt;/h3><br />
+<br />
+<var>&lt;?php else: ?></var><br />
+<br />
+&nbsp;&nbsp;&nbsp;&lt;h3>Hi unknown user&lt;/h3><br />
+<br />
+<var>&lt;?php endif; ?></var></code>
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="managing_apps.html">Managing Applications</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="security.html">Security</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

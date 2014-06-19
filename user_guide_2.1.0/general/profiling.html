@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Profiling Your Application : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Profiling Your Application
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>프로파일링 Profiling Your Application</h1>
+
+<p>프로파일러 클래스는 벤치마크결과,여러분이 수행한 쿼리,$_POST 데이터를 여러분의 페이지 하단에 보여줄것입니다..</p>
+<p>이런 정보들은 개발시 디버깅이나 최적화 작업을 하는데 도움이 될 것입니다..</p>
+<h2>클래스 초기화</h2>
+
+<p class="important"><strong>Important:</strong>&nbsp; 본 클래스는 초기화가 필요없습니다.만약 아래에서 설명하는 대로 프로파일링이 활성(enable)화 되어있다면 <a href="../libraries/output.html">출력클래스(Output Class)</a>i에서 자동으로 초기화됩니다.</p>
+
+<h2>프로파일링 활성화(Enabling the Profiler)</h2>
+
+<p>프로파일링을 활성화 하려면 아래와같은 코드를 여러분 컨트롤러의 어떤 곳에서든지 삽입하시면 됩니다.:</p>
+<code>$this->output->enable_profiler(TRUE);</code>
+
+<p>활성화 되면 리포트가 생성되고 여러분 페이지의 하단에 삽입됩니다.</p>
+
+<p>프로파일링을 비활성화 하려면 아래의 코드를 삽입하세요.:</p>
+<code>$this->output->enable_profiler(FALSE);</code>
+
+<h2>벤치마크 포인트 설정(Setting Benchmark Points)</h2>
+
+<p>프로파일러가 벤치마크 결과를 컴파일 하기위해서는 특정한 문법으로 벤치마크 포인트를 지정해 주어야합니다.</p>
+
+<p>벤치마크 포인트 설정에 관해서는 <a href="../libraries/benchmark.html">벤치마크(Benchmark Class)</a> 페이지를 참고하세요</p>  <h2>프로파일 섹션의 활성화 및 비활성화</h2>
+  <p>각 섹션의 프로파일 데이타를 활성/비활성화 하려면, 해당 설정값을 <var>TRUE</var> 나<var>FALSE</var>로 설정하세요.
+    설정에는 두가지 방법이 있습니다.응용프로그램 단위로 설정하려면<dfn> application/config/profiler.php</dfn>
+    에서 하세요.</p>
+
+	<code>$config['config']&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= FALSE;<br />
+	$config['queries']&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= FALSE;<br />
+  </code>
+  <p>컨트롤러에서<a href="../libraries/output.html"> 출력클래스</a> 의 <kbd>set_profiler_sections()</kbd>를
+    호출하면 설정된 기본값 덮어 쓸 수 있습니다:</p>
+
+	<code>$sections = array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;'config' &nbsp;=> TRUE,<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;'queries' => TRUE<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+	<br />
+  $this->output->set_profiler_sections($sections);</code>
+  <p>사용 가능한 섹션과 필요한 배열의 키는 다음의 표와 같습니다.</p>
+
+	<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+		<tr>
+
+      <th>키 </th>
+      <th>설명</th>
+      <th>기본값</th>
+		</tr>
+		<tr>
+			<td class="td"><strong>benchmarks</strong></td>
+
+      <td class="td">벤치 마크 포인트에서 경과 시간과 총 실행 시간</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>config</strong></td>
+
+      <td class="td">CodeIgniter 설정 변수</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>controller_info</strong></td>
+
+      <td class="td">요청된 컨트롤러 클래스와 메소드</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>get</strong></td>
+
+      <td class="td">요청에 전달된 모든 GET 데이터</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>http_headers</strong></td>
+
+      <td class="td">현재 요청의 HTTP 헤더</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>memory_usage</strong></td>
+
+      <td class="td">현재 요청에서 사용된 메모리 용량(Bytes)</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>post</strong></td>
+
+      <td class="td">요청에 전달된 모든 POST 데이터</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>queries</strong></td>
+
+      <td class="td">실행 시간을 포함하여 실행된 모든 데이터베이스 쿼리 목록</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>uri_string</strong></td>
+
+      <td class="td">현재 요청 URI</td>
+			<td class="td">TRUE</td>
+		</tr>
+		<tr>
+			<td class="td"><strong>query_toggle_count</strong></td>
+
+      <td class="td">숨길 쿼리블록수 의 기본 값 설정</td>
+			<td class="td">25</td>
+		</tr>
+	</table>
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="caching.html">Caching</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="managing_apps.html">Managing Applications</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

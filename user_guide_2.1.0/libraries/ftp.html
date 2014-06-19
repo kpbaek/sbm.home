@@ -1,0 +1,309 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>FTP Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+<style type="text/css">
+<!--
+.style1 {
+	color: #006600;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+FTP Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>FTP 클래스 </h1>
+
+<p>CodeIgniter의  FTP 클래스를 이용하면 원격서버에 파일을 전송할 수 있습니다. 원격지 파일들을 이동하거나, 이름변경 혹은 삭제도 가능하구요 .  FTP 클래스는 미러링(mirroring) 함수도 제공합니다. 미러링 함수는  FTP를 이용하여 로컬 폴더의 복사본을 원격지에 만듦니다.</p>
+
+<p class="important"><strong>주의:</strong>&nbsp; SFTP 와 SSL FTP 은 지원하지 않습니다. 표준FTP만 지원 합니다.</p>
+
+<h2>클래스 초기화 Initializing the Class</h2>
+
+<p>CodeIgniter에서 제공하는 다른 클래스들과 같이 ,  FTP 클래스도 컨트롤러에서 <dfn>$this->load->library</dfn> 함수를 이용하여 초기화 합니다:</p>
+
+<code>$this->load->library('ftp');</code>
+<p>한번 로드되면 , FTP객체는 <dfn>$this->ftp </dfn>와 같이 사용합니다. </p>
+
+
+<h2>사용예제 Usage Examples</h2>
+
+  <p>본 예제에서는 FTP 연결을 열고 로컬파일을 읽은다음 ASCII 모드로 업로드 합니다. 이때 파일 퍼미션은 755로 설정합니다. </p>
+
+<code>
+$this->load->library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['debug'] 	= TRUE;<br />
+<br />
+$this->ftp->connect($config);<br />
+<br />
+$this->ftp->upload('/local/path/to/myfile.html', '/public_html/myfile.html', 'ascii', 0775);<br />
+<br />
+$this->ftp->close();
+
+</code>
+
+
+<p>본 예제에서는 서버에서 파일목록을 추출해 냅니다.</p>
+
+<code>
+$this->load->library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['debug'] 	= TRUE;<br />
+<br />
+$this->ftp->connect($config);<br />
+<br />
+$list = $this->ftp->list_files('/public_html/');<br />
+<br />
+print_r($list);<br />
+<br />
+$this->ftp->close();
+</code>
+
+<p>본 예제에서는 로컬 디렉토리를 서버에 미러링(똑같이 생성)합니다.</p>
+
+
+<code>
+$this->load->library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['debug'] 	= TRUE;<br />
+<br />
+$this->ftp->connect($config);<br />
+<br />
+$this->ftp->mirror('/path/to/myfolder/', '/public_html/myfolder/');<br />
+<br />
+$this->ftp->close();
+</code>
+
+
+<h1>함수 레퍼런스 Function Reference</h1>
+
+<h2>$this->ftp->connect()</h2>
+
+<p>FTP에 연결하여 로그온합니다. 연결정보는 배열로 함수에 전달하거나, 설정파일에 저장할 수 있습니다.</p>
+
+
+<p>아래 예제는 연결정보를 직접 설정하는법을 보여줍니다:</p>
+
+<code>
+$this->load->library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['port']&nbsp;&nbsp;&nbsp;&nbsp; = 21;<br />
+$config['passive']&nbsp;&nbsp;= FALSE;<br />
+$config['debug']&nbsp;&nbsp;&nbsp;&nbsp;= TRUE;<br />
+<br />
+$this->ftp->connect($config);<br />
+</code>
+
+<h3>FTP 연결정보를 설정파일에 저장하기 Setting FTP Preferences in a Config File</h3>
+
+<p><var>ftp.php</var>파일을 만든후  <var>$config</var>
+배열을 그 파일안에 추가합니다. 그 다음에 <var>config/ftp.php</var> 로 저장하면 자동으로 설정을 읽어오게 됩니다.</p>
+
+<h3>사용가능한 연결 옵션:</h3>
+
+
+<ul>
+<li><strong>hostname</strong> - FTP 호스트 이름.  일반적으로 &nbsp; <dfn>ftp.example.com </dfn>등과 같습니다. </li>
+<li><strong>username</strong> - 사용자 명.</li>
+<li><strong>password</strong> - 암호.</li>
+<li><strong>port</strong> - 접속포트. <dfn>21</dfn> 이 기본값 입니다.</li>
+<li><strong>debug</strong> - <kbd>TRUE/FALSE</kbd> (불린). 에러메세지를 표시하기 위해 디버깅을 활성화 시킬지 안시킬지 설정.</li>
+<li><strong>passive</strong> - <kbd>TRUE/FALSE</kbd> (불린). 패시브모드(passive mode)로 할것인지 여부설정.  기본값은 패시브모드 활성상태 입니다.</li>
+</ul>
+
+
+
+<h2>$this->ftp->upload()</h2>
+
+<p>파일을 서버에 업로드 합니다.  이때 반드시 로컬경로와 서버경로를 넘겨주어야합니다. 필요하다면 모드 및 퍼미션을 설정할수도 있습니다. 예 :</p>
+
+
+<code>$this->ftp->upload('/local/path/to/myfile.html', '/public_html/myfile.html', 'ascii', 0775);</code>
+
+<p><strong>모드옵션은 :</strong>&nbsp; <kbd>ascii</kbd>, <kbd>binary</kbd>, 그리고 <kbd>auto</kbd> (기본값). 만약 <kbd>auto</kbd> 로 설정되어있다면 업로드할 파일의 확장자를 기준으로 모드를 설정합니다.</p>
+
+<p>퍼미션 설정은 8진수를 이용하여 4번째 파라미터로 설정하면 됩니다.</p>
+
+
+<h2>$this->ftp->download()</h2>
+
+  <p>서버에서 파일을 다운로드합니다. 원격 및 로컬 경로를 지정해야합니다. 옵션으로 모드를 지정할 수도 있습니다. 예 :</p>
+
+<code>$this->ftp->download('/public_html/myfile.html', '/local/path/to/myfile.html', 'ascii');</code>
+
+  <p><strong>옵션으로 지정할 수 있는 모드:</strong>&nbsp; <kbd>ascii</kbd>, <kbd>binary</kbd>, 
+    <kbd>auto</kbd> (기본값). <kbd>auto</kbd> 는 소스파일의 확장자를 통해 모드를 자동설정합니다.</p>
+
+  <p>다운로드에 실패한 경우 FALSE를 반환합니다. (로컬 파일에 쓰기 권한이없는 경우 포함)</p>
+
+
+<h2>$this->ftp->rename()</h2>
+<p>파일이름을 바꿉니다.  원래 파일경로 및 새로운파일 경로를 파라미터로 넘겨야 합니다.</p>
+
+<code>
+// Renames green.html to blue.html<br />
+$this->ftp->rename('/public_html/foo/green.html', '/public_html/foo/blue.html');
+</code>
+
+<h2>$this->ftp->move()</h2>
+<p>파일을 이동합니다.  소스(source)와 목적지경로(destination)를 넘겨줍니다.:</p>
+
+<code>
+// Moves blog.html from "joe" to "fred"<br />
+$this->ftp->move('/public_html/joe/blog.html', '/public_html/fred/blog.html');
+</code>
+
+<p>참고: 만약 목적지 경로에서 넘겨지는 파일이름이 소스와 다르다면 파일명 변경도 같이 이루어 집니다.</p>
+
+
+<h2>$this->ftp->delete_file()</h2>
+<p>파일을 삭제합니다.  지울 파일의 경로를 넘겨줍니다.</p>
+
+<code>
+$this->ftp->delete_file('/public_html/joe/blog.html');
+</code>
+
+
+<h2>$this->ftp->delete_dir()</h2>
+<p>디렉토리를 지웁니다. 이때 디렉토리가 포함하고있는 모든것을 같이 지웁니다.  지울 디렉토리를 넘겨줍니다. 이때 마지막에 / 를 붙여야합니다.</p>
+
+<p class="important"><strong>중요 : </strong>&nbsp;이함수를 사용하실때는 매우 주의하셔야 합니다. 디렉토리를 삭제할때 하위디렉토리까지 모두 재귀적으로 삭제합니다.그러므로 넘겨주는 경로가 잘못된 경로가 아닌지 확실하게 확인해야 합니다.<kbd>list_files()</kbd> 함수를 통해서 경로가 옳은지 먼저 확인하시는것이 좋습니다.</p>
+
+<code>
+$this->ftp->delete_dir('/public_html/path/to/folder/');
+</code>
+
+
+
+<h2>$this->ftp->list_files()</h2>
+<p>서버에서 파일목록을 추출하여 <span class="style1">배열</span>로 리턴합니다.  원하는 디렉토리의 경로를 넘겨줍니다.</p>
+
+<code>
+$list = $this->ftp->list_files('/public_html/');<br />
+<br />
+print_r($list);
+</code>
+
+
+<h2>$this->ftp->mirror()</h2>
+
+<p>로컬 폴더의 포함내용 전부를 재귀적으로 읽은후 서버에 동일한 폴더를 생성합니다.  어떤 디렉토리 구조라도 서버에서 다시 생성됩니다. 파라미터로 소스경로와 목적지 경로를 넘겨줍니다:</p>
+
+<code>
+$this->ftp->mirror('/path/to/myfolder/', '/public_html/myfolder/');
+</code>
+
+
+
+<h2>$this->ftp->mkdir()</h2>
+
+  <p>서버에 디렉토리를 생성합니다 . 생성하고자하는 폴더의 경로를 넘겨줍니다. 이때 마지막에 / 를 붙여줍니다.퍼미션은 8진수를 사용할수도 
+    있으며 두번째 파라미터로 넘겨줍니다</p>
+
+<code>
+// Creates a folder named "bar"<br />
+$this->ftp->mkdir('/public_html/foo/bar/', DIR_WRITE_MODE);
+</code>
+
+
+<h2>$this->ftp->chmod()</h2>
+
+<p>파일 퍼미션을 설정합니다.  퍼미션을 적용하고자하는 파일이나 폴더경로를 넘겨줍니다:</p>
+
+<code>
+// Chmod "bar" to 777<br />
+$this->ftp->chmod('/public_html/foo/bar/', DIR_WRITE_MODE);
+</code>
+
+
+
+
+<h2>$this->ftp->close();</h2>
+<p>연결을 끊습니다.  업로드가 끝났을때 이 함수를 사용하는것이 좋습니다.</p>
+
+
+
+
+
+
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="form_validation.html">Form Validation Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="table.html">HTML Table Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

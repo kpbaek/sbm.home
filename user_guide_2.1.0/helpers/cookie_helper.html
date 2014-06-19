@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Cookie Helper : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Cookie Helper
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>쿠키 Cookie Helper</h1>
+
+<p>쿠키헬퍼 파일은 쿠키조작을 손쉽게 해주는 함수들로 구성되어있습니다.</p>
+
+
+<h2>헬퍼 로드하기 Loading this Helper</h2>
+
+<p>아래와 같이 로드합니다:</p>
+<code>$this->load->helper('cookie');</code>
+
+<p>아래의 함수들이 사용가능합니다:</p>
+
+<h2>set_cookie()</h2>
+  <p>이 함수는 쿠키를 설정할때 뷰파일 친화적인(view file friendly) 문법을 제공해 줍니다.이 함수는 $ this -&gt;
+    input -&gt; set_cookie ()의 별칭이므로 자세한 내용은 <a href="../libraries/input.html">입력클래스(Input
+    class)</a>를 참조하십시오. </p>
+
+
+<h2>get_cookie()</h2>
+  <p>이 함수는 쿠키를 읽어올때 뷰파일 친화적인(view file friendly) 문법을 제공해 줍니다. 이 함수는 $this-&gt;input-&gt;cookie
+    ()의 별칭이므로 자세한 내용은 <a href="../libraries/input.html">입력클래스(Input class)</a>를
+    참조하십시오. </p>
+
+<h2>delete_cookie()</h2>
+
+<p>쿠키를 삭제합니다.  여러분이 특정한 경로나 특별한 값을 설정하지않았다면, 쿠키이름만 파라미터로 넘겨주시면 됩니다:</p>
+
+<code>delete_cookie("name");</code>
+
+<p>이 함수는 어떤 면에서 <dfn>set_cookie()</dfn>함수와 유사하며, 값이나 유효기간 등을 설정할 필요가 없다는 점이 다릅니다.넘겨주는 파라미터는 배열을 이용할수도 있고 각각 설정할수도 있습니다.</p>
+
+<code>delete_cookie($name, $domain, $path, $prefix)</code>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="compatibility_helper.html">Compatibility Helper</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="date_helper.html">Date Helper</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

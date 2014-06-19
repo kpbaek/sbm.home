@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Hooks : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Hooks - Extending the Framework Core
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>후킹-프레임워크 코어확장 Hooks - Extending the Framework Core</h1>
+
+<p>CodeIgniter의 후킹기능은 코어파일들을 해킹하지 않고도 내부작동방식을 변경할 수 있도록 합니다. CodeIgniter가 작동하기 시작하면 <a href="../overview/appflow.html">동작개념도</a>에 설명된  처리순서에 따라서 일을 처리합니다. 그러나, 당신은 특정한 순서에서 처리하는 방식을 새롭게 바꾸고 싶을수도 있습니다. 예를들어, 당신은 컨트롤러가 로드되기전에 특정한 기능이 수행되도록 하고싶거나, 혹은 특정순서중에 당신만의 기능이 수행되도록 하고싶을 수도 있습니다.</p>
+<h2>후킹 활성화 (Enabling Hooks)</h2>
+
+<p>후킹은 글로벌로 동작하며 <kbd>application/config/config.php</kbd> 파일에 있는 아래변수를 통해서 활성화 가능합니다.:</p>
+
+<code>$config['enable_hooks'] = TRUE;</code>
+
+
+<h2>후크 정의 (Defining a Hook)</h2>
+
+<p>후크는 <dfn>application/config/hooks.php</dfn> 파일에 정의되어있습니다.각후크는 아래의 형태로 정의됩니다:</p>
+
+<code>
+$hook['pre_controller'] = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'class'&nbsp;&nbsp;&nbsp;&nbsp;=> 'MyClass',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'function' => 'Myfunction',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filename' => 'Myclass.php',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filepath' => 'hooks',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'params'&nbsp;&nbsp;&nbsp;=> array('beer', 'wine', 'snacks')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</code>
+
+<p><strong>주의:</strong>배열의 인덱스는 여러분이 사용하고자하는 후크포인트의 이름과 연관됩니다. 위 예제의경우에 후크포인트는 <kbd>pre_controller</kbd> 가 됩니다. 후크포인트의 목록은 아래에 있습니다. 다음 아이템들은 당신의 연관후크배열에 반드시 정의되어야 합니다. <br />
+</p>
+<ul>
+<li><strong>클래스(class</strong>)&nbsp; 당신이 호출하고자 하는 클래스의 이름입니다.만약 클래스 대신 순차 함수(procedural function)를 사용한다면 이 항목을 공백으로 해주세요.</li>
+<li><strong>함수(function</strong>)&nbsp; 호출하고자 하는 함수의 이름입니다.</li>
+<li><strong>파일이름(filename)</strong>&nbsp; 당신의 스크립트(클래스, 함수)를 정의해둔 파일이름입니다.</li>
+<li><strong>파일경로(filepath)</strong>&nbsp; 파일경로(파일명을 제외한 디렉토리경로)입니다.  주의: 당신의 스크립트는 반드시 <kbd>application</kbd> 폴더 안에 있어야합니다. 파일경로는 그 폴더로부터의 상대경로로 설정됩니다..  예를들어,당신의 스크립트가<dfn>application/hooks</dfn> 에 있다면,파일경로는 <samp>hooks</samp> 가 됩니다. 당신의 스크립트가 <dfn>application/hooks/utilities</dfn> 에 있다면 파일경로는<samp>hooks/utilities</samp> 가 되며 끝부분에 슬래시(/)가 붙지않습니다.</li>
+<li><strong>파라미터들(params</strong>)&nbsp; 스크립트로 전달하고자하는파라미터. 파라미터는 옵션입니다. </li>
+</ul>
+
+
+<h2>동일한 후크포인트에서 여러 후크 호출하기 Multiple Calls to the Same Hook</h2>
+
+<p>같은 후크포인트를 하나이상의 스크립트에서 사용하고싶다면 간단히 배열정의를 다차원으로 합니다.</p>
+<p>예제:</p>
+<code>
+$hook['pre_controller']<kbd>[]</kbd> = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'class'&nbsp;&nbsp;&nbsp;&nbsp;=> 'MyClass',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'function' => 'Myfunction',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filename' => 'Myclass.php',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filepath' => 'hooks',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'params'&nbsp;&nbsp;&nbsp;=> array('beer', 'wine', 'snacks')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$hook['pre_controller']<kbd>[]</kbd> = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'class'&nbsp;&nbsp;&nbsp;&nbsp;=> 'MyOtherClass',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'function' => 'MyOtherfunction',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filename' => 'Myotherclass.php',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filepath' => 'hooks',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'params'&nbsp;&nbsp;&nbsp;=> array('red', 'yellow', 'blue')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</code>
+
+<p>주의할것은 대괄호([])가 각 배열 인덱스뒤에 있다는점입니다.:</p>
+
+<code>$hook['pre_controller']<kbd>[]</kbd></code>
+
+<p>이것을 이용하면 다양한 스크립트를 같은 후크포인트로 사용할 수 있습니다. 배열의 순서는 처리순서가 될것입니다.</p>
+
+
+<h2>후크포인트 Hook Points</h2>
+
+<p>다음은 가능한 후크포인트 목록입니다..</p>
+
+  <ul>
+    <li><strong>pre_system</strong><br />
+      시스템 작동초기입니다.벤치마크와 후킹클래스들만 로드된 상태로서, 라우팅을 비롯한 어떤 다른 프로세스도 진행되지않은 상태입니다. </li>
+    <li><strong>pre_controller</strong><br />
+      컨트롤러가 호출되기 직전입니다. 모든 기반클래스(base classes), 라우팅 그리고 보안점검이 완료된 상태입니다.</li>
+    <li><strong>post_controller_constructor</strong><br />
+      컨트롤러가 인스턴스화 된 직후입니다.즉 사용준비가 완료된 상태가 되겠죠. 하지만, 인스턴스화 된후 메소드들이 호출되기 직전입니다.</li>
+    <li><strong>post_controller</strong><br />
+      컨트롤러가 완전히 수행된 직후입니다. </li>
+    <li><strong>display_override</strong><br />
+      <dfn>_display()</dfn> 함수를 재정의 합니다.최종적으로 브라우저에 페이지를 전송할때 사용됩니다.이로서 당신만의 표시
+      방법( display methodology)을사용할수 있습니다. 주의 : CI 부모객체(superobject)를 <dfn>$this->CI
+      =&amp; get_instance()</dfn> 로 호출하여 사용한 후에 최종데이터 작성은 <dfn>$this->CI->output->get_output()
+      </dfn>함수를 호출하여 할 수 있습니다. </li>
+    <li><strong>cache_override</strong><br />
+      출력클래스(output class) 에 있는<dfn>_display_cache()</dfn> 함수 대신 당신의 스크립트를 호출할
+      수 있도록 해줍니다.이로서 당신만의 캐시 표시 메커니즘(cache display mechanism)을 적용할 수 있습니다.</li>
+    <li><strong>post_system</strong><br />
+      최종 렌더링 페이지가 브라우저로 보내진후에 호출됩니다.</li>
+  </ul>
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="core_classes.html">Creating Core Classes</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="autoloader.html">Auto-loading Resources</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Image Manipulation Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Image Manipulation Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>이미지 Image Manipulation Class</h1>
+
+<p>CodeIgniter의 이미지 처리 클래스 는 다음 기능을 제공합니다:</p>
+
+<ul>
+<li>이미지 크기 변경 Image Resizing</li>
+<li>썸네일 생성 Thumbnail Creation</li>
+<li>이미지 자르기 Image Cropping</li>
+<li>이미지 회전 Image Rotating</li>
+<li>이미지 워터마크(이미지위에 글자따위를 새기는것)Image Watermarking</li>
+</ul>
+
+<p>3개의 주요 이미지 라이브러리는 다음 라이브러리가 필요합니다:  GD/GD2, NetPBM, 그리고 ImageMagick</p>
+
+<p class="important"><strong>주의:</strong> 워터마크는  GD/GD2 라이브러리가 사용가능해야 합니다.
+그리고,다른 라이브러리들이 있더라도, 이미지 속성정보를 계산하기 위해 GD 는 기본으로 필요합니다. 그러나 이미지 처리는 여러분이 정의한 라이브러리를 가지고 수행할 수 있습니다.</p>
+
+
+<h2>클래스 초기화 Initializing the Class</h2>
+
+<p>다른 클래스들과 같이 ,이미지 클래스또한 <dfn>$this->load-&gt;library</dfn> 함수로 초기화 합니다:</p>
+<code>$this->load->library('image_lib');</code>
+
+<p>일단 초기화하면 바로 사용하실 수 있습니다.  이미지 라이브러리 객체는 다음과같이 사용합니다: <dfn>$this->image_lib</dfn></p>
+
+
+<h2>이미지 처리 Processing an Image</h2>
+
+<p>이미지를 어떻게 처리하고자 하든지 (예를들어 크기조절,자르기,돌리기,워터마크),일반적인 사용법은 동일합니다. 어떤 처리를 할것인지에  따라서 약간의 속성을 설정한후 , 사용가능한 처리 함수를 호출하면 됩니다.  예를 들어, 썸네일을 만들고자한다면 아래와 같이 합니다:</p>
+
+<code>$config['image_library'] = 'gd2';<br />
+$config['source_image']	= '/path/to/image/mypic.jpg';<br />
+$config['create_thumb'] = TRUE;<br />
+$config['maintain_ratio'] = TRUE;<br />
+$config['width']		= 75;<br />
+$config['height']	= 50;<br />
+<br />
+$this->load->library('image_lib', $config);
+<br />
+<br />
+$this->image_lib->resize();</code>
+
+<p>위 코드를 보면  <dfn>image_resize</dfn> 함수는 <dfn>source_image</dfn> 폴더에 있는 <em>mypic.jpg</em> 이미지를 찾은후 GD2 <dfn>이미지 라이브러리 </dfn> 를 사용하여  75 X 50 사이즈의 썸네일을 생성합니다.<dfn>maintain_ratio</dfn> 옵션이 켜져 있으므로 ,썸네일은 원본의 가로세로 비율을 유지하면서 지정한 <dfn>너비</dfn> 와 <dfn>높이</dfn> 에 최대한 가깝게 생성될것입니다.썸네일은 <em>mypic_thumb.jpg</em> 라는 이름으로 생성됩니다.
+</p>
+
+<p class="important"><strong>주의:</strong> 이미지 처리가 정상적으로 진행되기 위해서는 이미지가 들어있는 폴더에 쓰기권한이 있어야 합니다.</p>  
+  <p class="important"><strong>주의:</strong> 때에 따라서 이미지 처리가 서버메모리를 매우많이 사용할 수도 
+    있습니다. out of memory 에러가 발생했다면, 메모리 최대크기를 제한하시기 바랍니다. PHP에서 사용할 수 있는 최대 메모리 
+    설정도 같이 하시면 좋습니다.</p>
+
+<h2>처리 함수들 Processing Functions</h2>
+
+<p>처리함수는 4개가 있습니다:</p>
+
+<ul>
+<li>$this->image_lib->resize()</li>
+<li>$this->image_lib->crop()</li>
+<li>$this->image_lib->rotate()</li>
+<li>$this->image_lib->watermark()</li>
+<li>$this-&gt;image_lib-&gt;clear()</li>
+</ul>
+
+<p>함수들은 처리성공시  TRUE 를 실패시 FALSE 를 리턴합니다.  만약 실패하면 아래 함수를 이용하여 에러메세지를 출력할 수 있습니다:</p>
+
+<code>echo $this->image_lib->display_errors();</code>
+
+<p>아래와 같이 조건문안에서 이미지를 처리하고 에러가 있을때만 에러메세지를 출력하도록 하면 좋습니다:</p>
+
+<code>if ( ! $this->image_lib->resize())<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this->image_lib->display_errors();<br />
+}</code>
+
+<p>참고:  아래와같이 에러메세지의 시작부분과 끝부분에 원하는 html 코드를 추가하시면 보다 보기좋게 꾸밀수 있습니다:</p>
+
+<code>$this->image_lib->display_errors('<var>&lt;p></var>', '<var>&lt;/p></var>');</code>
+
+
+<h2>속성 Preferences</h2>
+
+<p>아래 설명되어있는 속성들을통해서 이미지를원하는대로 재단 할수 있습니다.</p>
+
+<p>아래 속성들을 모든 이미지 처리함수에서 사용할수는 없습니다.  예를들어,  x/y 축(axis) 속성은 이미지 자르기에서만 사용가능 합니다. 그리고, 너비(width) 와 높이(height)
+속성은 자르기에서 아무런 소용이 없습니다.  "지원함수(availability)" 칼럼에서 어떤 함수에 사용가능한지 표시해 줍니다..</p>
+
+<p>지원함수 범례 (Availability Legend):</p>
+
+<ul>
+<li><var>R</var> - 이미지 크기 조절 Image Resizing</li>
+<li><var>C</var> - 자르기 Image Cropping</li>
+<li><var>X</var> - 회전 Image Rotation</li>
+<li><var>W</var> - 워터마크 Image Watermarking</li>
+
+</ul>
+
+
+
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>속성</th>
+<th>기본값</th>
+<th>옵션</th>
+<th>설명</th>
+<th>사용가능성</th>
+</tr>
+
+<tr>
+<td class="td"><strong>image_library</strong></td>
+<td class="td">GD2</td>
+<td class="td">GD, GD2, ImageMagick, NetPBM</td>
+<td class="td">이미지 라이브러리를 사용가능하도록 세팅합니다.</td>
+<td class="td">R, C, X, W</td>
+</tr>
+
+<tr>
+<td class="td"><strong>library_path</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td"> ImageMagick 이나 NetPBM 라이브러리의 서버경로(path)를 설정합니다.  둘중 어떤 라이브러리를 사용하더라도 , 경로를 설정해야합니다.</td>
+<td class="td">R, C, X</td>
+</tr>
+
+<tr>
+<td class="td"><strong>source_image</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">소스이미지의 경로/이름을 설정합니다.  경로는 URL이 아니라 절대경로나 혹은 상대경로로 설정합니다.</td>
+<td class="td">R, C, S, W</td>
+</tr>
+
+<tr>
+<td class="td"><strong>dynamic_output</strong></td>
+<td class="td">FALSE</td>
+<td class="td">TRUE/FALSE (boolean)</td>
+<td class="td">이미지 파일이 동적으로 생성될지, 디스크에 저장될지를 결정합니다.  참고: 동적생성으로 설정할경우 한번에 하나의 이미지만 보여집니다 그리고, 페이지내에서 위치를 설정할 수 없습니다.단지 이미지 헤더와 함께 동적으로 브라우저에 출력됩니다.</td>
+<td class="td">R, C, X, W</td>
+</tr>
+
+
+<tr>
+<td class="td"><strong>quality</strong></td>
+<td class="td">90%</td>
+<td class="td">1 - 100%</td>
+<td class="td">이미지의 품질을 설정합니다. 고품질일수록 파일의 크기는 커집니다.</td>
+<td class="td">R, C, X, W</td>
+</tr>
+
+
+<tr>
+<td class="td"><strong>new_image</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">이미지의 출력경로(destination)를 설정합니다.  이미지의 복사복을 생성할때 이 속성을 이용할수 있습니다. 경로는 URL이 아니라 절대경로나 혹은 상대경로로 설정합니다.</td>
+<td class="td">R, C, X, W</td>
+</tr>
+
+<tr>
+<td class="td"><strong>width</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">원하는 이미지의 너비를 설정합니다.</td>
+<td class="td">R, C </td>
+</tr>
+
+<tr>
+<td class="td"><strong>height</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">원하는 이미지의 높이를 설정합니다.</td>
+<td class="td">R, C </td>
+</tr>
+
+<tr>
+<td class="td"><strong>create_thumb</strong></td>
+<td class="td">FALSE</td>
+<td class="td">TRUE/FALSE (boolean)</td>
+<td class="td">이미지 처리함수에 썸네일을 생성할것이라고 지정합니다.</td>
+<td class="td">R</td>
+</tr>
+
+<tr>
+<td class="td"><strong>thumb_marker</strong></td>
+<td class="td">_thumb</td>
+<td class="td">None</td>
+<td class="td">썸네일지시자를 명시합니다.지시자는 파일 확장자 바로 앞에삽입됩니다. 예를들어 mypic.jpg 는  mypic_thumb.jpg 이 될것입니다 </td>
+<td class="td">R</td>
+</tr>
+
+<tr>
+<td class="td"><strong>maintain_ratio</strong></td>
+<td class="td">TRUE</td>
+<td class="td">TRUE/FALSE (boolean)</td>
+<td class="td">원본이미지의 가로세로비율을 유지할지 혹은 입력된 수치대로 이미지 크기조절을 수행할지를 결정합니다.</td>
+<td class="td">R, C</td>
+</tr>
+
+
+<tr>
+<td class="td"><strong>master_dim</strong></td>
+<td class="td">auto</td>
+<td class="td">auto, width, height</td>
+<td class="td">크기조절이나, 썸네일 생성시 어느축을 주축으로 할지를 정의합니다. 예를들어, 어떤 이미지를  100 X 75 로 리사이징 한다고할때, 이미지 원본의 비율이 이와달라서 완벽하게 처리될수 없다면 이 설정은 너비나 높이중 어느쪽을 중심으로 처리할것인지를 지정합니다. "auto" 는 이미지가 넓은 형태인지 높은 형태인지를 가지고 자동으로 주축을 결정합니다.</td>
+<td class="td">R</td>
+</tr>
+
+
+
+
+<tr>
+<td class="td"><strong>rotation_angle</strong></td>
+<td class="td">None</td>
+<td class="td">90, 180, 270, vrt, hor</td>
+<td class="td">이미지를 회전할때 몇도로 회전할지를 결정합니다.  PHP 는 시계반대방향으로 회전시키므로 ,90도를 회전시키고자한다면  270 을 지정하셔야 합니다.</td>
+<td class="td">X</td>
+</tr>
+
+<tr>
+<td class="td"><strong>x_axis</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">이미지를 자를때  X 좌표를 픽셀단위로 설정합니다. 예를들어 , 30을 설정하면 왼쪽으로부터 30픽셀만큼 잘라냅니다.</td>
+<td class="td">C</td>
+</tr>
+<tr>
+<td class="td"><strong>y_axis</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">이미지를 자를때 Y 좌표를 픽셀단위로 설정합니다. 예를들어 , 30을 설정하면 위쪽으로부터 30픽셀만큼 잘라냅니다.</td>
+<td class="td">C</td>
+</tr>
+
+</table>
+
+
+<h2>속성을 설정파일에 저장하기 Setting preferences in a config file</h2>
+
+<p>속성을 위와같이 설정하는대신에 설정파일에 저장하고싶다면 <var>image_lib.php</var>라는 이름으로 새파일을 만드신후 <var>$config</var>
+배열을 그안에 추가하시기 바랍니다. 그런다음 파일을 <var>config/image_lib.php</var> 로 저장하시면 자동으로 설정이 로드됩니다.설정파일에 저장하시면 <dfn>$this->image_lib->initialize</dfn> 함수를 호출할필요가 없습니다.</p>
+
+
+<h2>$this->image_lib->resize()</h2>
+
+<p>크기변경(resizing)함수를 이용하시면 크기변경,복사본생성(크기변경과 동시에 혹은 크기변경없이) 그리고 썸네일 생성 작업이 가능합니다..</p>
+
+<p>실재 썸네일마커를 썸네일파일이름에 추가하는것(예, mypic_thumb.jpg)을 제외한다면, 복사본생성과 썸네일 생성은 아무런 차이가 없습니다 .</p>
+
+<p>위에서 열거한 속성중 다음 세가지를 제외한 모든속성이 적용가능합니다:  rotation_angle, x_axis, and y_axis.</p>
+
+<h3>썸네일 생성 Creating a Thumbnail</h3>
+
+<p>속성을 TRUE 로 설정하시면 크기변경함수는 썸네일파일을 생성하고 원본은 보존합니다:</p>
+
+<code>$config['create_thumb'] = TRUE;</code>
+
+<p>위 하나의 속성은 썸네일을 생성할지 말지를 결정합니다.</p>
+
+<h3>복사본 생성 Creating a Copy</h3>
+
+<p>아래의 속성에 복사본이 저장될 경로와 파일명을 지정해주시면 크기변환함수는 원본을 보존한채 복사본을 생성합니다:</p>
+
+<code>$config['new_image'] = '/path/to/new_image.jpg';</code>
+
+<p>이 속성에대한 참고사항:</p>
+<ul>
+<li>파일이름만 지정하시면 복사본은 원본과같은 폴더에 저장됩니다</li>
+<li>경로만 지정하시면 , 지정한 경로에 원본과 같은 이름으로 복사본을 생성합니다.</li>
+<li>경로와 파일명을 모두 지정하시면 지정한위치에 지정한 이름으로 복사본이 생성됩니다.</li>
+</ul>
+
+
+<h3>원본이미지의 크기변환 Resizing the Original Image</h3>
+
+<p>위 두 속성중 아무것도 지정하지않으면 크기변환함수는 원본이미지를 변환합니다.</p>
+
+
+<h2>$this->image_lib->crop()</h2>
+
+<p>어느만큼 잘라낼지에대한 X,Y 값을 요구한다는점을 제외하면 자르기(cropping)함수는 크기변환 함수와 동일합니다.예제:</p>
+
+<code>$config['x_axis'] = '100';<br />
+$config['y_axis'] = '40';</code>
+
+<p>윗쪽 테이블에 나열된 속성중 다음제외한 모든 속성이 사용가능합니다:  rotation_angle, width, height, create_thumb, new_image.아래는 이미지를 잘라내는 예제입니다 :</p>
+
+<code>$config['image_library'] = 'imagemagick';<br />
+$config['library_path'] = '/usr/X11R6/bin/';<br />
+$config['source_image']	= '/path/to/image/mypic.jpg';<br />
+$config['x_axis'] = '100';<br />
+$config['y_axis'] = '60';<br />
+<br />
+$this->image_lib->initialize($config);
+<br />
+<br />
+if ( ! $this->image_lib->crop())<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this->image_lib->display_errors();<br />
+}</code>
+
+
+<p>참고 : 비주얼한 UI가 없다면 이미지를 잘라내는것은 어렵습니다. 그러므로 비주얼한 UI를 제작하지 않는다면, 이함수는 그다지 유용하지 않습니다.우리는 우리가 개발한 CMS 프로그램인 ExpressionEngine에 사용된 포토갤러리에서 비주얼한 UI를 만들었습니다.자바스크립트를 이용해서 잘라낼 영역을 선택할수 있는 UI 를 말이죠 .</p>
+<h2>$this->image_lib->rotate()</h2>
+
+<p>이미지 회전 함수는 속성을 통해서 회전할 각도를 입력받습니다:</p>
+
+<code>$config['rotation_angle'] = '90';</code>
+
+<p>회전옵션은 5 가지가 있습니다:</p>
+
+<ol>
+<li>90 - 반시계방향 90도.</li>
+<li>180 - 반시계방향 180 도.</li>
+<li>270 - r반시계방향 270 도.</li>
+<li>hor - 이미지를 가로로 대칭(flips)되도록 변환 .</li>
+<li>vrt - 이미지를 세로로 대칭(flips)되도록 변환 .</li>
+</ol>
+
+<p>아래는 이미지 회전에 대한 예제입니다:</p>
+
+<code>$config['image_library'] = 'netpbm';<br />
+$config['library_path'] = '/usr/bin/';<br />
+$config['source_image']	= '/path/to/image/mypic.jpg';<br />
+$config['rotation_angle'] = 'hor';<br />
+<br />
+$this->image_lib->initialize($config);
+<br />
+<br />
+if ( ! $this->image_lib->rotate())<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this->image_lib->display_errors();<br />
+}</code>
+
+
+
+<h2>$this-&gt;image_lib-&gt;clear()</h2>
+<p>clear 함수는 이미지처리에 쓰였던 모든값을 제거(clear)합니다. 이미지처리를 루프에서 한다면 이함수를 사용하게 될것입니다.</p>
+<p><code>$this-&gt;image_lib-&gt;clear();</code></p>
+<p>&nbsp;</p>
+<h1>워터마크 Image Watermarking</h1>
+
+<p>워터마크를 사용하려면  GD/GD2 라이브러리가 필요합니다.</p>
+
+
+<h2>두개 타입의 워터마크 Two Types of Watermarking</h2>
+
+<p>사용가능한 워터마크는 아래와같이 2개의 타입이 있습니다:</p>
+
+<ul>
+<li><strong>텍스트  Text</strong>: 텍스트를 사용하여 워터마크를 생성합니다. 트루타입폰트를 지정하여 사용할 수도 있고 ,GD 라이브러리에서 지원하는 네이티브 텍스트를 사용할 수도 있습니다. 트루타입을 사용하시려면  GD 는 트루타입지원(True Type support)으로 컴파일 되어 설치되어야합니다 (대부분은 그러하나, 그렇지않은경우도 있습니다).</li>
+
+<li><strong>오버레이 Overlay</strong>: 이미지 오버레이를 사용하여 워터마크를 생성합니다. 일반적으로 투명 PNG 나 GIF 를 사용합니다.</li>
+
+</ul>
+
+
+<h2>이미지에 워터마크 하기 Watermarking an Image</h2>
+
+<p>다른 함수들과 마찬가지로  (크기변환, 자르기, 회전) 워터마크도 필요한 속성을 설정하고 워터마크 함수를 호출하면 됩니다. 아래예제를 참고하세요:</p>
+
+<code>
+$config['source_image']	= '/path/to/image/mypic.jpg';<br />
+$config['wm_text'] = 'Copyright 2006 - John Doe';<br />	
+$config['wm_type'] = 'text';<br />
+$config['wm_font_path'] = './system/fonts/texb.ttf';<br />
+$config['wm_font_size']	= '16';<br />
+$config['wm_font_color'] = 'ffffff';<br />
+$config['wm_vrt_alignment']  = 'bottom';<br />
+$config['wm_hor_alignment']  = 'center';<br />
+$config['wm_padding']  = '20';<br />
+<br />
+$this->image_lib->initialize($config);
+<br />
+<br />
+$this->image_lib->watermark();</code>
+
+
+<p>위 예제에서는 "Copyright 2006 - John Doe" 라는 글자를 가지고  16픽셀 트루타입폰트로 워터마크를 생성합니다.  워터마크는 이미지의 하단 가운데 위치하며, 바닥에서부터 20픽셀위치에 있게됩니다.</p>
+
+<p class="important"><strong>참고:</strong> 이미지 클래스를 사용하기위해서는 이미지파일에 쓰기권한이 설정되어있어야 합니다. 예를들어 777 등으로 설정해주세요.</p>
+
+
+<h2>워터마크 속성 Watermarking Preferences</h2>
+
+<p>아래 테이블은 텍스트나 오버레이 워터마크에 사용할수 있는 속성을 보여줍니다.</p>
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>속성</th>
+<th>기본값&nbsp;</th>
+<th>옵션</th>
+<th>설명</th>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_type</strong></td>
+<td class="td">text</td>
+<td class="td">text, overlay</td>
+<td class="td">워터마크 타입을 설정합니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>source_image</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">소스이미지의 경로와 파일이름을 설정합니다.경로는 URL 이 아니라 절대경로나 상대경로로 설정해야합니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>dynamic_output</strong></td>
+<td class="td">FALSE</td>
+<td class="td">TRUE/FALSE (boolean)</td>
+<td class="td">이미지 파일이 동적으로 생성될지, 디스크에 저장될지를 결정합니다. 참고: 동적생성으로 설정할경우 한번에 하나의 이미지만 보여집니다 그리고, 페이지내에서 위치를 설정할 수 없습니다.단지 이미지 헤더와 함께 동적으로 브라우저에 출력됩니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>quality</strong></td>
+<td class="td">90%</td>
+<td class="td">1 - 100%</td>
+<td class="td">이미지의 품질을 설정합니다. 고품질일수록 파일의 크기는 커집니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>padding</strong></td>
+<td class="td">None</td>
+<td class="td">A number</td>
+<td class="td">워터마크가 이미지의 경계로부터 기본적으로 얼마나 떨어질지에 대한 패딩(padding) 을 픽셀로 설정합니다. (html 테이블에서 padding 설정하는것과 같은개념).</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_vrt_alignment</strong></td>
+<td class="td">bottom</td>
+<td class="td">top, middle, bottom</td>
+<td class="td">워터마크이미지의 세로 정렬을 설정합니다</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_hor_alignment</strong></td>
+<td class="td">center</td>
+<td class="td">left, center, right</td>
+<td class="td">워터마크이미지의 가로 정렬을 설정합니다</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_hor_offset</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">워터마크 이미지의 가로 위치를 픽셀로 설정합니다. 통상 오프셋을 설정하면 워터마크는 설정값 만큼 오른쪽으로 이동하게 됩니다. 그러나 alignment를 right 로 설장하면 왼쪽으로 이동합니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_vrt_offset</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">워터마크 이미지의 세로 위치를 픽셀로 설정합니다. 통상 오프셋을 설정하면 워터마크는 설정값 만큼 아래로 이동하게 됩니다. 그러나 alignment를 bottom으로 설장하면 위쪽으로 이동합니다.</td>
+</tr>
+
+</table>
+
+
+
+<h3>텍스트 속성 Text Preferences</h3>
+<p>아래테이블은 워터마크가 텍스트 타입일때 사용할수 있는 속성입니다.</p>
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>속성</th>
+<th>기본값 </th>
+<th>옵션</th>
+<th>설명</th>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_text</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">워터마크로 사용할 텍스트를 설정합니다. 일반적으로는 저작권(copyright)관련 텍스트를 쓰겠지요.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_font_path</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">사용할 트루타입폰트의 서버경로를 설정합니다.이 옵션을 설정하지 않으시면 GD에 내장된 폰트가 사용됩니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_font_size</strong></td>
+<td class="td">16</td>
+<td class="td">None</td>
+<td class="td">폰트크기입니다.  참고: 위의 트루타입 옵션을 사용하지 않으면, 숫자는1 - 5 까지 설정할수 있습니다.  그렇지않다면, 사용하는 폰트에 대해 가능한 크기를 모두 사용할수 있습니다(픽셀단위로 설정).</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_font_color</strong></td>
+<td class="td">ffffff</td>
+<td class="td">None</td>
+<td class="td">폰트색상을 16진수로 설정합니다.  참고, 3글자의 축소버전(예 fff) 컬러설정대신 반드시 6 글자의 16진수값을 모두 사용해야합니다(예, 993300).</td>
+</tr>
+
+
+<tr>
+<td class="td"><strong>wm_shadow_color</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">그림자의 색상을 16진수로 설정합니다. 이설정을 사용하지않으면 그림자는 생성되지 않습니다. 참고, 3글자의 축소버전(예 fff) 컬러설정대신 반드시 6 글자의 16진수값을 모두 사용해야합니다(예, 993300).</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_shadow_distance</strong></td>
+<td class="td">3</td>
+<td class="td">None</td>
+<td class="td">그림자가 얼마나 떨어져서 표시될지를 픽셀단위로 지정합니다.</td>
+</tr>
+
+</table>
+
+
+
+
+<h3>오버레이 속성 Overlay Preferences</h3>
+<p>아래테이블은 워터마크가 오버레이 타입일때 사용할수 있는 속성입니다.</p>
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>속성</th>
+<th>기본값</th>
+<th>옵션</th>
+<th>설명</th>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_overlay_path</strong></td>
+<td class="td">None</td>
+<td class="td">None</td>
+<td class="td">워터마크로 사용할 이미지의 서버경로를 설정합니다. 오버레이타입의 워터마크 생성시에만 필요합니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_opacity</strong></td>
+<td class="td">50</td>
+<td class="td">1 - 100</td>
+<td class="td">이미지 투명도를 설정합니다. 이 설정을 통해서 원본이미지위체 반투명으로 워터마크를 생성할수 있습니다. 일반적으로 50% 로 설정합니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_x_transp</strong></td>
+<td class="td">4</td>
+<td class="td">A number</td>
+<td class="td">워터마크 이미지로 PNG 혹은GIF를 사용한다면, 어떤 색깔을 투명으로할지 설정해야할 것입니다. 이 속성을 통해 설정할 수 있습니다.이 속성과 아래 속성을 함께 사용하여 좌표를 지정하면 왼쪽 위를 0으로 하여 지정한 픽셀만큼의 위치에 있는색깔과 같은 색깔을 투명으로 설정합니다.</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_y_transp</strong></td>
+<td class="td">4</td>
+<td class="td">A number</td>
+<td class="td">위 설정과 함께 , 투명하게 할색상의 위치를 표현하는데 쓰입니다.</td>
+</tr>
+</table>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="table.html">HTML Table Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="input.html">Input Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

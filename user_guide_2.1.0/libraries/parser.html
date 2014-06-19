@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Template Parser Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Template Parser Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+
+
+<h1>템플릿 파서 Template Parser Class</h1>
+
+<p>템플릿파서 클래스를 이용하시면 뷰파일에 포함된 모조변수(pseudo-variables)를 파싱할수 있습니다. 단순한 변수나 변수,태그 쌍 모두 파싱가능합니다.템플릿엔진을 사용해보신적이 없나요 ? 모조변수는 아래와같은 형태랍니다:</p>
+
+<code>&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;title&gt;<kbd>{blog_title}</kbd>&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+&lt;body&gt;<br />
+<br />
+&lt;h3&gt;<kbd>{blog_heading}</kbd>&lt;/h3&gt;<br />
+<br />
+<kbd>{blog_entries}</kbd><br />
+&lt;h5&gt;<kbd>{title}</kbd>&lt;/h5&gt;<br />
+&lt;p&gt;<kbd>{body}</kbd>&lt;/p&gt;<br />
+<kbd>{/blog_entries}</kbd><br />
+
+&lt;/body&gt;<br />
+&lt;/html&gt;</code>
+
+<p>이변수들은 실재 PHP 변수는 아닙니다. 오히려 일반 텍스트에 가까우며, 이변수들을 통해서 PHP 코드를 템플릿(뷰 파일)에서 제거할 수 있습니다.</p>
+
+<p class="important"><strong>참고:</strong> 뷰파일에서 순수 PHP를 사용하시는것이 약간 더 빨리 동작하므로, 본 클래스를 반드시 사용하실필요는 없습니다.  그러나, 어떤 개발자들은 PHP를 모르는 디자이너와 같이 일할때 템플릿 엔진을 사용하는것을 더 선호하는 경우도 있습니다.</p>
+
+<p><strong>추가 참고:</strong> 템플릿파서 클래스는 완전한 템플릿 파싱 솔루션이 아닙니다. 우리는 성능의 극대화 쪽으로 많이 신경썼습니다.</p>
+
+
+<h2>클래스 초기화 Initializing the Class</h2>
+
+<p>CodeIgniter에 있는 대부분의 다른 클래스들처럼, 파서클래스도 <dfn>$this->load->library</dfn> 함수로 초기화 합니다:</p>
+
+<code>$this->load->library('parser');</code>
+<p>일단 로드되면,파서 라이브러리 객체는 <dfn>$this->parser </dfn> 를 통해 사용합니다.</p>
+
+
+<p>아래의 함수들이 본 라이브러리에서 사용가능합니다:</p>
+
+<h2>$this->parser->parse()</h2>
+
+<p>이 메소드는 템플릿 이름과 데이터베열을 입력받으며, 파싱된 결과를 생성합니다. 예:</p>
+<code>$this->load->library('parser');<br />
+<br />
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_title' => 'My Blog Title',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_heading' => 'My Blog Heading'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->parser->parse('blog_template', $data);</code>
+
+<p>첫번째 파라미터는 뷰파일(<a href="../general/views.html">view file</a>)의 이름(예제에서는 blog_template.php)을 포함하며,
+두번째 파라미터는 템플릿에서 대체될 데이터의 연관배열 입니다.  위 예제에서 , 템플릿은 두개의 변수를 포함합니다: {blog_title} 와 {blog_heading}</p>
+
+<p>"echo"를 사용할 필요가 없으며 <dfn>$this->parser->parse()</dfn>함수에서 리턴되는 데이터에대해서 뭔가 작업해줄 필요가 없습니다. 결과는 자동으로 출력클래스로 보내져 브라우저로 전송됩니다.  그러나, 출력클래스로 보내는대신 데이터를 리턴받으시려면 세번째 파라미터를 TRUE 로 설정합니다:</p>
+
+<code>$string = $this->parser->parse('blog_template', $data, TRUE);</code>
+<h2>$this->parser->parse_string()</h2>
+
+  <p> parse()와 동일한 동작을 합니다만, 뷰파일 대신에 문자열을 첫번째 파라미터로 받을 수 있다는것이 다릅니다..</p>
+
+
+
+<h2>변수 쌍 Variable Pairs</h2>
+
+<p>위의 예제에서는 단순 변수치환을 보여주었습니다.  만약 여러분이 각 반복마다 다른 데이터를 가지고 있는 변수블럭전체를 반복적으로 처리하고싶다면, 본 페이지의 처음에 보여주었던 예제를 보세요:</p>
+
+<code>&lt;html&gt;<br />
+&lt;head&gt;<br />
+&lt;title&gt;<kbd>{blog_title}</kbd>&lt;/title&gt;<br />
+&lt;/head&gt;<br />
+&lt;body&gt;<br />
+<br />
+&lt;h3&gt;<kbd>{blog_heading}</kbd>&lt;/h3&gt;<br />
+<br />
+<kbd>{blog_entries}</kbd><br />
+&lt;h5&gt;<kbd>{title}</kbd>&lt;/h5&gt;<br />
+&lt;p&gt;<kbd>{body}</kbd>&lt;/p&gt;<br />
+<kbd>{/blog_entries}</kbd><br />
+
+&lt;/body&gt;<br />
+&lt;/html&gt;</code>
+
+<p>위 예제를 보시면 변수 쌍이 있다는것을 아실거예요: <kbd>{blog_entries}</kbd> 데이터들.. <kbd>{/blog_entries}</kbd>.
+이런경우 , 이 쌍들 사이에 있는 데이터덩어리들은 여러번 반복되며, 결과셋의 열수에 대응하여 작동됩니다.</p>
+
+<p>변수쌍은 위의 단순변수치환예제와 동일한 코드로 파싱되나,변수쌍에 대응하는 다차원배열을 추가하셔야 합니다. 다음예제를 참고하시죠:</p>
+
+
+<code>$this->load->library('parser');<br />
+<br />
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_title'&nbsp;&nbsp; => 'My Blog Title',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_heading' => 'My Blog Heading',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_entries' => array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('title' => 'Title 1', 'body' => 'Body 1'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('title' => 'Title 2', 'body' => 'Body 2'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('title' => 'Title 3', 'body' => 'Body 3'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('title' => 'Title 4', 'body' => 'Body 4'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('title' => 'Title 5', 'body' => 'Body 5')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->parser->parse('blog_template', $data);</code>
+
+<p>만약 쌍으로 구성된 데이터가 데이터베이스 결과셋이라면 result_array() 함수를 통해서 간단히 다차원 배열을 만들수 있습니다:</p>
+
+<code>
+$query = $this->db->query("SELECT * FROM blog");<br />
+<br />
+$this->load->library('parser');<br />
+<br />
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_title'&nbsp;&nbsp; => 'My Blog Title',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_heading' => 'My Blog Heading',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_entries' => $query->result_array()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->parser->parse('blog_template', $data);</code>
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="trackback.html">Trackback Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="typography.html">Typography</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Database Utility Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Database Utility Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>데이터베이스 유틸리티 클래스 Database Utility Class</h1>
+
+<p>데이터베이스 유틸리티클래스는 데이터베이스 관리에 도움을 주는 함수들을 제공합니다.</p>
+
+<h3>목차</h3>
+
+<ul>
+<li><a href="#init">유틸리티 클래스 초기화 Initializing the Utility Class</a></li>
+<li><a href="#list">데이터베이스 목록조회Listing your Databases</a></li>
+<li><a href="#opttb">테이블 최적화 Optimizing your Tables</a></li>
+<li><a href="#repair">데이터베이스 정비 Repairing your Databases</a></li>
+<li><a href="#optdb">데이터베이스 최적화 Optimizing your Database</a></li>
+<li><a href="#csv">결과로부터 CSV  만들기 SV Files from a Database Result</a></li>
+<li><a href="#xml">결과로부터 XML 만들기 XML Files from a Database Result</a></li>
+<li><a href="#backup">데이터베이스 백업Backing up your Database</a></li>
+</ul>
+
+
+
+<h2><a name="init"></a>유틸리티 클래스 초기화Initializing the Utility Class</h2>
+
+<p class="important"><strong>중요:</strong>&nbsp; 관리클래스를 초기화 하기위해서는 데이터베이스 드라이버가 실행된 상태라야 합니다. 관리클래스는 데이터베이스 드라이버에 의존합니다</p>
+
+<p>아래와같이 유틸리티클래스를 로드합니다:</p>
+
+<code>$this->load->dbutil()</code>
+
+<p>초기화 되고 나면 함수들을 사용할때<dfn>$this->dbutil</dfn> 객체를 이용합니다:</p>
+
+<code>$this->dbutil->some_function()</code>
+
+<h2><a name="list"></a>$this->dbutil->list_databases()</h2>
+<p>데이터베이스 이름을 담은 배열을 리턴합니다:</p>
+
+<code>
+$dbs = $this->dbutil->list_databases();<br />
+<br />
+foreach($dbs as $db)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo $db;<br />
+}</code>
+
+  <h2><a name="exists"></a><font color="#FF0066">$this->dbutil->database_exists();</font></h2>
+
+  <p>데이터베이스 존재여부를 확인. 리턴값 TRUE/FALSE. 예제:</p>
+
+<code>
+if ($this->dbutil->database_exists('database_name'))<br />
+{<br />
+&nbsp;&nbsp; // some code...<br />
+}
+</code>
+
+  <p>주의: <em>database_name</em> 부분을 찾고자하는 테이블 명으로 바꿉니다(헐.. db 명이 아니구?).대소문자에 주의하세요.</p>
+
+
+
+<h2><a name="opttb"></a>$this->dbutil->optimize_table('table_name');</h2>
+
+<p class="important"><strong>정보:</strong>&nbsp; 이함수는 MySQL/MySQLi 데이터베이스에서만 사용할수 있습니다.</p>
+
+
+<p>첫번째 파라미터로 테이블이름을 넘겨주며 , 그 테이블을 최적화 합니다.작업결과에 따라서 TRUE/FALSE을 리턴합니다:</p>
+
+<code>
+if ($this->dbutil->optimize_table('table_name'))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo 'Success!';<br />
+}
+</code>
+
+<p><strong>정보:</strong> 모든 데이터베이스 플렛폼이 테이블 최적화를 지원하지는 않습니다.</p>
+
+
+<h2><a name="repair"></a>$this->dbutil->repair_table('table_name');</h2>
+
+<p class="important"><strong>정보:</strong>&nbsp; 이함수는 MySQL/MySQLi 데이터베이스에서만 사용할수 있습니다.</p>
+
+
+<p>첫번째 파라미터로 테이블이름을 넘겨주며 , 그 테이블을 수리 합니다. 작업결과에 따라서 TRUE/FALSE을 리턴합니다:</p>
+
+<code>
+if ($this->dbutil->repair_table('table_name'))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo 'Success!';<br />
+}
+</code>
+
+<p><strong>정보:</strong> 모든 데이터베이스 플렛폼이 테이블 최적화를 지원하지는 않습니다.</p>
+
+
+<h2><a name="optdb"></a>$this->dbutil->optimize_database();</h2>
+
+<p class="important"><strong>정보:</strong>&nbsp; 이함수는 MySQL/MySQLi 데이터베이스에서만 사용할수 있습니다.</p>
+
+<p>현재 사용중인 데이터베이스를 최적화합니다.작업결과에 따라 데이터베이스 상태가 담긴 배열을 리턴하거나 FALSE를 리턴합니다.</p>
+
+<code>
+$result = $this->dbutil->optimize_database();<br />
+<br />
+if ($result !== FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; print_r($result);<br />
+}
+</code>
+
+<p><strong>정보:</strong> 모든 데이터베이스 플렛폼이 테이블 최적화를 지원하지는 않습니다.</p>
+
+
+<h2><a name="csv"></a>$this->dbutil->csv_from_result($db_result)</h2>
+
+<p>쿼리결과로부터 CSV를 생성할수 있게 합니다.첫번째 파라미터는 반드시 쿼리실행의 결과객체라야 합니다.예제:</p>
+<code>
+$this->load->dbutil();<br />
+<br />
+$query = $this->db->query("SELECT * FROM mytable");<br />
+<br />
+echo $this->dbutil->csv_from_result($query);
+</code>
+
+<p>두번째와 세번째 파라미터는 각각 칼럼구분자(delimiter)와 줄바꿈문자로 설정합니다.  기본적으로 탭이 칼럼구분자로,"\n"이 줄바꿈문자입니다.<br />
+  사용예:</p>
+
+<code>
+$delimiter = ",";<br />
+$newline = "\r\n";<br />
+<br />
+echo $this->dbutil->csv_from_result($query, $delimiter, $newline);
+</code>
+
+<p><strong>중요:</strong>&nbsp; 이함수는 CSV 파일을 생성하는것이 아니라 단순히 CSV레이아웃을 생성합니다.이파일을 저장하러면<a href="../helpers/file_helper.html"> 파일헬퍼  섹션을 보세요 </a>.</p>
+
+
+<h2><a name="xml"></a>$this->dbutil->xml_from_result($db_result)</h2>
+
+<p>쿼리 결과로부터 XML 을 생성해줍니다. 첫번째 파라미터는 쿼리결과 객체이며 두번째 파라미터는 옵션으로 환경설정을 담은 배열을 넘겨줄수 있습니다.<br />
+  사용예
+  :</p>
+
+<code>
+$this->load->dbutil();<br />
+<br />
+$query = $this->db->query("SELECT * FROM mytable");<br />
+<br />
+$config = array (<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'root'&nbsp;&nbsp;&nbsp; => 'root',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'element' => 'element', <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'newline' => "\n", <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'tab'&nbsp;&nbsp;&nbsp;&nbsp;=> "\t"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo $this->dbutil->xml_from_result($query, $config);
+</code>
+
+<p><strong>중요:</strong>&nbsp; 이함수는 XML 파일을 생성하는것이 아니라 단순히 XML레이아웃을 생성합니다.이파일을 저장하러면<a href="../helpers/file_helper.html"> 파일헬퍼 섹션을 보세요 </a>..</p>
+
+
+<h2><a name="backup"></a>$this->dbutil->backup()</h2>
+
+<p>데이터베이스 전체나 각각의 테이블을 백업할수 있도록 합니다.백업데이터는 Zip 이나 Gzip 포멧으로 압축할수 있습니다.</p>
+
+<p class="important"><strong>정보:</strong>&nbsp; 이함수는 MySQL 데이터베이스에서만 사용할수 있습니다.</p>
+
+<p>주의: PHP에서 사용가능한 메모리가 제한되어있고 실행시간의 제한도 있기 때문에 너무큰 데이터베이스의 백업은 불가능할수 있습니다.큰 데이터베이스는 직접백업하세요 .</p>
+
+<h3>사용예</h3>
+
+<code>
+<dfn>// Load the DB utility class</dfn><br />
+$this->load->dbutil();<br /><br />
+
+<dfn>// Backup your entire database and assign it to a variable</dfn><br />
+$backup =& $this->dbutil->backup();
+
+<br /><br />
+<dfn>// Load the file helper and write the file to your server</dfn><br />
+$this->load->helper('file');<br />
+write_file('/path/to/mybackup.gz', $backup);
+
+<br /><br />
+<dfn>// Load the download helper and send the file to your desktop</dfn><br />
+$this->load->helper('download');<br />
+force_download('mybackup.gz', $backup);
+</code>
+
+<h3>백업 환경설정 Setting Backup Preferences</h3>
+
+<p>백업 환경설정은 배열로 구성되며 백업함수의 첫번째 파라미터로 넘기시면됩니다.<br />
+  예제:</p>
+
+<code>$prefs = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'tables'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> array('table1', 'table2'),&nbsp;&nbsp;// Array of tables to backup.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ignore'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> array(),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// List of tables to omit from the backup<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'format'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'txt',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// gzip, zip, txt<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'filename'&nbsp;&nbsp;&nbsp;&nbsp;=> 'mybackup.sql',&nbsp;&nbsp;&nbsp;&nbsp;// File name - NEEDED ONLY WITH ZIP FILES<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'add_drop'&nbsp;&nbsp;&nbsp;&nbsp;=> TRUE,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Whether to add DROP TABLE statements to backup file<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'add_insert'&nbsp;&nbsp;=> TRUE,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Whether to add INSERT data to backup file<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'newline'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> "\n"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Newline character used in backup file<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->dbutil->backup($prefs);
+</code>
+
+
+<h3>백업 환경설정 설명 Description of Backup Preferences</h3>
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>설정</th>
+<th>기본값</th>
+<th>옵션</th>
+<th>설명</th>
+</tr><tr>
+<td class="td"><strong>tables</strong></td><td class="td">empty array</td><td class="td">None</td>
+<td class="td">백업하고자하는 테이블명 배열. 공백이면 모든 테이블을 백업.</td>
+</tr><tr>
+<td class="td"><strong>ignore</strong></td><td class="td">empty array</td><td class="td">None</td>
+<td class="td">백업루틴에서 제외하고자하는 테이블명.(백업안할 테이블) </td>
+</tr><tr>
+<td class="td"><strong>format</strong></td><td class="td">gzip</td><td class="td">gzip, zip, txt</td>
+<td class="td">백업파일의 포멧.</td>
+</tr><tr>
+<td class="td"><strong>filename</strong></td><td class="td">the current date/time</td><td class="td">None</td>
+<td class="td">백업파일의 파일명.ZIP 압축시에만 필요함</td>
+</tr><tr>
+<td class="td"><strong>add_drop</strong></td><td class="td">TRUE</td><td class="td">TRUE/FALSE</td>
+<td class="td">DROP TABLE 문을 백업파일에 추가할지 여부</td>
+</tr><tr>
+<td class="td"><strong>add_insert</strong></td><td class="td">TRUE</td><td class="td">TRUE/FALSE</td>
+<td class="td">INSERT문을 SQL 백업파일에 추가할지 여부.</td>
+</tr><tr>
+<td class="td"><strong>newline</strong></td><td class="td">"\n"</td><td class="td">"\n", "\r", "\r\n"</td>
+<td class="td">SQL 백업파일의 줄바꿈 문자.</td>
+
+</tr>
+</table>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="forge.html">DB Forge Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="../libraries/email.html"> Email Class</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

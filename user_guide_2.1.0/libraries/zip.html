@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Zip Encoding Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Zip Encoding Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>Zip 압축 Zip Encoding Class</h1>
+<p>Zip 압축 클래스를 이용하시면 Zip으로 압축된 파일을 만들 수 있습니다. 압축된것은 데스크탑으로 다운로드 할수도 있고 디렉토리로 저장할수도 있습니다.</p>
+
+
+<h2>클래스 초기화 Initializing the Class</h2>
+<p>다른 대부분의 클래스들처럼 Zip 클래스도 컨트롤러에서 <dfn>$this->load->library</dfn> 함수를 이용하여 초기화 합니다:</p>
+
+<code>$this->load->library('zip');</code>
+<p>일단 로드되면 , Zip 라이브러리 객체는<dfn>$this->zip  </dfn>로 사용가능합니다.</p>
+
+
+<h2>사용예 Usage Example</h2>
+
+<p>이 예제는 어떻게 파일을 압축하고, 서버의 폴더에 저장하고, 데스크탑에 다운로드하는지를 보여줍니다.</p>
+
+<code>
+$name = 'mydata1.txt';<br />
+$data = 'A Data String!';<br />
+<br />
+$this->zip->add_data($name, $data);<br />
+<br />
+// zip 파일을 "my_backup.zip"라는 이름으로 서버의 폴더에 저장합니다.<br />
+$this->zip->archive('/path/to/directory/my_backup.zip');
+<br /><br />
+ // "my_backup.zip" 파일을 데스크탑에 다운로드 합니다.<br />
+$this->zip->download('my_backup.zip');
+</code>
+
+<h1>함수 참조 Function Reference</h1>
+
+<h2>$this->zip->add_data()</h2>
+
+<p>Zip 으로 압축할 데이터를 추가합니다. 첫번째 파라미터는 반드시 파일명을, 두번째 파라미터는 반드시 데이터를 문자열로 포함하고 있어야 합니다:</p>
+
+<code>
+$name = 'my_bio.txt';<br />
+$data = 'I was born in an elevator...';<br />
+<br />
+$this->zip->add_data($name, $data);
+</code>
+
+<p>이 함수를 여러번 호출하여 여러개의 파일을 하나로 압축할수도 있습니다. 예:</p>
+
+<code>
+$name = 'mydata1.txt';<br />
+$data = 'A Data String!';<br />
+$this->zip->add_data($name, $data);<br />
+<br />
+$name = 'mydata2.txt';<br />
+$data = 'Another Data String!';<br />
+$this->zip->add_data($name, $data);<br />
+</code>
+
+<p>아래와같이 배열로 여러파일을 넘겨줄수도 있습니다:</p>
+
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mydata1.txt' => 'A Data String!',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mydata2.txt' => 'Another Data String!'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this->zip->add_data($data);<br />
+<br />
+$this->zip->download('my_backup.zip');
+</code>
+
+<p>만약 압축된 데이터를 하위폴더로 정리하고싶다면 ,파일명에 경로도 같이 적어주시면 됩니다:</p>
+
+<code>
+$name = '<kbd>personal/</kbd>my_bio.txt';<br />
+$data = 'I was born in an elevator...';<br />
+<br />
+$this->zip->add_data($name, $data);
+</code>
+
+<p>위 예제에서는<kbd>personal</kbd> 라는 폴더안에 <dfn>my_bio.txt</dfn> 파일이 존재하게 됩니다 <kbd></kbd>.</p>
+
+
+<h2>$this->zip->add_dir()</h2>
+
+<p>디렉토리를 추가할때 사용합니다.  일반적으로는 <dfn>$this->zip->add_data()</dfn>함수에서  데이터를 하위디렉토리에 놓을수 있기때문에 사용할 필요가 없지만, 빈 폴더를 만들려면 사용해야겠지요 .예제:</p>
+
+<code>$this->zip->add_dir('myfolder'); // Creates a folder called "myfolder"</code>
+
+
+
+<h2>$this->zip->read_file()</h2>
+
+<p>서버에 이미존재하는 파일을 압축할때 사용합니다.  파일경로를 넘겨주면 zip 클래스는 그 파일을 읽은후 압축파일에 추가합니다:</p>
+
+<code>
+$path = '/path/to/photo.jpg';<br /><br />
+$this->zip->read_file($path);
+<br /><br />
+ // Download the file to your desktop.  Name it "my_backup.zip"<br />
+$this->zip->download('my_backup.zip');
+</code>
+
+<p>만약 Zip 으로 압축된 파일의 디렉토리 구조를 유지하도록 하고싶다면 , 두번째 파라미터를<kbd>TRUE</kbd> 로 설정합니다. 예:</p>
+
+
+<code>
+$path = '/path/to/photo.jpg';<br /><br />
+$this->zip->read_file($path, <kbd>TRUE</kbd>);
+<br /><br />
+ // Download the file to your desktop.  Name it "my_backup.zip"<br />
+$this->zip->download('my_backup.zip');
+</code>
+
+<p>위 예제에서,<dfn>photo.jpg</dfn> 파일은 <kbd>path/to/  </kbd>아래 위치하게 됩니다.</p>
+
+
+
+<h2>$this->zip->read_dir()</h2>
+
+<p>서버에 이미 존재하는 폴더 및 폴더내용을 압축할때 사용합니다.  폴더경로를 넘겨주면 zip 클래스는 재귀적으로 읽어들인다음  Zip 으로 압축합니다.  모든 하위폴더 및 파일들이 압축됩니다. 예제 :</p>
+
+<code>
+$path = '/path/to/your/directory/';<br /><br />
+$this->zip->read_dir($path);
+<br /><br />
+ // Download the file to your desktop.  Name it "my_backup.zip"<br />
+$this->zip->download('my_backup.zip');
+</code>
+  <p>기본적으로 Zip으로 압축된 결과에는 첫번째 파라미터의 모든 경로가 포함됩니다.만약 압축하려는 폴더의 상위 경로명을 포함하지 않으려면 
+    두번째 파라미터를 <kbd>FALSE</kbd> 로 두세요 예:</p>
+
+<code>
+$path = '/path/to/your/directory/';<br /><br />
+$this->zip->read_dir($path, FALSE);
+</code>
+
+  <p>이렇게 하면 <samp>/path/to/your</samp> 경로는 압축파일에서 빠지게됩니다.</p>
+
+
+
+
+
+
+<h2>$this->zip->archive()</h2>
+
+<p>Zip 으로 압축된 파일을 서버의 디렉토리에 생성합니다.  유효한 서버경로와 함께 압축파일의 이름을 넘겨줍니다.  디렉토리는 쓰기 가능해야합니다(666 이나 777 이면 OK). 예:</p>
+
+<code>$this->zip->archive('/path/to/folder/myarchive.zip'); // Creates a file named myarchive.zip</code>
+
+
+<h2>$this->zip->download()</h2>
+
+<p>서버로부터 Zip 파일을 다운로드 하도록 해줍니다. 이함수에는 생성될 zip 파일명을 넘겨줘야합니다. 예:</p>
+
+<code>$this->zip->download('latest_stuff.zip'); // 파일명은 "latest_stuff.zip"가 될것입니다. </code>
+<p class="important"><strong>참고 :</strong>&nbsp; 이 함수를 호출하는 컨트롤러의 함수에서는 어떤 데이터도 표시(display)하게 해서는 안됩니다. 만약 그럴경우 여러가지 서버 헤더가 전송되게 되므로 다운로드가 실행되게 되며 파일은 바이너리로 취급되게 됩니다.</p>
+
+
+<h2>$this->zip->get_zip()</h2>
+
+<p>Zip으로 압축된 파일데이터를 리턴합니다.  데이터에 특별한 작업을 하는경우가 아니라면 이함수를 사용하실일은 잘 없으거예요 . 예:</p>
+
+<code>
+$name = 'my_bio.txt';<br />
+$data = 'I was born in an elevator...';<br />
+<br />
+$this->zip->add_data($name, $data);<br /><br />
+
+$zip_file = $this->zip->get_zip();
+</code>
+
+
+<h2>$this->zip->clear_data()</h2>
+
+<p>Zip 클래스는 zip 데이터를 캐시하고 있기때문에 위에서 보여준 각 함수에서 Zip을 다시 컴파일 할 필요가 없습니다.
+그러나 만일 , 각각 다른 데이터를 가진 여러개의 Zip 파일을 생성하고자 한다면 , 각각마다 캐시를 제거(clear)할 수 있습니다. 예:</p>
+
+<code>
+$name = 'my_bio.txt';<br />
+$data = 'I was born in an elevator...';<br />
+<br />
+$this->zip->add_data($name, $data);<br />
+$zip_file = $this->zip->get_zip();<br />
+<br />
+<kbd>$this->zip->clear_data();</kbd>
+<br /><br />
+
+$name = 'photo.jpg';<br />
+$this->zip->read_file("/path/to/photo.jpg"); // Read the file's contents<br />
+<br /><br />
+$this->zip->download('myphotos.zip');
+</code></div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="xmlrpc.html"> XML-RPC Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="caching.html">Caching Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

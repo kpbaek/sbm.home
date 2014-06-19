@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Database Forge Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Database Forge Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>데이터베이스 관리 클래스 Database Forge Class</h1>
+
+<p>데이터베이스 관리클래스는 아래와 같이 데이터베이스를 관리하는데 도움이 되는 함수들을 포함하고있습니다</p>
+
+<h3>목차</h3>
+
+<ul>
+<li><a href="#init">관리클래스 초기화(Initializing the Forge Class</a>)</li>
+<li><a href="#create">데이터베이스 생성(Creating a Database</a>)</li>
+<li><a href="#drop">데이터베이스 삭제(Dropping a Database</a>)</li>
+<li><a href="#add_field">필드 추가(Adding Fields</a>)</li>
+<li><a href="#add_key">키 추가(Adding Keys</a></li>
+<li><a href="#create_table">테이블 추가(Creating a Table</a>)</li>
+<li><a href="#drop_table">테이블 삭제(Dropping a Table</a>)</li>
+<li><a href="#rename_table">테이블 이름 변경(Renaming a Table</a>)</li>
+<li><a href="#modifying_tables">테이블 변경(Modifying a Table)</a></li>
+</ul>
+
+
+<h2><a name="init"></a>관리 클래스 초기화 Initializing the Forge Class</h2>
+
+<p class="important"><strong>중요:</strong>&nbsp;관리클래스를 초기화 하기위해서는 데이터베이스 드라이버가 실행된 상태라야 합니다. 관리클래스는 데이터베이스 드라이버에 의존합니다.</p>
+
+<p>관리클래스를 아래와같이 로드합니다:</p>
+
+<code>$this->load->dbforge()</code>
+
+<p>초기화 되고 나면 함수들을 사용할때<dfn>$this->dbforge</dfn> 객체를 이용합니다:</p>
+
+<code>$this->dbforge->some_function()</code>
+<h2><a name="create"></a>$this->dbforge->create_database('db_name')</h2>
+
+<p>첫번째 파라미터에 정의한대로 데이터베이스를 생성합니다. 그리고 그 결과에 따라서 TRUE/FALSE 를 리턴합니다:</p>
+
+<code>if ($this->dbforge->create_database('my_db'))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo 'Database created!';<br />
+}</code>
+
+
+
+
+<h2><a name="drop"></a>$this->dbforge->drop_database('db_name')</h2>
+
+<p>첫번째 파라미터에 주어진 데이터베이스를 삭제합니다.그리고 그 결과에 따라서 TRUE/FALSE 를 리턴합니다:</p>
+
+<code>if ($this->dbforge->drop_database('my_db'))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo 'Database deleted!';<br />
+}</code>
+
+
+<h1>테이블의 생성과 삭제 Creating and Dropping Tables</h1>
+<p>테이블을 생성할때 하고자 하는 일들이 몇가지 있을것입니다.필드추가,키추가,칼럼변경 등이 그것이죠. CodeIgniter는 이러한 작업에대한 메커니즘을 제공합니다.</p>
+<h2><a name="add_field" id="add_field"></a>필드 추가 Adding fields</h2>
+<p>필드는 연관배열을 통해 정의됩니다.배열에는 반드시  필드의 데이터타입에 대한 'type' 키가 존재해야합니다. 예를들어 , INT, VARCHAR, TEXT, 등 많은 데이터타입(for example VARCHAR) 과 제약('constraint') 키도 필요합니다.</p>
+<p><code>$fields = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'users' =&gt; array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'type' =&gt; 'VARCHAR',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'constraint' =&gt; '100',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+	<br />
+// &quot;users VARCHAR(100)&quot; 로 변환 됩니다 </code></p>
+<p>부가적으로, 다음의 키/값 쌍이 사용됩니다.:</p>
+<ul>
+	<li>unsigned/true : 필드정의에서 &quot;UNSIGNED&quot; 를 생성합니다.</li>
+	<li>default/value : 필드정의에서 기본값을 설정합니다.</li>
+	<li>null/true : 필드정의에서 &quot;NULL&quot; 을 생성합니다. 설정하지않으면 기본으로 &quot;NOT NULL&quot;이 설정됩니다.</li>
+	<li>auto_increment/true : 필드정의에서 auto_increment 플래그를 설정합니다. 필드의 타입은 예를들어 integer 처럼 자동증가를 지원해야합니다.</li>
+  </ul>
+<p><code>$fields = array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_id' =&gt; array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'type' =&gt; 'INT',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'constraint' =&gt; 5, <br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'unsigned' =&gt; TRUE,<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'auto_increment' =&gt; TRUE<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_title' =&gt; array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'type' =&gt; 'VARCHAR',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'constraint' =&gt; '100',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_author' =&gt; array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'type' =&gt;'VARCHAR',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'constraint' =&gt; '100',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'default' =&gt; 'King of Town',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_description' =&gt; array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'type' =&gt; 'TEXT',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'null' =&gt; TRUE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+</code></p>
+<p>필드정의가 완료된 후 <dfn>$this-&gt;dbforge-&gt;add_field($fields);</dfn> 를 호출하고 최종적으로 <dfn>create_table()</dfn> 을 호출하여 적용시킵니다.</p>
+<h3>$this-&gt;dbforge-&gt;add_field()</h3>
+<p>이함수가 위의 배열을 수용합니다.</p>
+<h3>Passing strings as fields</h3>
+<p>필드가 어떤형태로 생성되어야 하는지 정확히 알고 있다면 , add_field() 를 사용할때 문자열로 넘겨주어도 됩니다. </p>
+<p><code>$this-&gt;dbforge-&gt;add_field(&quot;label varchar(100) NOT NULL DEFAULT 'default label'&quot;);</code></p>
+<p class="important">정보: <dfn>add_field()</dfn> 함수를 여러번 호출하면 그 결과는 누적됩니다.</p>
+<h3>아이디 필드 만들기 Creating an id field</h3>
+<p>아이디 필드를 만들때 특별한 예외가 있습니다. 아이디(id)타입의 필드는 자동으로 INT(9) 로 설정되며 자동증가되는 기본키(Primary Key)로 설정됩니다.</p>
+<p><code>$this-&gt;dbforge-&gt;add_field('id');<br />
+	// gives id INT(9) NOT NULL AUTO_INCREMENT</code></p>
+<h2><a name="add_key" id="add_key"></a>키 추가 Adding Keys</h2>
+<p>일반적으로 , 여러분은 테이블이 키를 가지고 있도록 만들것입니다. <dfn>$this-&gt;dbforge-&gt;add_key('field')</dfn>함수를 호출하시면 됩니다. 옵션으로 설정하는 두번째 파라미터를 TRUE로 하시면 기본키(primary key)가 될것입니다. 주의하실것은 <dfn>add_key()</dfn> 함수는 <dfn>create_table()</dfn> 함수 전에 실행되어야 한다는것입니다.</p>
+<p>기본키가 아닌 여러칼럼들은 반드시 배열로 설정해야 합니다.아래는 MySql 에 대한 예제입니다.</p>
+<p><code>$this-&gt;dbforge-&gt;add_key('blog_id', TRUE);<br />
+	// gives PRIMARY KEY `blog_id` (`blog_id`)<br />
+	<br />
+	$this-&gt;dbforge-&gt;add_key('blog_id', TRUE);<br />
+	$this-&gt;dbforge-&gt;add_key('site_id', TRUE);<br />
+	// gives PRIMARY KEY `blog_id_site_id` (`blog_id`, `site_id`)<br />
+	<br />
+	$this-&gt;dbforge-&gt;add_key('blog_name');<br />
+	// gives KEY `blog_name` (`blog_name`)<br />
+	<br />
+	$this-&gt;dbforge-&gt;add_key(array('blog_name', 'blog_label'));<br />
+	// gives KEY `blog_name_blog_label` (`blog_name`, `blog_label`)</code></p>
+<h2><a name="create_table" id="create_table"></a>테이블 생성 Creating a table</h2>
+<p>필드와 키들이 정의된후에 아래와 같이 새로운 테이블을 생성합니다.</p>
+<p><code>$this-&gt;dbforge-&gt;create_table('table_name');<br />
+// gives CREATE TABLE table_name</code></p>
+<p>옵션으로 제공되는 두번째 파라미터를 TRUE로 설정하면 &quot;IF NOT EXISTS&quot;절을 추가하게됩니다.</p>
+<p><code>$this-&gt;dbforge-&gt;create_table('table_name', TRUE);<br />
+// gives CREATE TABLE IF NOT EXISTS table_name</code></p>
+<h2><a name="drop_table" id="drop_table"></a>테이블 삭제 Dropping a table</h2>
+<p>테이블삭제( DROP TABLE )쿼리를 실행합니다 </p>
+<p><code>$this-&gt;dbforge-&gt;drop_table('table_name');<br />
+	// gives DROP TABLE IF EXISTS  table_name</code></p>
+<h2><a name="rename_table" id="rename_table"></a>테이블 이름 변경Renaming a table</h2>
+<p>테이블 이름변경(TABLE rename) 쿼리를 실행합니다 </p>
+<p><code>$this-&gt;dbforge-&gt;rename_table('old_table_name', 'new_table_name');<br />
+	// gives ALTER TABLE old_table_name RENAME TO new_table_name</code></p>
+<h1><a name="modifying_tables" id="modifying_tables"></a>테이블 수정 Modifying Tables</h1>
+<h2>$this-&gt;dbforge-&gt;add_column()</h2>
+<p>add_column() 함수는 이미 존재하는 테이블을 수정하기 위해 사용합니다.이 함수는 위에서 설명한것과 같은 배열을 사용할수 있으며 , 필드의 개수의 제한없이 사용할 수 있습니다.</p>
+<p><code>$fields = array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'preferences' =&gt; array('type' =&gt; 'TEXT')<br />
+);<br />
+$this-&gt;dbforge-&gt;add_column('table_name', $fields);<br />
+<br />
+// gives ALTER TABLE table_name ADD   	preferences TEXT</code></p>
+<h2>$this-&gt;dbforge-&gt;drop_column()</h2>
+<p>테이블에서 칼럼을 제거하기위해 사용합니다.</p>
+<p><code>$this-&gt;dbforge-&gt;drop_column('table_name', 'column_to_drop');</code></p>
+<h2>$this-&gt;dbforge-&gt;modify_column()</h2>
+  <p>이 함수의 사용법은 add_column() 함수와 동일합니다만, 새로운 칼럼을 추가하는것이아니라 기존의 칼럼을 수정하는데 사용합니다.
+    칼럼 명을 수정하기 위해서는 배열에 &quot;name&quot; 키가 있어야합니다.</p>
+<p><code>$fields = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'old_name' =&gt; array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' =&gt; 'new_name',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'type' =&gt; 'TEXT',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+);<br />
+$this-&gt;dbforge-&gt;modify_column('table_name', $fields);<br />
+	<br />
+	// gives ALTER TABLE table_name CHANGE   	old_name new_name TEXT </code></p>
+<p>&nbsp;</p>
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="caching.html">DB Caching Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="utilities.html">Database Utilities Class</a><a href="../libraries/email.html"></a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

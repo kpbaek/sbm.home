@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Common Functions : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Auto-loading Resources
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>일반 함수들Common Functions</h1>
+
+<p>CodeIgniter 는 약간의 글로벌 함수를 지정해 두었으며, 여러분은 어떤곳에서도 그 함수들을 사용할 수 있습니다. 그 함수들은 별도의 라이브러리나 헬퍼의 로드과정이 필요없습니다.</p>
+<h2>is_really_writable('<var>path/to/file</var>')</h2>
+<p>is_writable() 함수는 윈도우 서버에서 해당파일이 읽기전용일때도 TRUE 를 반환합니다.그에 반해 본 함수는 실재로 파일을 작성해봐서 파일을 쓸수있는지를 확인합니다. OS 가 제공하는 쓰기가능 여부 정보를 신뢰할수 없을때만 사용하세요 .</p>
+<code>if (is_really_writable('file.txt'))<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo &quot;I could write to this if I wanted to&quot;;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo &quot;File is not writable&quot;;<br />
+}</code>
+<h2>config_item('<var>item_key</var>')</h2>
+<p>환경설정은<a href="../libraries/config.html"> 환경설정 </a>라이브러리 를 사용하시는것이 좋습니다. 그러나 config_item() 함수를 이용해서도 단일 키를 가져올수 있습니다. <a href="../libraries/config.html">환경설정</a> 라이브러리 페이지를 보시면 더 자세한 정보가 있습니다. </p>
+<h2>show_error('<var>message</var>'), show_404('<var>page</var>'), log_message('<var>level</var>', '<samp>message</samp>')</h2>
+<p>이 함수들은 <a href="errors.html">에러 핸들링</a> 페이지를 참고하세요. </p>
+
+  <h2><font color="#FF3366">set_status_header</font>(<var>code</var>, '<var>text</var>');</h2>
+
+  <p>서버의 status header를 직접 설정할때 씁니다. 예:</p>
+
+<code>set_status_header(401);<br />
+  // 헤더를: Unauthorized</code> 로 설정합니다
+  <p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">요기</a>에서
+    헤더에 사용할 수 있는 설정목록을 확인 하세요.</p>
+  <h2><font color="#FF0066">remove_invisible_characters</font>(<var>$str</var>)</h2>
+  <p>ascii 문자 사이에 null문자가 들어가는것을 방지합니다.예:Java\0script.</p>
+
+
+<h2>html_escape(<var>$mixed</var>)</h2>
+  <p> htmlspecialchars() 함수의 단축버전입니다. 문자열이나 배열을 넘겨줄 수 있습니다. 크로스 사이트 스크립팅(XSS)
+    방어에 유용합니다.</p>
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="autoloader.html">Auto-loading Resources</a><a href="hooks.html"></a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="scaffolding.html">Scaffolding</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

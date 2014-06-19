@@ -1,0 +1,477 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>XML-RPC and XML-RPC Server Classes : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+XML-RPC and XML-RPC Server Classes
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>XML-RPC and XML-RPC Server Classes</h1>
+
+
+<p> XML-RPC 클래스를 이용하시면 다른 서버로 요청을 보낼수 있으며 여러분의 XML-RPC 서버를 설정하여 요청을 받을수도 있습니다.</p>
+
+
+<h2>XML-RPC란 무엇인가 What is XML-RPC?</h2>
+
+<p>간단히 말해 XML로 인터넷을 통해 두 컴퓨터가 통신하는 방법입니다.먼저 <dfn>클라이언트</dfn>라는 컴퓨터가 XML-RPC <strong>요청</strong> 을 <dfn>서버</dfn>라고 하는 다른컴퓨터에 에 보냅니다 <dfn></dfn>.  일단 서버가 요청을 받아들이고 처리하면, 다시 <strong>응답</strong> 을 클라이언트로 보내게 됩니다.</p>
+
+<p>예를들어 , MetaWeblog API 를 사용할때 ,  XML-RPC 클라이언트(보통 데스크탑 게시(publishing) 툴)는 여러분의 사이트에서 돌아가고 있는 XML-RPC 서버에 요청을 보내게 됩니다.  이 요청은 새로운 웹로그 입력이거나,기존 웹로그의 수정에 대한 요청일 것입니다.
+
+XML-RPC 서버가 이 요청을 수신하면 서버는 어떤 클래스/함수 가 요청을 처리할지를 결정합니다.
+처리가 완료되면 , 서버는 응답메세지를 되돌려주게 됩니다.</p>
+
+<p>좀더 자세한 정의를 보시려면 , <a href="http://www.xmlrpc.com/">XML-RPC</a> 사이트를 참고하세요 .(영어).</p>
+
+<h2>클래스 초기화 Initializing the Class</h2>
+
+<p>대부분의 다른 클래스들 처럼 XML-RPC 와 XML-RPCS 클래스도 컨트롤러에서 <dfn>$this->load->library</dfn> 함수를 통해 초기화 됩니다:</p>
+
+<p>Xml RPC 클래스를 로드하려면 아래와 같이 합니다:</p>
+<code>$this->load->library('xmlrpc');</code>
+<p>일단 로드되면 xml-rpc 라이브러리는 <dfn>$this->xmlrpc </dfn>로 사용할 수 있습니다. </p>
+
+<p>XML-RPC 서버클래스는 아래와같이 합니다:</p>
+<code>
+$this->load->library('xmlrpc');<br />
+$this->load->library('xmlrpcs');
+</code>
+<p>일단 로드되면 ,xml-rpcs 라이브러리 객체는 <dfn>$this->xmlrpcs</dfn>로 사용할 수 있습니다. </p>
+
+<p class="important"><strong>참고:</strong>&nbsp; XML-RPC 서버클래스를 사용할때는 XML-RPC 클래스와 XML-RPC 서버클래스 둘다 로드해야 합니다.</p>
+
+
+
+<h2>XML-RPC 요청 보내기 Sending XML-RPC Requests</h2>
+
+<p>요청을 XML-RPC 서버에 보내려면 다음 정보를 먼저 정의해야합니다:</p>
+
+<ul>
+<li>서버의 URL</li>
+<li>서버에서 호출하고자하는 메소드 </li>
+<li>요청 데이터(아래에서 설명함 ).</li>
+</ul>
+
+<p>아래는 간단한 Weblogs.com 핑(ping)을 <a href="http://pingomatic.com/">Ping-o-Matic</a> 로 보내는 예제입니다.</p>
+
+
+<code>$this->load->library('xmlrpc');<br />
+<br />
+$this->xmlrpc->server('http://rpc.pingomatic.com/', 80);<br />
+$this->xmlrpc->method('weblogUpdates.ping');<br />
+
+<br />
+$request = array('My Photoblog', 'http://www.my-site.com/photoblog/');<br />
+$this->xmlrpc->request($request);<br />
+<br />
+if ( ! $this->xmlrpc->send_request())<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this-&gt;xmlrpc->display_error();<br />
+}</code>
+
+<h3>설명</h3>
+
+<p>위코드에서 , XML-RPC 클래스를 초기화 하고, 서버URL 과 호출한 메소드(weblogUpdates.ping)를 설정합니다.전송할   요청(이경우,  제목과 여러분 사이트URL)을 배열에 넣고 request() 함수를 사용하여 합칩니다.
+마지막으로, 전체 요청을 보냅니다. 만약   <dfn>send_request()</dfn> 메소드가 false를 리턴하면 XML-RPC 서버로부터 되돌아오는 에러메세지를 표시하게 됩니다.</p>
+
+<h2>요청 해부 Anatomy of a Request</h2>
+
+<p> XML-RPC <dfn>요청(request)</dfn> 는 간단히 말하면 XML-RPC 로 보내는 데이터 입니다.  요청을 구성하는 조각데이터들은 <dfn>요청파라미터(request parameter</dfn>)로써 참조됩니다 . 위 예제에서는 두개의 파라미터를 사용했습니다:
+제목과 여러분 사이트URL가 그것입니다. XML-RPC 서버가 여러분의 요청을 받으면, 필요한 파라미터도 같이 넘어올 것이라고 기대합니다.</p>
+
+<p>요청파라미터는 반드시 배열에 담아야하며, 각 파라미터는 7가지의 데이터타입(strings, numbers, dates, etc.)중 하나로 해야합니다. 만약 파라미터가 문자열(string) 타입이 아니라면, 요청에 데이터타입을 포함해야 합니다..</p>
+
+<p>아래는 3개의 파라미터 설정 예제입니다:</p>
+
+<code>$request = array('John', 'Doe', 'www.some-site.com');<br />
+$this->xmlrpc->request($request);</code>
+
+<p>만약 파라미터가 문자열(string)타입이 아니라면, 아래와같이 배열내에 다시 배열을 삽입하고 데이터형을 같이 설정해주셔야 합니다:</p>
+
+<code>
+$request = array (<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('John', 'string'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array('Doe', 'string'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(FALSE, 'boolean'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(12345, 'int')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+<br />
+$this->xmlrpc->request($request);</code>
+
+<a href="#datatypes">데이터타입</a>  섹션을 보시면 모든 데이터타입목록을 확인하실 수 있습니다.
+<h2>XML-RPC 서버 생성 Creating an XML-RPC Server</h2>
+
+<p> XML-RPC 서버는 교통경찰같이 동작합니다. 요청을 기다리고 들어온 요청에 대해서는 적합한 함수로 연결(redirect) 해 줍니다.</p>
+
+<p>XML-RPC 서버를 생성하려면,요청을 받을 컨트롤러에서 XML-RPC 서버 클래스를 초기화하고 들어온 요청을 적절한 클래스/함수로 연결하는 규칙을 배열로 설정해야 합니다.</p>
+
+<p>아래 예제를 보세요:</p>
+
+<code>
+$this->load->library('xmlrpc');<br />
+$this->load->library('xmlrpcs');<br />
+<br />
+$config['functions']['<var>new_post</var>'] = array('function' => '<dfn>My_blog.new_entry</dfn>'),<br />
+$config['functions']['<var>update_post</var>'] = array('function' => '<dfn>My_blog.update_entry</dfn>');<br />
+$config['object'] = $this;<br />
+<br />
+$this->xmlrpcs->initialize($config);<br />
+$this->xmlrpcs->serve();</code>
+
+<p>위예제는 서버가 받아들일 두가지 요청처리 메소드를 정의하고 있습니다.
+요청을 받는 메소드는 배열의 왼쪽에 있습니다. 둘중 하나의 요청이 들어오면, 오른쪽에 있는 클래스/함수로 매핑됩니다.</p>
+
+<p>'<var>object</var>'키는 실재객체(instantiated class object)를 전달하는 특별한 키입니다. 매핑하고자하는 메소드가 CodeIgniter  부모객체(super object)의 일부가 아닐때 필요합니다.</p>
+	
+<p>다시말해,  XML-RPC 클라이언트가 <var>new_post</var> 메소드에 대한 요청을 전송하면, 여러분의 서버는 <dfn>My_blog</dfn> 클래스를 로드한후 <dfn>new_entry</dfn> 함수를 호출합니다.<var>update_post</var> 메소드에 대한 요청이 들어오면 , 서버는 <dfn>My_blog</dfn> 클래스를 로드한 후 <dfn>update_entry</dfn> 함수를 호출 합니다.</p>
+
+<p>위 예제의 함수이름은 임의로 지은것입니다.  </p>
+  <p>서버 클래스를 초기화 할때 사용할 수 있는 두개의 추가 설정 키가 있습니다.<var>debug</var> 를 TRUE 로 설정하면, 
+    디버깅이 활성화 되며 <var>xss_clean</var> 를 FALSE 로 두면 전송하는 데이터에 Security 라이브러리의 xss_clean 
+    함수를 적용하지 않습니다.. 
+  <h2>서버 요청 처리 Processing Server Requests</h2>
+
+<p>XML-RPC 서버가 요청을 받고 클래스/메소드 를 로드하면, 클라이언트로 부터 받은 데이터를 그 메소드로 넘겨주게 됩니다.</p>
+
+<p>위의 예제에서 <var>new_post</var> 메소드가 요청되면, 서버는 아래와 같은 형태의 클래스가 있을것이라고 기대합니다:</p>
+
+  <code>class <kbd>My_blog</kbd> extends CI_Controller {<br />
+  <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;function <kbd>new_post</kbd>(<var>$request</var>)<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;{<br />
+  <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+  } </code> 
+  <p><var>$request</var> 변수는 서버에서 구성(compile)된 객체이며,클라이언트로부터 전달된 데이터를 포함하고 있습니다.요청을 처리하기위해
+요청파라미터(<em>request parameters</em>)에 접근하려면 이 객체를 사용합니다. 처리가 끝나면 여러분은 <dfn>응답(Response)</dfn>을 클라인트에게 되돌려줄것입니다.</p>
+
+<p>아래는 Blogger API를 사용한 실재 예제입니다.  <dfn>getUserInfo()</dfn>는 
+Blogger API 의 한 메소드 입니다.이 메소드를 이용하여 , XML-RPC 클라이언트는 서버로 사용자이름과 암호를 전송하고 특정사용자에대한 정보(nickname, user ID, email address, 등.)를 받습니다.  아래예제는 그 과정을 보여줍니다:</p>
+
+
+  <code>class <kbd>My_blog</kbd> extends CI_Controller {<br />
+  <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;function <kbd>getUserInfo</kbd>(<var>$request</var>)<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;{<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$username = 'smitty';<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$password = 'secretsmittypass';<br />
+  <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this->load->library('xmlrpc');<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$parameters&nbsp;=&nbsp;$request->output_parameters();<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($parameters['1'] != 
+  $username AND $parameters['2'] != $password)<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this->xmlrpc->send_error_message('100',&nbsp;'Invalid&nbsp;Access');<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$response&nbsp;=&nbsp;array(array('nickname'&nbsp;&nbsp;=>&nbsp;array('Smitty','string'),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'userid'&nbsp;&nbsp;&nbsp;&nbsp;=>&nbsp;array('99','string'),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'url'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=>&nbsp;array('http://yoursite.com','string'),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'email'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=>&nbsp;array('jsmith@yoursite.com','string'),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'lastname'&nbsp;&nbsp;=>&nbsp;array('Smith','string'),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'firstname'&nbsp;=>&nbsp;array('John','string')<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct');<br />
+  <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return $this->xmlrpc->send_response($response);<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+  } </code> 
+  <h3>참고:</h3>
+<p><dfn>output_parameters()</dfn> 함수는 클라이언트가 전송한 파라미터에 대응하는 배열을 복원(retrieve)해 냅니다. 위 예제애서, 출력 파라미터(output parameters)는  username ,password가 될것입니다.</p>
+
+<p>만약 클라이언트가 전송한 username,password 가 틀린것이라면<dfn>send_error_message()</dfn>함수를 통해 에러메세지를 리턴합니다. </p>
+
+<p>동작이 성공적으로 끝나면 클라이언트는 사용자 정보를 포함한 응답을 받게 됩니다.</p>
+
+
+<h2>응답 구성 Formatting a Response</h2>
+
+<p><em>요청(Requests) 이나 응답(Responses</em>)은 반드시 배열로 구성되어야 합니다.  그러나, 요청(request)과는 달리 응답(response)은 <strong>단일 아이템</strong>을 포함한 배열입니다.  이 아이템은 여러 배열을 포함한 배열일수 있지만, 단 하나의 배열인덱스만을 포함할수 있습니다.다시말하면 , 아래예제가 기본적인 형태입니다:</p>
+
+<code>$response = array('Response data',  'array');</code>
+
+<p> 응답(Response)은 보통 여러가지 정보를 포함합니다. 그렇게 하기 위해서는 아래와같이 단일 배열안애 여러가지 정보가 들어간 하위배열을 구성하시면 됩니다:</p>
+
+<code>
+$response = array (<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'first_name' => array('John', 'string'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'last_name' => array('Doe', 'string'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'member_id' => array(123435, 'int'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'todo_list' => array(array('clean house', 'call mom', 'water plants'), 'array'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+</code>
+
+<p class="important">위 배열은 <dfn>struct</dfn>로 구성되어 있습니다. 이런형태는 가장 일반적으로 사용하는 응답구성입니다.</p>
+
+<p>요청과 마찬가지로 응답또한 7가지 데이터타입을 사용할 수 있습니다.</p>
+
+
+<h2>에러응답 전송하기Sending an Error Response</h2>
+
+<p>클라이언트에게 에러를 전송해야할경우 아래와 같이 하시면 됩니다:</p>
+
+<code>return $this->xmlrpc->send_error_message('123', 'Requested data not available');</code>
+
+<p>첫번째 파라미터는 에러번호이고 ,두번째 파라미터는 메세지 입니다.</p>
+
+
+
+
+
+
+<h2>클라이언트와 서버 만들기 Creating Your Own Client and Server</h2>
+
+<p>지금까지의 설명에 대한 이해를 돕기위해서 XML-RPC 클라이언트 와 서버를 직접 만들어봅시다.  </p>
+
+<h3>클라이언트 The Client</h3>
+
+<p><dfn>xmlrpc_client.php</dfn> 라는 파일을 만드신후 아래 코드를 삽입하고 <samp>applications/controllers/</samp> 폴더에 저장합니다:</p>
+
+<textarea class="textarea" style="width:100%" cols="50" rows="32">&lt;?php
+
+class Xmlrpc_client extends CI_Controller {
+	
+	function index()
+	{	
+		$this->load->helper('url');
+		$server_url = site_url('xmlrpc_server');
+	
+		$this->load->library('xmlrpc');
+		
+		$this->xmlrpc->server($server_url, 80);
+		$this->xmlrpc->method('Greetings');
+		
+		$request = array('How is it going?');
+		$this->xmlrpc->request($request);	
+		
+		if ( ! $this->xmlrpc->send_request())
+		{
+			echo $this->xmlrpc->display_error();
+		}
+		else
+		{
+			echo '<pre>';
+			print_r($this->xmlrpc->display_response());
+			echo '</pre>';
+		}
+	}
+}
+?></textarea>
+
+<p>참고: 위 예제에서"url helper"를 사용하였습니다.  <a href="../general/helpers.html">Helpers Functions</a> 페이지를 보시면 자세한 정보가 있습니다.</p>
+
+<h3>서버 The Server</h3>
+
+<p><dfn>xmlrpc_server.php</dfn>파일을 만드신후 아래 코드를 삽입하고 <samp>applications/controllers/</samp> 폴더에 저장합니다:</p>
+
+<textarea class="textarea" style="width:100%" cols="50" rows="30">&lt;?php
+
+class Xmlrpc_server extends CI_Controller {
+
+	function index()
+	{
+		$this->load->library('xmlrpc');
+		$this->load->library('xmlrpcs');
+		
+		$config['functions']['Greetings'] = array('function' => 'Xmlrpc_server.process');
+		
+		$this->xmlrpcs->initialize($config);
+		$this->xmlrpcs->serve();
+	}
+	
+	
+	function process($request)
+	{
+		$parameters = $request->output_parameters();
+		
+		$response = array(
+							array(
+									'you_said'  => $parameters['0'],
+									'i_respond' => 'Not bad at all.'),
+							'struct');
+						
+		return $this->xmlrpc->send_response($response);
+	}
+}
+?></textarea>
+
+<h3>해봅세!</h3>
+
+<p>자 이제 아래와 같은 url 로 접근해 봅시다:</p>
+<code>example.com/index.php/<var>xmlrpc_client</var>/</code>
+
+<p>여러분이 서버로 보낸메세지와 응답을 보실수 있습니다.</p>
+
+<p>클라이언트는 "How's is going?" 메세지를 "Greetings" 메소드요청과 함께서버로 보냅니다.
+서버는 요청을 받아들인후 "process" 함수로 매핑하여 응답을 돌려줍니다.</p>
+
+<h2>요청 파라미터로 연관배열 사용하기 Using Associative Arrays In a Request Parameter</h2>
+
+<p>만약 메소드의 파라미터에 연관배열을 사용하고자 한다면 struct 데이터타입을 사용하셔야합니다:</p>
+
+<code>$request = array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Param 0<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'=&gt;'John'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Param 1<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	'size'=&gt;'large',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'shape'=&gt;'round'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+	$this-&gt;xmlrpc-&gt;request($request);</code>
+	
+<p>서버에서 요청을 처리할때 연관배열을 아래와같이 사용(retrieve)할 수 있습니다.</p>
+
+<code>$parameters = $request-&gt;output_parameters();<br />
+	$name = $parameters['0']['name'];<br />
+	$size = $parameters['1']['size'];<br />
+	$size = $parameters['1']['shape']; </code>
+
+<h1>XML-RPC 함수 레퍼런스 XML-RPC Function Reference</h1>
+
+<h2>$this->xmlrpc->server()</h2>
+<p>요청을 보낼 서버의 URL과 포트번호를 설정합니다:</p>
+<code>$this->xmlrpc->server('http://www.sometimes.com/pings.php', 80);</code>
+
+<h2>$this->xmlrpc->timeout()</h2>
+<p>요청이 취소될 타임아웃 기간을 초단위로 설정합니다:</p>
+<code>$this->xmlrpc->timeout(6);</code>
+
+<h2>$this->xmlrpc->method()</h2>
+<p>XML-RPC 서버로부터 요청될 메소드를 설정합니다:</p>
+<code>$this->xmlrpc->method('<var>method</var>');</code>
+
+<p><var>method</var> 는 메소드의 이름입니다.</p>
+
+<h2>$this->xmlrpc->request()</h2>
+<p>데이터배열을 받아서 서버로 전송될 데이터를 구성합니다:</p>
+<code>$request = array(array('My Photoblog', 'string'), 'http://www.yoursite.com/photoblog/');<br />
+$this->xmlrpc->request($request);</code>
+
+<h2>$this->xmlrpc->send_request()</h2>
+<p>요청을 보내는 함수 입니다.  성공여부에 따라서TRUE 나FALSE를 리턴합니다.</p>
+
+<h2>$this->xmlrpc->set_debug(TRUE);</h2>
+<p>디버깅을 활성화 합니다. 여러가지 정보를 표시해주므로 개발시에 유용합니다.</p>
+
+
+<h2>$this->xmlrpc->display_error()</h2>
+<p>요청 실패에대한 에러메세지를 문자열로 리턴합니다.</p>
+<code>echo $this->xmlrpc->display_error();</code>
+
+<h2>$this->xmlrpc->display_response()</h2>
+<p>요청을 하면 서버는 응답을 리턴합니다. 응답은 일반적으로 연관배열입니다.</p>
+<code>$this->xmlrpc->display_response();</code>
+
+<h2>$this->xmlrpc->send_error_message()</h2>
+<p>이 함수를 이용하시면 서버에서 클라이언트로 에러메세지를 전송할수 있습니다. 첫번째 파라미터는 에러번호 , 두번재 파라미터는 에러메세지 입니다.</p>
+<code>return $this->xmlrpc->send_error_message('123', 'Requested data not available');</code>
+
+<h2>$this->xmlrpc->send_response()</h2>
+<p>서버에서 클라이언트로 응답을 전송할때 사용합니다.이 메소드를 사용할때 반드시 적합한 데이터가 하나의 배열로 전송되어야 합니다.</p>
+<code>$response = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'flerror' => array(FALSE, 'boolean'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'message' => "Thanks for the ping!"<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct');<br />
+return $this->xmlrpc->send_response($response);</code>
+
+
+<a name="datatypes"></a>
+<h2>데이터타입 Data Types</h2>
+
+<p><a href="http://www.xmlrpc.com/spec">XML-RPC 스펙(spec)</a> 에 따라 아래와 같이 7가지 데이터타입을 사용하실 수 있습니다:</p>
+
+<ul>
+<li><em>int</em> or <em>i4</em></li>
+<li><em>boolean</em></li>
+<li><em>string</em></li>
+<li><em>double</em></li>
+<li><em>dateTime.iso8601</em></li>
+<li><em>base64</em></li>
+<li><em>struct</em> (contains array of values)</li>
+<li><em>array</em> (contains array of values)</li>
+</ul>
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="user_agent.html">User Agent Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="zip.html">Zip Encoding Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

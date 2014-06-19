@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Trackback Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Trackback Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>트랙백 Trackback Class</h1>
+
+<p>트랙백 클래스를 이용하시면 트랙백데이터를 보내거나 받을 수 있습니다.</p>
+
+
+<p>트랙백에 익숙하지않으시면 <a href="http://en.wikipedia.org/wiki/Trackback">여기</a>를 참조해주세요.</p>
+
+<h2>클래스 초기화 Initializing the Class</h2>
+
+<p>CodeIgniter의 다른 클래스들 처럼 , 트랙백클래스도 컨트롤러에서 <dfn>$this->load->library</dfn> 함수를 이용해 초기화 합니다:</p>
+
+<code>$this->load->library('trackback');</code>
+<p>일단 로드 되면, <dfn>$this->trackback </dfn>로 트랙백 객체를 이용하시면됩니다.</p>
+
+
+<h2>트랙백 보내기 Sending Trackbacks</h2>
+
+<p>컨트롤러내 어떤 함수에서라도 아래와 같은 코드로 트랙백을 보낼수 있습니다:</p>
+
+<code>$this->load->library('trackback');<br />
+<br />
+$tb_data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ping_url'&nbsp;&nbsp;=> 'http://example.com/trackback/456',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'url'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'http://www.my-example.com/blog/entry/123',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'The Title of My Entry',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'excerpt'&nbsp;&nbsp;&nbsp;=> 'The entry content.',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_name' => 'My Blog Name',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'charset'&nbsp;&nbsp;&nbsp;=> 'utf-8'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+if ( ! $this->trackback->send($tb_data))<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo $this->trackback->display_errors();<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo 'Trackback was sent!';<br />
+}</code>
+
+<p>배열 데이터 설명:</p>
+
+<ul>
+<li><strong>ping_url</strong> - 트랙백을 보내는 사이트의 URL 입니다(여러분 사이트의 입장에서 보면 받는 사이트가 되겠죠). 콤마로 구분하여 여러 URL에 보낼수도 있습니다.</li>
+<li><strong>url</strong> - 웹로그표제어(weblog entry)를 가지고 있는여러분 사이트의  URL 입니다.</li>
+<li><strong>title</strong> - 웹로그표제어의 제목입니다.</li>
+<li><strong>excerpt</strong> - 여러분의 웹로그표제어의 내용입니다. 참고: 트랙백클래스는 표제어중 앞 500글자만 자동전송하며, HTML 을 모두 벗겨집니다(제거됩니다).</li>
+<li><strong>blog_name</strong> - 웹로그의 이름입니다.</li>
+<li><strong>charset</strong> - 여러분 웹로그의 문자 인코딩입니다.생략하시면, UTF-8 이 사용됩니다.</li>
+</ul>
+
+<p>트랙백 전송함수는 성공여부에 따라서 TRUE/FALSE 를 반환합니다.실패한다면, 아래함수를 사용하여 에러메세지를 추출하실 수 있습니다:</p>
+
+<code>$this->trackback->display_errors();</code>
+
+
+<h2>트랙백 받기 Receiving Trackbacks</h2>
+
+<p>트랙벡을 받기전에 반드시 웹로그(weblog)를 생성하셔야 합니다.  만약 아직 블로그가 없으시다면, 더 진행하는것은 의미가 없겠죠 .</p>
+
+<p>트랙백을 받는것은 보내는것보다 약간 더 복잡합니다 . 받은것을 저장할 데이터베이스 테이블이 필요하고 , 입력되는 트랙백데이터가 유효한지도 확인해야 하기때문 입니다.  스팸이나, 중복데이터를 방지하기 위해서 전반적인 검증코드의 작성이 필요합니다.또한 특정 IP 에서 주어진 시간간격안에 넘어오는 트랙백 개수를 제한하여 스팸을 방지할 필요도 있을것입니다.  트랙백을 받는 절차는 상당히 간단합니다.;
+검증부분이 대부분의 작업을 차지합니다.</p>
+
+<h2>Your Ping URL</h2>
+
+<p>트랙백을 수신하기 위해서는 각 웹로그표제어(weblog entries)옆에 트랙백 URL을 표시해야 합니다.이 URL 을 가지고 사람들은 여러분에게 트랙백을 보낼수 있게 됩니다 (우리는 이것을 여러분의 "Ping URL"로 참조하게 됩니다).</p>
+
+<p>Ping URL은 트랙백을 수신할 컨트롤러의 함수를 가리키고 있어야 하며, 각 웹로그표제어의 아이디를 포함해야 합니다. 그래야만 트랙백을 수신받았을때 , 특정표제어와 연관시켜 작업하실 수 있습니다.</p>
+
+<p>예를들어, 컨트롤러 클래스가 <dfn>Trackback</dfn>이고, 수신함수가 <dfn>receive</dfn>이면 Ping URL은 아래와 같이 구성됩니다:</p>
+
+<code>http://example.com/index.php/trackback/receive/<samp>entry_id</samp></code>
+
+<p><samp>entry_id</samp> 는 여러분 웹로그 각 표제어의 유일한 아이디 입니다.</p>
+
+
+<h2>트랙백 테이블 생성 Creating a Trackback Table</h2>
+
+<p>트랙백을 수신하기전에 수신한 트랙백을 저장할 테이블을 만들어야 합니다.  아래는 그 테이블의 기본 프로토타입입니다:</p>
+
+<textarea class="textarea" style="width:100%" cols="50" rows="13">
+CREATE TABLE trackbacks (
+ tb_id int(10) unsigned NOT NULL auto_increment,
+ entry_id int(10) unsigned NOT NULL default 0,
+ url varchar(200) NOT NULL,
+ title varchar(100) NOT NULL,
+ excerpt text NOT NULL,
+ blog_name varchar(100) NOT NULL,
+ tb_date int(10) NOT NULL,
+ ip_address varchar(16) NOT NULL,
+ PRIMARY KEY `tb_id` (`tb_id`),
+ KEY `entry_id` (`entry_id`)
+);</textarea>
+
+
+<p>트랙백의 정의에서는 수신할때 단지 4개의 정보만을 요구합니다[url, 제목(title), 발췌문(excerpt),블로그이름( blog_name)]. 그러나 데이터 사용성을 높이기위해 우리는 몇개의 필드를 더 추가했습니다(날짜, IP 주소 등).</p>
+
+<h2>트랙백 처리 Processing a Trackback</h2>
+
+<p>아래는 어떻게 트랙백을 수신하여 처리하는지를 보여주는 예제입니다.  아래코드는 트랙백을 수신하는 컨트롤러 함수내에서 사용해야합니다.</p>
+
+<code>$this->load->library('trackback');<br />
+$this->load->database();<br />
+<br />
+if ($this->uri->segment(3) == FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->trackback->send_error("Unable to determine the entry ID");<br />
+}<br />
+<br />
+if ( ! $this->trackback->receive())<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->trackback->send_error("The Trackback did not contain valid data");<br />
+}<br />
+<br />
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'tb_id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> '',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'entry_id'&nbsp;&nbsp;&nbsp;=> $this->uri->segment(3),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'url'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> $this->trackback->data('url'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> $this->trackback->data('title'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'excerpt'&nbsp;&nbsp;&nbsp;&nbsp;=> $this->trackback->data('excerpt'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'blog_name'&nbsp;&nbsp;=> $this->trackback->data('blog_name'),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'tb_date'&nbsp;&nbsp;&nbsp;&nbsp;=> time(),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ip_address' => $this->input->ip_address()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$sql = $this->db->insert_string('trackbacks', $data);<br />
+$this->db->query($sql);<br />
+<br />
+$this->trackback->send_success();</code>
+
+<h4>참고:</h4>
+
+<p>표제어아이디(entry ID)번호는 URL의 세번째 파라미터로 넘어온다고 가정합니다.  이것은 이전에 부여했던 URI 예제에 근거합니다:</p>
+
+<code>http://example.com/index.php/trackback/receive/<samp>entry_id</samp></code>
+
+<p>표제어아이디(entry_id)는 URI 세그먼트의 세번째 요소이고,아래아 같이 추출해 낼수 있습니다:</p>
+
+<code>$this->uri->segment(3);</code>
+
+<p>위의 트랙백 수신코드에서는 ,세번째 세그먼트가 빠질경우, 에러가 발생됩니다.  유효한 표제어아이디(entry ID)가 없을경우 , 계속할 필요가 없겠죠 .</p>
+
+<p><dfn>$this->trackback->receive()</dfn> 함수는 들어오는데이터를 조사하여 필요한 4가지 데이터(url, title, excerpt, blog_name)가 포함되어있는지를 확인합니다. 그 결과에따라서 TRUE 나 FALSE 를 반환합니다.  실패시 에러메세지를 발생시킵니다.</p>
+
+<p>들어오는 트랙백데이터는 아래와 같이 추출할수 있습니다:</p>
+
+<code>$this->trackback->data('<var>item</var>')</code>
+
+<p><var>item</var> 부분은 4가지 정보중 하나를 나타냅니다: url, title, excerpt, or blog_name</p>
+
+<p>트랙백데이터가 성공적으로 수신되면, 여러분은 아래와 같이 성공메세지를 발생시키시겠지요 :</p>
+
+<code>$this->trackback->send_success();</code>
+
+<p class="important"><strong>참고:</strong> 위 코드는 데이터검증부분이 빠져있으므로 여러분이 직접 추가하셔야 합니다.</p>
+
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="sessions.html">Session Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="parser.html">Template Parser Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

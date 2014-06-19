@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Output Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Output Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>출력 Output Class</h1>
+
+<p>출력클래스는 하나의 주 함수를 가진 작은 클래스 입니다:  브라우저로 최종결과물을 보낼때 사용합니다.또한 웹페이지의 <a href="../general/caching.html">캐싱(caching)</a> 을 사용하신다면 그부분도 담당합니다.</p>
+
+<p class="important"><strong>참고:</strong> 이클래스는 시스템에서 자동으로 초기화 됩니다.</p>
+
+<p>일반적인 상황에서 여러분은 출력클래스의 존재를 알아채지도 못할것입니다. 출력클래스는 여러분의 간섭이 필요하지않으며 투명하게 작동합니다.
+예를들어 ,뷰 파일을 로드하기 위해 <a href="../libraries/loader.html">로더(Loader)</a> 클래스를 사용할때 , 로더는 자동으로 그것을 CI 에서 최종적으로 자동 호출 되는 출력클래스로 전달합니다.
+그러나, 필요하면 다음 두 함수를 이용하여 출력클래스를 작동에 여러분이 끼어들수 있습니다:</p>
+
+<h2>$this->output->set_output();</h2>
+
+<p>최종 출력 문자열을 수동으로 설정할수 있도록 해 줍니다. 사용예:</p>
+
+<code>$this->output->set_output($data);</code>
+
+<p><strong>중요:</strong> 만약 출력을 수동으로 설정한다면, 출력설정을 하는 함수에서 마지막으로 수행하는 작업이 되어야 합니다.
+예를들어 , 컨트롤러의 어떤함수에서 페이지를 생성한다면, 반드시 맨 마지막에 출력을 설정하셔야 합니다.</p>
+
+<h2>$this->output->set_content_type();</h2>  <p>JSON 데이터, JPEG's, XML 등을 손쉽게 제공하기 위해서 마임타입을 (mime-type)을 설정합니다.</p>
+
+<code>$this->output<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;->set_content_type('application/json')<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;->set_output(json_encode(array('foo' => 'bar')));<br/>
+<br/>
+$this->output<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;->set_content_type('jpeg') // You could also use ".jpeg" which will have the full stop removed before looking in config/mimes.php<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;->set_output(file_get_contents('files/something.jpg'));</code>
+
+  <p><strong>주의:</strong> config/mimes.php 에 있는 마임타입 외의 것을 설정하면, 작동하지않습니다.</p>
+
+
+
+<h2>$this->output->get_output();</h2>
+
+<p>출력 클래스에서 저장을 위해서 전송되는 어떤 내용이라도 뽑아낼수 있게 해줍니다.사용예:</p>
+<code>$string = $this->output->get_output();</code>
+
+<p>이미 출력클래스로 전송된 데이터만 가져올수 있다는것을 명심하세요 .예를들어 <var>$this->load->view()</var>함수 등을 호출하면 데이터가 출력클래스로 전송된답니다. </p>
+
+<h2>$this->output->append_output();</h2>  <p>출력 문자열에 데이터를 추가합니다. 예:</p>
+
+<code>$this->output->append_output($data);</code>
+
+
+
+<h2>$this->output->set_header();</h2>
+
+<p>서버헤더(server headers)를 설정하는데 사용합니다.예:</p>
+
+<code>
+$this->output->set_header("HTTP/1.0 200 OK");<br />
+$this->output->set_header("HTTP/1.1 200 OK");<br />
+$this->output->set_header('Last-Modified: '.gmdate('D, d M Y H:i:s', $last_update).' GMT');<br />
+$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");<br />
+$this->output->set_header("Cache-Control: post-check=0, pre-check=0");<br />
+$this->output->set_header("Pragma: no-cache");	</code>
+
+
+<h2>$this->output->set_status_header();</h2>
+
+<p>서버상태를 설정하는데 사용합니다 예:</p>
+
+<code>$this->output->set_status_header('401');<br />
+// Sets the header as:  Unauthorized</code>
+
+<p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">여기</a> 를 보시면 헤더 전체 목록이 있습니다.</p>
+
+<h2>$this->output->enable_profiler();</h2>
+
+<p>프로파일러(<a href="../general/profiling.html">Profiler</a>)를 활성/비활성 할하는데 사용합니다. 프로파일러는 디버깅이나 프로세스 최적화를위해 벤치마크등의 정보를 페이지 하단에표시 합니다.</p>
+<p>프로파일러를 활성화(enable)하려면 아래코드를 <a href="../general/controllers.html">컨트롤러(Controller)</a> 에서 원하는 함수에 추가하시면 됩니다:</p>
+<code>$this->output->enable_profiler(TRUE);</code>
+
+<p>활성화되면 페이지의 맨 아래에 리포트가 생성됩니다.</p>
+
+<p>비활성으로 하시려면 아래와 같이 합니다:</p>
+<code>$this->output->enable_profiler(FALSE);</code>
+
+<h2>$this->output->set_profiler_sections();</h2>  <p>프로파일러가 활성화 된 경우 특정 색션을 켜거나 끌수 있습니다. 상세한 정보는<a href="../general/profiling.html">프로파일러</a> 
+    페이지에...</p>
+
+<h2>$this->output->cache();</h2>
+<p>CodeIgniter 출력라이브러리는 캐시도 컨트롤합니다.  자세한정보는 , <a href="../general/caching.html">캐싱문서(caching documentation</a>)를 보세요.</p>
+<h2>Parsing Execution Variables</h2>
+  <p>기본값으로, CodeIgniter는 출력 중에 의사 변수 <var>{elapsed_time}</var> 와 <var>{memory_usage}</var> 
+    을 분석합니다. 이것을 비활성화하려면 컨트롤러에서 클래스 속성 <var>$parse_exec_vars</var> 를 <var>FALSE</var> 
+    로 설정합니다.<code>$this->output->parse_exec_vars = FALSE;</code> </div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="language.html">Language Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="pagination.html">Pagination Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Email Class : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+<style type="text/css">
+<!--
+.style1 {
+	color: #0066CC;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Email Class
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>이메일 Email Class</h1>
+
+<p>CodeIgniter 의 이메일 클래스는 다음의 기능을 제공합니다:</p>
+
+
+<ul>
+<li>다양한 프로토콜지원( Mail, Sendmail, and SMTP)</li>
+<li>다수의 수신자</li>
+<li>CC 와  BCC</li>
+<li>HTML 또는 일반 텍스트 이메일</li>
+<li>파일첨부</li>
+<li>자동줄바꿈(Word wrapping)</li>
+<li>우선순위설정(Priorities)</li>
+<li>BCC 배치 모드(대량의 이메일 수신자 목록을 작은 BCC 배치로 쪼개줌).</li>
+<li>이메일 디버깅 툴</li>
+</ul>
+
+
+<h2>이메일 보내기</h2>
+
+<p>이메일 보내기는 단순할뿐만아니라, 쉽게 설정을 추가할수 있고 , 원한다면 설정파일에 설정을 세팅할수도 있습니다.</p>
+
+<p>아래에 이메일 보내기 기본 예제이 있습니다.<br />  
+  주의:  이 예제는 여러분이 <span class="style1">컨트롤러</span>에서 이메일을 보낸다는것을 가정합니다.</p>
+
+<code>$this->load->library('email');<br />
+<br />
+$this->email->from('your@example.com', 'Your Name');<br />	
+$this->email->to('someone@example.com'); <br />
+$this->email->cc('another@another-example.com'); <br />
+$this->email->bcc('them@their-example.com'); <br />
+<br />
+$this->email->subject('Email Test');<br />
+$this->email->message('Testing the email class.');	<br />
+<br />
+$this->email->send();<br />
+<br />
+echo $this->email->print_debugger();</code>
+
+
+
+
+<h2>이메일 환경설정 (Setting Email Preferences)</h2>
+
+<p>환경설정 항목은 총 17가지 입니다.여기에서 설명하는것 처럼 여러분이 직접 설정할수도 있고 , 설정파일을 통해 자동으로 설정할수도 있습니다:</p>
+
+<p>환경설정을 하려면 먼저 설정내용을 배열로 만든후 , 이메일 초기화<dfn>(initialize</dfn>)함수로 전달하면 됩니다.아래에 예제가 있습니다:</p>
+
+<code>$config['protocol'] = 'sendmail';<br />
+$config['mailpath'] = '/usr/sbin/sendmail';<br />
+$config['charset'] = 'iso-8859-1';<br />
+$config['wordwrap'] = TRUE;<br />
+<br />
+$this->email->initialize($config);</code>
+
+<p><strong>정보:</strong> 대부분의 설정은 기본값을가지고 있기때문에 여러분이 설정값을 지정하지않으면 그 기본값으로 설정 됩니다..</p
+
+>
+<h3>환경설정파일에 설정하기 </h3>
+
+<p>위와같이 직접 설정하지 않고 자동으로 설정되게 하려면, 환경설정파일에 설정값을 저장하세요 .먼저 <var>email.php</var>파일을 새로 만듧니다.  그리고 <var>$config</var>
+배열을 그 파일에 추가합니다.마지막으로 <var>config/email.php</var> 로 저장합니다. 이렇게 하면 <dfn>$this->email->initialize()</dfn> 함수를 사용할 필요가 없습니다.</p>
+
+
+
+
+<h2>이메일 환경설정 Email Preferences</h2>
+
+<p>아래는 이메일 전송시 사용되는 설정 항목입니다.</p>
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+<th>항목</th>
+<th>기본값</th>
+<th>옵션</th>
+<th>설명</th>
+</tr><tr>
+<td class="td"><strong>useragent</strong></td><td class="td">CodeIgniter</td><td class="td">None</td><td class="td">The "user agent".</td>
+</tr><tr>
+<td class="td"><strong>protocol</strong></td><td class="td">mail</td><td class="td">mail, sendmail, or smtp</td>
+<td class="td">메일전송 프로토콜(The mail sending protocol).</td>
+</tr><tr>
+<td class="td"><strong>mailpath</strong></td><td class="td">/usr/sbin/sendmail</td><td class="td">None</td>
+<td class="td">Sendmail함수의 서버상 경로(The server path to Sendmail).리눅스(유닉스)에서 제공하는 sendmail을 말함 </td>
+</tr><tr>
+<td class="td"><strong>smtp_host</strong></td><td class="td">No Default</td><td class="td">None</td>
+<td class="td">SMTP서버주소(SMTP Server Address).</td>
+</tr><tr>
+<td class="td"><strong>smtp_user</strong></td><td class="td">No Default</td><td class="td">None</td>
+<td class="td">SMTP서버 사용자 아이디(SMTP Username).</td>
+</tr><tr>
+<td class="td"><strong>smtp_pass</strong></td><td class="td">No Default</td><td class="td">None</td>
+<td class="td">SMTP서버 사용자 암호(SMTP Password).</td>
+</tr><tr>
+<td class="td"><strong>smtp_port</strong></td><td class="td">25</td><td class="td">None</td>
+<td class="td">SMTP서버 포트(SMTP Port).</td>
+</tr><tr>
+<td class="td"><strong>smtp_timeout</strong></td><td class="td">5</td><td class="td">None</td>
+<td class="td">SMTP서버 타임아웃(최대처리 혹은 대기)시간(초)(SMTP Timeout (in seconds)).</td>
+</tr><tr>
+<td class="td"><strong>wordwrap</strong></td><td class="td">TRUE</td><td class="td">TRUE or FALSE (boolean)</td>
+<td class="td">자동줄바꿈(Enable word-wrap).</td>
+</tr><tr>
+<td class="td"><strong>wrapchars</strong></td><td class="td">76</td><td class="td"> </td>
+<td class="td">자동줄바꿈시 한줄에 몇개의 문자를 허용할것인가를결정(Character count to wrap at).</td>
+</tr><tr>
+<td class="td"><strong>mailtype</strong></td><td class="td">text</td><td class="td">text or html</td>
+<td class="td">메일 타입(일반텍스트/ html). 만약 html 형태의 메일을 보낸다면 삽입된 링크나 이미지 의 경로는 절대경로를 사용하세요 .그렇지않으면 여러분의 컴퓨터에서 잘보이던 페이지가 메일을 받은사람에게는 이것저것 깨져보일테니까요.</td>
+</tr><tr>
+<td class="td"><strong>charset</strong></td><td class="td">utf-8</td><td class="td"></td>
+<td class="td">문자셋(utf-8, iso-8859-1 등)(Character set (utf-8, iso-8859-1, etc.)).</td>
+</tr><tr>
+<td class="td"><strong>validate</strong></td><td class="td">FALSE</td><td class="td">TRUE or FALSE  (boolean)</td>
+<td class="td">이메일주소가 적합한지 여부를 검사할지 말지 결정(Whether to validate the email address).</td>
+</tr><tr>
+<td class="td"><strong>priority</strong></td><td class="td">3</td><td class="td">1, 2, 3, 4, 5</td>
+<td class="td">이메일 우선순위1 =가장높음.  5 =가장낮음 .  3 = 중간.</td>
+</tr>
+<tr>
+	<td class="td"><strong>crlf</strong></td>
+	<td class="td">\n</td>
+	<td class="td">&quot;\r\n&quot; or &quot;\n&quot; or &quot;\r&quot;</td>
+	<td class="td">줄바꿈 문자 ( RFC 822 를 준수하기 위해  &quot;\r\n&quot;을 사용함 ).</td>
+</tr>
+<tr>
+<td class="td"><strong>newline</strong></td><td class="td">\n</td>
+<td class="td">"\r\n" or "\n" or &quot;\r&quot;</td>
+<td class="td">줄바꿈 문자 ( RFC 822 를 준수하기 위해  &quot;\r\n&quot;을 사용함 )..</td>
+</tr><tr>
+<td class="td"><strong>bcc_batch_mode</strong></td><td class="td">FALSE</td><td class="td">TRUE or FALSE (boolean)</td>
+<td class="td">BCC 배치모드 사용여부결정(Enable BCC Batch Mode).</td>
+</tr><tr>
+<td class="td"><strong>bcc_batch_size</strong></td><td class="td">200</td><td class="td">None</td>
+<td class="td">각 BCC 배치에 몇개의 메일주소를 포함하도록할것인지결정(Number of emails in each BCC batch).</td>
+</tr>
+</table>
+
+
+<h2>이메일 함수 설명 Email Function Reference</h2>
+
+<h3>$this->email->from()</h3>
+<p>메일 보내는 사람의 메일주소와 이름을 설정합니다:</p>
+<code>$this->email->from('<var>you@example.com</var>', '<var>Your Name</var>');</code>
+
+<h3>$this->email->reply_to()</h3>
+<p>답신을 받을(reply-to) 메일 주소와 이름을 설정합니다.  설정하지않으면 from 함수에서 제공된 정보를 기본으로 사용하게 됩니다. 예제:</p>
+<code>$this->email->reply_to('<var>you@example.com</var>', '<var>Your Name</var>');</code>
+
+
+<h3>$this->email->to()</h3>
+<p>수신자의 이메일주소를 설정합니다. 하나이상의 주소를 설정할수있으며 , 여러개를 설정할때는 콤마(,)로 구분하여 설정하거나, 배열로 넘겨줄수도 있습니다:</p>
+
+<code>$this->email->to('<var>someone@example.com</var>');</code>
+<code>$this->email->to('<var>one@example.com</var>, <var>two@example.com</var>, <var>three@example.com</var>');</code>
+
+<code>$list = array('<var>one@example.com</var>', '<var>two@example.com</var>', '<var>three@example.com</var>');<br />
+<br />
+$this->email->to(<var>$list</var>);</code>
+
+<h3>$this->email->cc()</h3>
+<p>CC 메일주소를 설정합니다. "to" 함수처럼 , 하나이상의 주소를 설정할수있으며 , 여러개를 설정할때는 콤마(,)로 구분하여 설정하거나, 배열로 넘겨줄수도 있습니다</p>
+
+<h3>$this->email->bcc()</h3>
+<p>BCC 메일주소를 설정합니다. "to" 함수처럼 , 하나이상의 주소를 설정할수있으며 , 여러개를 설정할때는 콤마(,)로 구분하여 설정하거나, 배열로 넘겨줄수도 있습니다</p>
+
+
+<h3>$this->email->subject()</h3>
+<p>메일 제목을 설정합니다:</p>
+<code>$this->email->subject('<var>This is my subject</var>');</code>
+
+<h3>$this->email->message()</h3>
+<p>이메일 내용을 설정합니다:</p>
+<code>$this->email->message('<var>This is my message</var>');</code>
+
+<h3>$this->email->set_alt_message()</h3>
+<p>HTML 메일을 수신하지 못하는 수신자에게 전달하는경우에 html로 작성된 내용을 대신할 내용을 설정합니다:</p>
+<code>$this->email->set_alt_message('<var>This is the alternative message</var>');</code>
+
+<p>이 항목은 html로 내용을 작성할경우에 사용할 수 있는 옵션입니다. html 메세지를 보낼때 본 함수를 사용하여 대체메시지를 작성하시지않으면, CodeIgniter 는 자동으로 html 메세지에서 태그를 제거하여 대체메세지로 사용합니다.</p>
+
+
+
+<h3>$this->email->clear()</h3>
+<p>모든 이메일 변수들을 초기화 하여 비웁니다.이 함수는 루프를 이용하여 메일을 전송할 경우를 위하여 각 사이클 마다 데이터를 리셋하도록 해줍니다.</p>
+<code>foreach ($list as $name => $address)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->clear();<br /><br />
+	
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->to($address);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->from('your@example.com');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->subject('Here is your info '.$name);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->message('Hi '.$name.' Here is the info you requested.');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->send();<br />
+}</code>
+
+<p>파라미터로 TRUE 를 넘겨주면, 첨부파일도 함께 비워집니다:</p>
+
+<code>$this->email->clear(TRUE);</code>
+
+
+<h3>$this->email->send()</h3>
+<p>메일전송함수입니다. 전송성공여부에 따라서 TRUE / FALSE 를 반환합니다.아래와같이 전송성공여부를 체크하여 적절히 코딩하시면 되겠죠:</p>
+
+<code>if ( ! $this->email->send())<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;// Generate error<br />
+}</code>
+
+
+<h3>$this->email->attach()</h3>
+<p>파일을 첨부할수 있게 해주는 함수입니다. 파일 경로와이름(path/name)을 첫번째 파라미터로 넘겨주세요. <br />
+  Note: URL이 아니라 파일경로를 넘겨야합니다.
+여러개의 파일을 첨부할경우 함수를 여러번 호출해주시면됩니다.<br />
+예제:</p>
+
+<code>$this->email->attach('/path/to/photo1.jpg');<br />
+$this->email->attach('/path/to/photo2.jpg');<br />
+$this->email->attach('/path/to/photo3.jpg');<br />
+<br />
+$this->email->send();</code>
+
+
+<h3>$this->email->print_debugger()</h3>
+<p>모든 서버메세지,이메일 헤더,이메일 메세지들을 포함한 문자열을 리턴합니다. 디버깅시에 유용함.</p>
+
+
+<h2>자동줄바꿈 재정의 Overriding Word Wrapping</h2>
+
+<p>자동줄바꿈을 사용할때, 아주 긴 링크를 포함한메세지의 경우 링크도 줄바꿈 되기때문에 클릭하면 바로 연결되지않는 상황이 발생할수있습니다. 이런경우 메세지의 일부분을 아래와같이 재정의하여 링크를 보호할 수 있습니다:</p>
+
+<code>The text of your email that<br />
+gets wrapped normally.<br />
+<br />
+<var>{unwrap}</var>http://example.com/a_long_link_that_should_not_be_wrapped.html<var>{/unwrap}</var><br />
+<br />
+More text that will be<br />
+wrapped normally.</code>
+
+<p><var>{unwrap}</var> <var>{/unwrap}사이에 보호할 부분을 넣습니다 </var></p>
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="database/index.html">Database Class</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="encryption.html">Encryption Class</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

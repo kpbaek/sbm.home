@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Generating Query Results : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Database Library</a> &nbsp;&#8250;&nbsp;
+Query Results
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+
+<h1>쿼리결과 생성(Generating Query Results)</h1>
+
+
+<p>쿼리 결과를 생성하는데는 몇가지 방법이 있습니다:</p>
+
+	<h2>result()</h2>
+
+	<p>이 함수는 쿼리결과를 객체배열(an array of <strong>objects</strong>)로 리턴합니다. 실패시에는 빈 배열을 리턴하죠.
+
+	일반적으로 foreach 루프에서 이 함수를 사용할거예요 .다음 예를 보시죠:</p>
+
+	<code>
+	$query = $this->db->query("YOUR QUERY");<br />
+	<br />
+	foreach ($query->result() as $row)<br />
+	{<br />
+	&nbsp;&nbsp;&nbsp;echo $row->title;<br />
+	&nbsp;&nbsp;&nbsp;echo $row->name;<br />
+	&nbsp;&nbsp;&nbsp;echo $row->body;<br />
+	}</code>
+
+	<p>위 함수는 <dfn>result_object()</dfn> 함수의 별명(alias) 입니다.</p>
+
+	<p>만약 <strong>결과가 없을 수도 있는 쿼리</strong>를 수행한다면 아래와 같이 테스트를 먼저 해 보시는것이 좋습니다:</p>
+
+	<code>
+	$query = $this->db->query("YOUR QUERY");<br />
+	<br />
+	if ($query->num_rows() > 0)<br />
+	{<br />
+	&nbsp;&nbsp;&nbsp;foreach ($query->result() as $row)<br />
+	&nbsp;&nbsp;&nbsp;{<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo $row->title;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo $row->name;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo $row->body;<br />
+	&nbsp;&nbsp;&nbsp;}<br />
+  } </code>
+  <p>각각의 결과를 객체화 할 수 있도록 클래스 이름을 result() 메서드에 문자열로 넘겨 줄 수 있습니다. (주의:클래스는 미리 로드되어
+    있어야 합니다)</p>
+
+	<code>
+	$query = $this->db->query("SELECT * FROM users;");<br />
+	<br />
+		foreach ($query->result('User') as $row)<br />
+	{<br />
+	&nbsp;&nbsp;&nbsp;echo $row->name; // call attributes<br />
+	&nbsp;&nbsp;&nbsp;echo $row->reverse_name(); // or methods defined on the 'User' class<br />
+	}
+	</code>
+
+	<h2>result_array()</h2>
+
+	<p>이함수는 쿼리수행의 결과로 순수한 배열을 리턴합니다. 결과가 없다면 빈 배열을 리턴합니다. 일반적으로 아래와같은 foreach 루프에서 사용합니다.:</p>
+	<code>
+	$query = $this->db->query("YOUR QUERY");<br />
+	<br />
+	foreach ($query->result_array() as $row)<br />
+	{<br />
+	&nbsp;&nbsp;&nbsp;echo $row['title'];<br />
+	&nbsp;&nbsp;&nbsp;echo $row['name'];<br />
+	&nbsp;&nbsp;&nbsp;echo $row['body'];<br />
+	}</code>
+
+
+	<h2>row()</h2>
+
+	<p>이 함수는 한줄(a single row)의 결과만을 리턴합니다. 만약 쿼리가 한줄이상의 결과셋을 리턴하는 상황이라면 맨 첫번째 줄만 리턴합니다. 결과는 객체(<strong>object</strong>) 로 리턴됩니다. 아래 샘플을 보세요:</p>
+	<code>
+	$query = $this->db->query("YOUR QUERY");<br />
+	<br />
+	if ($query->num_rows() > 0)<br />
+	{<br />
+	&nbsp;&nbsp;&nbsp;$row = $query->row();
+	<br /><br />
+	&nbsp;&nbsp;&nbsp;echo $row->title;<br />
+	&nbsp;&nbsp;&nbsp;echo $row->name;<br />
+	&nbsp;&nbsp;&nbsp;echo $row->body;<br />
+	}
+	</code>
+
+	<p>만약 특정열의 결과를 리턴받고싶다면, 첫번째 파라미터에 열번호를 넘겨주세요:</p>
+
+	<code>$row = $query->row(<dfn>5</dfn>);</code>
+
+  <p>두번째 파라미터로 클래스 이름을 넘겨주면, 결과값의 각줄을 클래스 인스턴스로 리턴합니다:</p>
+
+	<code>
+	$query = $this->db->query("SELECT * FROM users LIMIT 1;");<br />
+	<br />
+	$query->row(0, 'User')<br />
+	echo $row->name; // call attributes<br />
+	echo $row->reverse_name(); // or methods defined on the 'User' class<br />
+	</code>
+
+	<h2>row_array()</h2>
+
+	<p>위<var>row()</var> 함수와 동일하나 이 함수는 객체가 아닌 배열의 형태로 결과를 리턴합니다.:</p>
+
+	<code>
+	$query = $this->db->query("YOUR QUERY");<br />
+	<br />
+	if ($query->num_rows() > 0)<br />
+	{<br />
+	&nbsp;&nbsp;&nbsp;$row = $query->row_array();
+	<br /><br />
+	&nbsp;&nbsp;&nbsp;echo $row['title'];<br />
+	&nbsp;&nbsp;&nbsp;echo $row['name'];<br />
+	&nbsp;&nbsp;&nbsp;echo $row['body'];<br />
+	}
+	</code>
+
+
+	<p>만약 특정열의 결과를 리턴받고싶다면, 첫번째 파라미터에 열번호를 넘겨주세요:</p>
+
+	<code>$row = $query->row_array(<dfn>5</dfn>);</code>
+
+
+ 	<p>추가적으로 , 아래의 함수를 이용하여 앞/뒤/첫번째/마지막 레코드등으로 이동할수 있습니다:</p>
+
+<p>
+	<strong>$row = $query->first_row()</strong><br />
+	<strong>$row = $query->last_row()</strong><br />
+	<strong>$row = $query->next_row()</strong><br />
+	<strong>$row = $query->previous_row()</strong>
+</p>
+
+<p>기본적으로 이렇게 이동할때 함수의 결과는 객체를 리턴합니다. 만약 배열로 리턴받고싶다면 아래와같이 'array'를 파라미터로 넘겨주시면 됩니다:</p>
+
+<p>
+	<strong>$row = $query->first_row('array')</strong><br />
+	<strong>$row = $query->last_row('array')</strong><br />
+	<strong>$row = $query->next_row('array')</strong><br />
+	<strong>$row = $query->previous_row('array')</strong>
+</p>
+
+
+
+<h1>결과 헬퍼 함수들 (Result Helper Functions)</h1>
+
+
+<h2>$query->num_rows()</h2>
+<p>쿼리 결과열의 개수를 리턴합니다. 아래예제에서, <dfn>$query</dfn> 는 쿼리결과를 받는 변수입니다:</p>
+
+<code>$query = $this->db->query('SELECT * FROM my_table');<br /><br />
+echo $query->num_rows();
+</code>
+
+<h2>$query->num_fields()</h2>
+<p>쿼리결과의 필드(columns)개수를 리턴합니다.  아래와 같이 쿼리 결과를 담은 객체에서 이함수를 호출해야한다는것을 명심하세요:</p>
+
+<code>$query = $this->db->query('SELECT * FROM my_table');<br /><br />
+echo $query->num_fields();
+</code>
+
+
+
+<h2>$query->free_result()</h2>
+<p>이함수는 쿼리결과객체에 할당된 메모리를 비우고 객체 및 리소스 아이디를 제거합니다.  보통 PHP는 스크립트 실행이 완료되면 자동으로 메모리를 해제하나 , 한 스크립트내에서 다수의 쿼리를 실행할경우 각 리소스를 스크립트가 완료되기전에 해제해야할 때도 있습니다. 메모리를 너무 많이 소모하게되면, 프로그램이 정지할수도 있으니까요 . 이함수는 아래와 같이 사용합니다:
+</p>
+
+<code>$query = $this->db->query('SELECT title FROM my_table');<br /><br />
+foreach ($query->result() as $row)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;echo $row->title;<br />
+}<br />
+$query->free_result();  // The $query result object will no longer be available<br />
+<br />
+$query2 = $this->db->query('SELECT name FROM some_table');<br /><br />
+$row = $query2->row();<br />
+echo $row->name;<br />
+$query2->free_result();  // The $query2 result object will no longer be available
+</code>
+
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="queries.html">Queries</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="helpers.html">Query Helper Functions</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

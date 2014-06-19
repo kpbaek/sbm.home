@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Form Helper : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<blockquote>&nbsp;</blockquote>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Form Helper
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>폼 Form Helper</h1>
+
+<p>폼 헬퍼는 폼조작에 필요한 함수들을 제공합니다.</p>
+
+
+<h2>헬퍼로딩 Loading this Helper</h2>
+
+<p>다음과같이 헬퍼를 로드합니다:</p>
+<code>$this->load->helper('form');</code>
+
+<p>다음 함수들이 사용가능 합니다:</p>
+
+
+
+<h2>form_open()</h2>
+
+  <p>환경설정(<strong>config preferences</strong>)파일에 설정해둔 기반(base)URL을 포함한 폼 태그의 여는
+    부분을 생성합니다. 옵션으로 폼 속성(attributes)과 숨김필드(hidden input)를 추가하실 수 있으며,설정 파일의 문자
+    코드 값에 따라 항상 <kbd>accept - charset</kbd> 속성이 추가됩니다.</p>
+
+<p>이 함수를 사용했을때 하드코딩 보다 좋은점은  URL이 변해도 신경쓸 필요가 없다는 점입니다.(이식성이 좋음).</p>
+
+<p>예:</p>
+
+<code>echo form_open('email/send');</code>
+
+<p>위 예제는 아래와같이 기반URL(base URL) 에 "email/send" URI 세그먼트를 덧붙인 폼을 생성합니다:</p>
+
+  <code>&lt;form method="post" accept-charset=&quot;utf-8&quot; action="http:/example.com/index.php/email/send"
+  /></code>
+  <h4>속성 추가하기 Adding Attributes</h4>
+
+<p>속성(Attributes)은 연관배열로 만드신 후 두번째 파라미터로 전달하여 설정할 수 있습니다:</p>
+
+<code>
+$attributes = array('class' => 'email', 'id' => 'myform');<br />
+<br />
+echo form_open('email/send', $attributes);</code>
+
+<p>위 예제는 아래와 유사한 폼을 생성합니다:</p>
+
+  <code>&lt;form method="post" accept-charset=&quot;utf-8&quot; action="http:/example.com/index.php/email/send"
+  &nbsp;class="email" &nbsp;id="myform" /></code>
+  <h4>숨김 입력필드 추가 Adding Hidden Input Fields</h4>
+
+<p>숨김필드(Hidden fields)는 세번째 파라미터에 아래와같이 연관배열을 전달하여 생성합니다:</p>
+
+<code>
+$hidden = array('username' => 'Joe', 'member_id' => '234');<br />
+<br />
+echo form_open('email/send', '', $hidden);</code>
+
+<p>위 예제는 아래와 유사한 폼을 생성합니다:</p>
+
+  <code>&lt;form method="post" accept-charset=&quot;utf-8&quot; action="http:/example.com/index.php/email/send"><br />
+  &lt;input type="hidden" name="username" value="Joe" /><br />
+  &lt;input type="hidden" name="member_id" value="234" /></code>
+  <h2>form_open_multipart()</h2>
+
+<p>이함수는 <dfn>form_open()</dfn> 와 동일하나 multipart 속성을 추가한다는 점이 다릅니다. multipart는 폼에서 파일을 업로드 해야할때 필요한 속성입니다.</p>
+
+<h2>form_hidden()</h2>
+
+<p>숨김필드(hidden input)를 생성합니다.  이름/값(name/value)을 넘겨주어 하나의 필드를 생성하실 수 있습니다:</p>
+
+<code>form_hidden('username', 'johndoe');<br />
+<br />
+// Would produce:<br /><br />
+&lt;input type="hidden" name="username" value="johndoe" /></code>
+
+<p>아니면, 연관배열을 통해서 여러개의 필드를 생성하실 수도 있습니다:</p>
+
+<code>$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;=> 'John Doe',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'email' => 'john@example.com',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'url'&nbsp;&nbsp;&nbsp;=> 'http://example.com'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo form_hidden($data);<br />
+<br />
+// 결과:<br />
+<br />
+&lt;input type="hidden" name="name" value="John Doe" /><br />
+&lt;input type="hidden" name="email" value="john@example.com" /><br />
+&lt;input type="hidden" name="url" value="http://example.com" /></code>
+
+
+
+
+<h2>form_input()</h2>
+
+<p>표준 입력필드(text input)를 생성합니다.  아래와 같이 필드 이름과 값만을 넘겨주어 생성할수도 있고:</p>
+
+<code>echo form_input('username', 'johndoe');</code>
+
+<p>필드의 여러속성을 아래와같이 연관배열로 넘겨주어 설정할수도 있습니다:</p>
+
+<code>$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'username',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'username',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'value'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'johndoe',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'maxlength'&nbsp;&nbsp;&nbsp;=> '100',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'size'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> '50',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'style'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'width:50%',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo form_input($data);<br />
+<br />
+// 결과:<br />
+<br />
+&lt;input type="text" name="username" id="username" value="johndoe" maxlength="100" size="50" style="width:50%" /></code>
+
+<p>자바스크립트등 부가적인 데이터를 설정하시려면 ,세번째 파라미터로 문자열을 넘겨주세요:</p>
+
+<code>$js = 'onClick="some_function()"';<br />
+<br />
+echo form_input('username', 'johndoe', $js);</code>
+
+<h2>form_password()</h2>
+
+<p>이 함수는 암호타입(password)의 입력필드 생성이라는 점을 제외하면 <dfn>form_input()</dfn> 함수와 완전히 동일합니다.</p>
+
+<h2>form_upload()</h2>
+
+<p>이 함수는 파일 업로드에 사용되는 파일타입(file)의 입력필드 생성이라는 점을 제외하면<dfn>form_input()</dfn> 함수와 완전히 동일합니다.</p>
+
+<h2>form_textarea()</h2>
+
+<p>이 함수는 파일 업로드에 사용되는 텍스트영역타입(textarea) 생성이라는 점을 제외하면<dfn>form_input()</dfn> 함수와 완전히 동일합니다. 참고: 위 예제에서 설정하신 "maxlength" 와 "size" 속성대신, "rows" 와 "cols" 를 설정하셔야 합니다.</p>
+
+
+<h2>form_dropdown()</h2>
+
+<p>표준 드롭다운(drop-down)필드를 생성합니다. 첫번째 파라미터는 필드의 이름 , 두번째 파라미터는 옵션의 연관배열, 세번째파라미터는 기본으로 선택될 값을 지정합니다. 세번째 파라미터로 배열을 넘겨주면, 이그나이터는 필드를 다중선택(multiple select)의 형태로 생성해줍니다. 예:</p>
+
+<code>$options = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'small'&nbsp;&nbsp;=> 'Small Shirt',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'med'&nbsp;&nbsp;&nbsp;&nbsp;=> 'Medium Shirt',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'large'&nbsp;&nbsp; => 'Large Shirt',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'xlarge' => 'Extra Large Shirt',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$shirts_on_sale = array('small', 'large');<br />
+<br />
+echo form_dropdown('shirts', $options, 'large');<br />
+<br />
+// 결과:<br />
+<br />
+&lt;select name=&quot;shirts&quot;&gt;<br />
+&lt;option value=&quot;small&quot;&gt;Small Shirt&lt;/option&gt;<br />
+&lt;option value=&quot;med&quot;&gt;Medium  Shirt&lt;/option&gt;<br />
+&lt;option value=&quot;large&quot; selected=&quot;selected&quot;&gt;Large Shirt&lt;/option&gt;<br />
+&lt;option value=&quot;xlarge&quot;&gt;Extra Large Shirt&lt;/option&gt;<br />
+&lt;/select&gt;<br />
+<br />
+echo form_dropdown('shirts', $options, $shirts_on_sale);<br />
+<br />
+// 결과:<br />
+<br />
+&lt;select name=&quot;shirts&quot; multiple=&quot;multiple&quot;&gt;<br />
+&lt;option value=&quot;small&quot; selected=&quot;selected&quot;&gt;Small Shirt&lt;/option&gt;<br />
+&lt;option value=&quot;med&quot;&gt;Medium  Shirt&lt;/option&gt;<br />
+&lt;option value=&quot;large&quot; selected=&quot;selected&quot;&gt;Large Shirt&lt;/option&gt;<br />
+&lt;option value=&quot;xlarge&quot;&gt;Extra Large Shirt&lt;/option&gt;<br />
+&lt;/select&gt;</code>
+
+
+<p>&lt;select> 태그에서 자바스크립트등 추가로 설정하실때는 문자열을 네번째 파라미터로 넘겨주세요 :</p>
+
+<code>$js = 'onChange="some_function()"';<br />
+<br />
+echo form_dropdown('shirts', $options, 'large', $js);</code>
+
+
+<h2>form_fieldset()</h2>
+
+<p> fieldset/legend 필드를 생성합니다.</p>
+<code>echo form_fieldset('Address Information');<br />
+echo &quot;&lt;p&gt;fieldset content here&lt;/p&gt;\n&quot;;<br />
+echo form_fieldset_close();
+<br />
+<br />
+// 결과 <br />
+&lt;fieldset&gt;
+<br />
+&lt;legend&gt;Address Information&lt;/legend&gt;
+<br />
+&lt;p&gt;form content here&lt;/p&gt;
+<br />
+&lt;/fieldset&gt;</code>
+<p>다른 함수들과 마찬가지로, 부가적인 속성을 설정하기위해서 두번째 파라미터를 연관배열로 넘겨줄 수 있습니다.</p>
+<p><code>$attributes = array('id' =&gt; 'address_info', 'class' =&gt; 'address_info');<br />
+    echo form_fieldset('Address Information', $attributes);<br />
+echo &quot;&lt;p&gt;fieldset content here&lt;/p&gt;\n&quot;;<br />
+echo form_fieldset_close(); <br />
+<br />
+// 결과 <br />
+&lt;fieldset id=&quot;address_info&quot; class=&quot;address_info&quot;&gt; <br />
+&lt;legend&gt;Address Information&lt;/legend&gt; <br />
+&lt;p&gt;form content here&lt;/p&gt; <br />
+&lt;/fieldset&gt;</code></p>
+<h2>form_fieldset_close()</h2>
+<p>닫는 &lt;/fieldset&gt; 태그를 생성합니다.  이함수를 사용하는 단하나의 잇점은 태그 생성후 원하는 데이터를 그 아래 덧붙일수 있다는 점입니다. 예:</p>
+<code>$string = &quot;&lt;/div&gt;&lt;/div&gt;&quot;;<br />
+<br />
+echo form_fieldset_close($string);<br />
+<br />
+// Would produce:<br />
+&lt;/fieldset&gt;<br />
+&lt;/div&gt;&lt;/div&gt;</code>
+<h2>form_checkbox()</h2>
+<p>체크박스를 생성합니다. 간단한 예:</p>
+<code>echo form_checkbox('newsletter', 'accept', TRUE);<br />
+<br />
+//결과:<br />
+<br />
+&lt;input type=&quot;checkbox&quot; name=&quot;newsletter&quot; value=&quot;accept&quot; checked=&quot;checked&quot; /&gt;</code>
+<p>박스가 기본으로 체크되어 있일지 여부를 세번째 파라미터로 지정할 수 있습니다.(TRUE/FALSE).</p>
+<p>다른 폼헬퍼 함수들과 마찬가지로 , 속성의 배열을 넘겨줄 수 있습니다:</p>
+
+<code>$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'newsletter',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'newsletter',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'value'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'accept',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'checked'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> TRUE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'style'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'margin:10px',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+echo form_checkbox($data);<br />
+<br />
+// 결과:<br />
+<br />
+&lt;input type="checkbox" name="newsletter" id="newsletter" value="accept" checked="checked" style="margin:10px" /></code>
+
+<p>다른 예에서와 같이 , 자바스크립등을 추가하고싶다면, 아래처럼 네번째 파라미터로 넘겨주세요:</p>
+
+<code>$js = 'onClick="some_function()"';<br />
+<br />
+ echo form_checkbox('newsletter', 'accept', TRUE, $js)</code>
+
+
+<h2>form_radio()</h2>
+<p>라디오버튼(radio)을 생성한다는 점을 제외하면 <dfn>form_checkbox()</dfn> 함수와 완전히 동일합니다.</p>
+
+
+<h2>form_submit()</h2>
+
+<p>표준 전송(submit) 버튼을 생성합니다. 단순 예제:</p>
+<code>echo form_submit('mysubmit', 'Submit Post!');<br />
+<br />
+// Would produce:<br />
+<br />
+&lt;input type=&quot;submit&quot; name=&quot;mysubmit&quot; value=&quot;Submit Post!&quot; /&gt;</code>
+<p>다른함수들과 마찬가지로, 속성을 설정하기위해서 첫번째 파라미터에 연관배열을 넘겨줄 수 있습니다. 세번째 파라미터로 자바스크립트 등을 설정할수 있습니다.</p>
+<h2>form_label()</h2>
+<p>&lt;label&gt;을 생성합니다. 단순 예제:</p>
+<code>echo form_label('What is your Name', 'username');<br />
+<br />
+// Would produce:
+<br />
+&lt;label for=&quot;username&quot;&gt;What is your Name&lt;/label&gt;</code>
+<p>다른함수들과 마찬가지로 ,속성을 설정하기위해서 세번째 파라미터에 연관배열을 넘겨줄 수 있습니다 . </p>
+<p><code>$attributes = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'class' =&gt; 'mycustomclass',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'style' =&gt; 'color: #000;',<br />
+);<br />
+    echo form_label('What is your Name', 'username', $attributes);<br />
+        <br />
+// Would produce: <br />
+&lt;label for=&quot;username&quot; class=&quot;mycustomclass&quot; style=&quot;color: #000;&quot;&gt;What is your Name&lt;/label&gt;</code></p>
+<h2>form_reset()</h2>
+
+<p>리셋(reset) 버튼을 생성합니다. 함수 사용법은 <dfn>form_submit()</dfn>와 동일합니다. </p>
+
+<h2>form_button()</h2>
+
+<p>표준 버튼(button)을 생성합니다.첫번째 파라미터는 버튼의 이름이며 두번째 파라미터는 내용(content)입니다:</p>
+<code>
+echo form_button('name','content');<br />
+<br />
+// 결과 <br />
+&lt;button name="name" type="submit"&gt;Content&lt;/button&gt;
+</code>
+
+혹은 아래와 같이 연관배열을 사용하여 각 속성을 설정하실 수 도 있습니다:<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'button',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'id' => 'button',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'value' => 'true',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'type' => 'reset',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'content' => 'Reset'<br />
+);<br />
+<br />
+echo form_button($data);<br />
+<br />
+// Would produce:<br />
+&lt;button name="button" id="button" value="true" type="reset"&gt;Reset&lt;/button&gt;
+</code>
+
+세번째 파라미터로 자바스크립트 등을 추가로 설정할수 있습니다:
+<code>
+$js = 'onClick="some_function()"';<br />
+<br />
+echo form_button('mybutton', 'Click Me', $js);</code>
+
+
+<h2>form_close()</h2>
+
+<p>&lt;/form>태그를 생성합니다.이함수를 사용하는 단하나의 잇점은 태그 생성후 원하는 데이터를 그 아래 덧붙일수 있다는 점입니다. 예:</p>
+
+<code>$string = "&lt;/div>&lt;/div>";<br />
+<br />
+echo form_close($string);<br />
+<br />
+// 결과:<br />
+<br />
+&lt;/form><br />
+&lt;/div>&lt;/div></code>
+
+
+
+
+
+<h2>form_prep()</h2>
+
+<p>폼 요소내에서 폼을 망가뜨리지 않고 따옴표(quotes:&quot;) 따위의 문자열이나 HTML 을 안전하게 사용할 수 있도록 해줍니다. 아래예제를 살펴보세요:</p>
+
+<code>$string = 'Here is a string containing <strong>"quoted"</strong> text.';<br />
+<br />
+&lt;input type="text" name="myform" value="<var>$string</var>" /></code>
+
+<p>위 예제는 따옴표를 포함하고 있기때문에 폼이 망가지게 됩니다.form_prep 함수는 HTML을 안전한 형태로 변환시켜줍니다:</p>
+
+<code>&lt;input type="text" name="myform" value="<var>&lt;?php echo form_prep($string); ?></var>" /></code>
+
+<p class="important"><strong>참고:</strong> 본 페이지에 있는 어떤 헬퍼 함수를 사용하더라도 폼값들이 자동으로 변환되기 때문에 이 함수를 직접 호출하실 필요가 없습니다. 여러분 자신만의 폼 요소(elements)를 생성했을때만 이 함수를 호출하시면 됩니다.</p>
+
+
+<h2>set_value()</h2>
+
+<p>입력폼이나 텍스트영역(textarea)에 값을 설정합니다. 첫번째 파라미터로 반드시 필드 이름을 넘겨주어야 합니다.
+옵션으로 두번째 파라미터를 통해 기본값을 설정하실 수 있습니다. 예:</p>
+
+<code>&lt;input type="text" name="quantity" value="<dfn>&lt;?php echo set_value('quantity', '0'); ?></dfn>" size="50" /></code>
+
+<p>위 예에서는 폼이 최초로 로드될때 "0"이 설정되게 됩니다.</p>
+
+<h2>set_select()</h2>
+
+<p><dfn>&lt;select></dfn> 메뉴를 사용할때 , 이전에 선택된 메뉴를 표시할 수 있도록 해줍니다(상태유지).  첫번째 파라미터는 반드시 선택메뉴(select menu)의 이름을 넘겨줘야하고 ,두번째 파라미터는 각 아이템의 값 그리고, 세번째 파라미터(옵션)은 기본값을 설정합니다(TRUE/FALSE).</p>
+
+<p>예:</p>
+
+<code>
+&lt;select name="myselect"><br />
+&lt;option value="one" <dfn>&lt;?php echo  set_select('myselect', 'one', TRUE); ?></dfn> >One&lt;/option><br />
+&lt;option value="two" <dfn>&lt;?php echo  set_select('myselect', 'two'); ?></dfn> >Two&lt;/option><br />
+&lt;option value="three" <dfn>&lt;?php echo  set_select('myselect', 'three'); ?></dfn> >Three&lt;/option><br />
+&lt;/select>
+</code>
+
+
+<h2>set_checkbox()</h2>
+
+<p>체크박스를 전송되기전 상태로 표시하도록 해줍니다(상태유지) .첫번째 파라미터는 체크박스의 이름, 두번째 파라미터는 값, 세번째 파라미터(옵션)은 기본값(TRUE/FALSE)을 지정합니다. 예:</p>
+
+<code>&lt;input type="checkbox" name="mycheck" value="1" <dfn>&lt;?php echo set_checkbox('mycheck', '1'); ?></dfn> /><br />
+&lt;input type="checkbox" name="mycheck" value="2" <dfn>&lt;?php echo set_checkbox('mycheck', '2'); ?></dfn> /></code>
+
+
+<h2>set_radio()</h2>
+
+<p>라디오 버튼을 전송되기전 상태로 표시하도록 해줍니다(상태유지) . 이함수는 <strong>set_checkbox()</strong> 함수와 동일합니다.</p>
+
+<code>&lt;input type="radio" name="myradio" value="1" <dfn>&lt;?php echo  set_radio('myradio', '1', TRUE); ?></dfn> /><br />
+&lt;input type="radio" name="myradio" value="2" <dfn>&lt;?php echo  set_radio('myradio', '2'); ?></dfn> /></code>
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="file_helper.html">File Helper</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="html_helper.html">HTML Helper</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>

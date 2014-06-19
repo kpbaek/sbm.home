@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Managing your Applications : CodeIgniter User Guide</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter User Guide' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter User Guide Version 2.1.0</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
+<a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
+Managing your Applications
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter-kr.org/user_guide_2.1.0/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+<h1>프로그램 관리법 Managing your Applications</h1>
+
+<p>기본적으로 CodeIgniter 는 여러분이 단일 프로그램을 만들거나 관리하고 있으며 ,그것은<dfn>application/</dfn> 폴더에 있다고 가정하고 있습니다. 그러나 하나의
+CodeIgniter 아래 여러 프로그램을 관리하거나, <dfn>application</dfn> 폴더명을 변경하거나 이동 해야할때도 있을것입니다.</p>
+
+<h2>Application 폴더 이름변경</h2>
+
+<p><dfn>application</dfn> 폴더의 이름을 변경하실수 있습니다. 만약 변경하신다면 메인 <kbd>index.php</kbd>
+파일을 여신후<samp>$application_folder</samp> 변수를 변경하셔야 합니다.:</p>
+
+<code>$application_folder = "application";</code>
+
+<h2>Application 위치 이동</h2>
+
+<p><dfn>application</dfn> 폴더의 위치를 <kbd>system</kbd> 폴더 아래가 아닌 다른곳으로 이동하실 수 있습니다.만약 이동하시면 메인 <kbd>index.php</kbd> 을 여신후 <samp>$application_folder</samp> 변수에 아래와 같이 전체 서버경로를 적어주세요: </p>
+
+
+<code>$application_folder = "/Path/to/your/application";</code>
+
+
+<h2>하나의 CodeIgniter 로 여러 프로그램 관리(제작)하기</h2>
+
+<p>하나의 CodeIgniter 로 여러 프로그램을 관리하시려면 각프로그램을 <kbd>application</kbd> 폴더아래 하위폴더로 두십시오. 각프로그램은 현재 application 폴더가 가지고 있는것처럼 config, controllers ..등등의 하위폴더구조를 그대로 유지해야합니다.</p>  <p>예를 들어 "foo" 와 "bar" 이라는 두개의 프로그램을 관리한다고 하면. 폴더구조를 아래처럼하면 됩니다:</p>
+  <code>applications/<var>foo</var>/<br />
+  applications/<var>foo</var>/config/<br />
+  applications/<var>foo</var>/controllers/<br />
+  applications/<var>foo</var>/errors/<br />
+  applications/<var>foo</var>/libraries/<br />
+  applications/<var>foo</var>/models/<br />
+  applications/<var>foo</var>/views/<br />
+  applications/<samp>bar</samp>/<br />
+  applications/<samp>bar</samp>/config/<br />
+  applications/<samp>bar</samp>/controllers/<br />
+  applications/<samp>bar</samp>/errors/<br />
+  applications/<samp>bar</samp>/libraries/<br />
+  applications/<samp>bar</samp>/models/<br />
+  applications/<samp>bar</samp>/views/</code>
+  <p>특정 프로그램을 사용할때는 메인 <kbd>index.php</kbd> 파일을 연후<dfn>$application_folder</dfn>
+변수에 그 경로를 입력합니다.  </p>
+<p>예를들어,"foo" 프로그램을 사용하시려면 아래와 같이 설정합니다:</p>  <code>$application_folder = "applications/foo";</code>
+  <p class="important"><strong>Note:</strong>&nbsp; 각 프로그램 해당프로그램 고유의<dfn>index.php</dfn> 파일이 필요합니다.  그 index.php 파일은 여러분이 원하시는 어떤 이름으로 하셔도 무방합니다.</p>
+
+
+
+
+
+</div>
+<div id="footer">
+<p>
+Previous Topic:&nbsp;&nbsp;<a href="profiling.html">Profiling Your Application</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+Next Topic:&nbsp;&nbsp;<a href="alternative_php.html">Alternative PHP Syntax</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2011 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+</div>
+
+</body>
+</html>
